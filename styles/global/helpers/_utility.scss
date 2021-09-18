@@ -1,0 +1,112 @@
+// font utilities
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-lowercase {
+  text-transform: capitalize !important;
+}
+
+@each $name, $weight in $font-weights {
+  .font-#{"" + $name} {
+    font-weight: $weight !important;
+  }
+}
+
+@each $name, $size in $font-sizes {
+  .font-size-#{"" + $name} {
+    font-size: $size !important;
+  }
+}
+
+@each $name, $color in $colors {
+  .bg-#{"" + $name} {
+    background: $color !important;
+  }
+
+  .color-#{"" + $name} {
+    color: $color !important;
+  }
+}
+
+// layout utilities
+
+$spaces: 5;
+$start: 0;
+
+@each $side in $sides {
+  @for $i from 1 through 6 {
+    $start: $start + 0.5;
+
+    .p#{str-slice($side, 0, 1)}-#{$i} {
+      padding-#{$side}: #{$start}rem !important;
+    }
+
+    .m#{str-slice($side, 0, 1)}-#{$i} {
+      margin-#{$side}: #{$start}rem !important;
+    }
+  }
+  $start: 0;
+
+  .p#{str-slice($side, 0, 1)}-0 {
+    padding-#{$side}: 0 !important;
+  }
+
+  .m#{str-slice($side, 0, 1)}-0 {
+    margin-#{$side}: 0 !important;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.filler {
+  flex-grow: 1 !important;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.m-auto {
+  margin: 0 auto;
+}
+
+.divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border: 1px solid color(lighter-grey);
+  margin: 0;
+  width: 100%;
+
+  @include respond(large) {
+    position: static;
+  }
+}

@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-right: calc(2 * #{$gutter-width});
+  padding-left: calc(2 * #{$gutter-width});
+
+  @include respond(largest) {
+    max-width: $max-width;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -#{$gutter-width};
+
+  [class^="col-"] {
+    width: 100%;
+    padding: 0 $gutter-width;
+  }
+
+  $counter: 0;
+
+  @while $counter < $num-of-columns {
+    .col-#{""+($num-of-columns - $counter)} {
+      @include grid-column($num-of-columns - $counter);
+    }
+
+    @each $name, $size in $device-sizes {
+      .col-#{"" + $name}-#{""+($num-of-columns - $counter)} {
+        @include respond($size) {
+          @include grid-column($num-of-columns - $counter);
+        }
+      }
+    }
+
+    $counter: $counter + 1;
+  }
+}

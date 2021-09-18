@@ -1,0 +1,6 @@
+.footer {
+  .copyright {
+    @include font-size(small);
+    margin: 1.8rem 0;
+  }
+}

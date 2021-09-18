@@ -1,0 +1,13 @@
+.home {
+  &__products {
+    display: block;
+
+    @include respond(large) {
+      display: grid;
+      grid-template-columns: 37.5rem calc(100% - 37.5rem);
+    }
+  }
+
+  &__sort {
+  }
+}

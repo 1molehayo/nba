@@ -1,0 +1,43 @@
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-angle-down::before {
+  content: "\e900";
+}
+.icon-angle-left::before {
+  content: "\e901";
+}
+.icon-angle-right::before {
+  content: "\e902";
+}
+.icon-check::before {
+  content: "\e903";
+}
+.icon-close::before {
+  content: "\e904";
+}
+.icon-logo::before {
+  content: "\e905";
+}
+.icon-settings::before {
+  content: "\e906";
+}
+.icon-shopping-cart::before {
+  content: "\e907";
+}
+.icon-sort::before {
+  content: "\e908";
+}

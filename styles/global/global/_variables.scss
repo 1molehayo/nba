@@ -1,0 +1,70 @@
+$colors: (
+  ash: #f2f2f2,
+  black: #000000,
+  dark: #7a7a7a,
+  green: #66b700,
+  grey: #868686,
+  light-blue: #f8f7fd,
+  light-grey: #eeeeee,
+  lighter-grey: #dadada,
+  orange: #db7600,
+  primary: #2d6936,
+  red: #f00,
+  white: #ffffff,
+);
+
+$ubuntu: "Ubuntu", sans-serif;
+$montserrat: "Montserrat", sans-serif;
+
+$font-families: (
+  icomoon: "icomoon",
+  montserrat: $montserrat,
+  ubuntu: $ubuntu,
+);
+
+$font-weights: (
+  regular: 400,
+  medium: 500,
+  semi-bold: 600,
+  bold: 700,
+);
+
+$font-sizes: (
+  xx-small: 0.9rem,
+  x-small: 1.2rem,
+  small: 1.4rem,
+  regular: 1.6rem,
+  medium: 1.8rem,
+  large: 2.4rem,
+  m-large: 3rem,
+  x-large: 5.5rem,
+  xx-large: 7rem,
+);
+
+$max-width: 129rem;
+$gutter-width: 1rem;
+$num-of-columns: 12;
+
+$break-points: (
+  // large mobile phones
+  smallest: 480px,
+  // small tabs or phablets
+  small: 600px,
+  // tabs and ipads
+  medium: 768px,
+  // large tabs / large ipads / small laptops
+  large: 990px,
+  // laptops / desktops
+  largest: 1200px
+);
+
+$device-sizes: (
+  sm: "small",
+  md: "medium",
+  lg: "large",
+  xl: "largest",
+);
+
+$sides: (top, bottom, left, right);
+
+$button-gradient: linear-gradient(90deg, #2d6936 -6.45%, #00a419 95.97%);

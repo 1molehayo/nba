@@ -1,0 +1,123 @@
+.hero {
+  position: relative;
+
+  &__badge {
+    position: absolute;
+    bottom: 0;
+    left: -2px;
+    padding: 1.5rem 4rem;
+    background-color: color(white);
+
+    @include respond(large) {
+      padding: 2rem 5rem;
+    }
+
+    p {
+      @include font-size(small);
+      @include font-weight(bold);
+      margin-bottom: 0;
+      color: color(black);
+
+      @include respond(large) {
+        @include font-size(medium);
+      }
+    }
+  }
+
+  &__content {
+    margin-top: 3rem;
+
+    @include respond(large) {
+      margin-top: 4.6rem;
+    }
+
+    .buy-details {
+      margin-top: 4rem;
+      text-align: left;
+
+      @include respond(large) {
+        margin-top: 5rem;
+        text-align: right;
+      }
+
+      h5 {
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        @include font-size(regular);
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    h1,
+    h2,
+    h4 {
+      margin-bottom: 3rem;
+    }
+
+    .thumbnail-heading {
+      text-align: left;
+      padding-top: 2.5rem;
+
+      @include respond(large) {
+        text-align: right;
+        padding-top: 0;
+      }
+    }
+
+    .thumbnail-wrapper {
+      display: flex;
+      justify-content: flex-start;
+
+      @include respond(large) {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 3.5rem;
+
+    @include respond(large) {
+      padding-bottom: 4rem;
+    }
+  }
+
+  &__image {
+    position: relative;
+    width: 100%;
+    height: 21rem;
+
+    @include respond(small) {
+      height: 30rem;
+    }
+
+    @include respond(large) {
+      height: 55rem;
+    }
+  }
+
+  &__thumbnail {
+    position: relative;
+    margin: 0 15px;
+    width: 10rem;
+    height: 12.5rem;
+
+    @include respond(large) {
+      width: 12rem;
+      height: 15rem;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

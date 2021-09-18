@@ -1,0 +1,17 @@
+// @import "~nprogress/nprogress.css";
+
+#nprogress .bar {
+  background: color(black);
+  height: 5px;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px color(black), 0 0 5px color(black);
+}
+
+#nprogress .spinner-icon {
+  border-top-color: color(black);
+  border-left-color: color(black);
+  width: 25px;
+  height: 25px;
+}

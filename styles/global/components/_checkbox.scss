@@ -1,0 +1,62 @@
+.checkbox {
+  position: relative;
+  display: block;
+  margin-right: 5px;
+  padding: 10px 0;
+  min-height: auto;
+
+  @include respond(large) {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    display: none;
+    margin: 0;
+    width: 23px;
+
+    &:checked {
+      & + label::before {
+        color: color(black);
+      }
+    }
+
+    & + label {
+      @include font-size(large);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      padding-left: 0;
+      cursor: pointer;
+      color: color(dark);
+      text-transform: capitalize;
+    }
+
+    & + label::before {
+      @include font-family(icomoon);
+      @include font-size(small);
+      display: inline-block;
+      border: 2px solid color(black);
+      margin-right: 2rem;
+      width: 23px;
+      height: 23px;
+      content: "\e903";
+      vertical-align: bottom;
+      background: transparent;
+      line-height: 1.7;
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      @include respond(large) {
+        margin-right: 2.3rem;
+      }
+    }
+  }
+}

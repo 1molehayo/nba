@@ -1,0 +1,70 @@
+.context {
+  z-index: 5;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding: 1.7rem 2.5rem;
+  width: calc(100vw - 4rem);
+  border: 2px solid color(grey);
+  background-color: color(white);
+
+  @include respond(medium) {
+    padding: 2.2rem 3rem;
+    width: 450px;
+  }
+
+  &__close {
+    @include font-size(medium);
+    border: 0;
+    margin-right: -6px;
+    padding: 6px;
+    background-color: color(white);
+  }
+
+  &__empty {
+    padding: 3rem 0;
+    text-align: center;
+  }
+
+  &__list {
+    .divider {
+      border-width: 1px;
+      margin: 1.5rem 0;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+
+  &__details {
+    flex: 0 0 60%;
+    padding-right: 1rem;
+
+    p {
+      @include font-size(regular);
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0;
+
+      @include respond(medium) {
+        @include font-size(medium);
+      }
+    }
+  }
+
+  &__image {
+    position: relative;
+    flex: 0 0 40%;
+    width: 100%;
+    height: 70px;
+
+    @include respond(medium) {
+      height: 90px;
+    }
+  }
+}

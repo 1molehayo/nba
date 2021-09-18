@@ -1,0 +1,36 @@
+.cart {
+  &__container {
+    position: relative;
+    display: inline-flex;
+  }
+
+  &__badge {
+    @include font-size(small);
+    @include font-weight(bold);
+    position: absolute;
+    bottom: 0;
+    right: -5px;
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: color(black);
+    color: color(white);
+
+    @include respond(medium) {
+      @include font-size(medium);
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  &__icon {
+    border: 0;
+    background-color: color(white);
+    font-size: 3.2rem;
+    color: color(black);
+
+    @include respond(large) {
+      font-size: 5.4rem;
+    }
+  }
+}

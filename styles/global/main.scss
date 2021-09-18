@@ -1,0 +1,36 @@
+/*
+  General styles
+*/
+
+// global
+@import "global/variables";
+@import "global/functions";
+@import "global/mixins";
+
+// vendors
+@import "vendors/icomoon";
+@import "vendors/nprogress";
+
+// base
+@import "base/resets";
+@import "base/fonts";
+@import "base/typography";
+@import "base/base";
+@import "base/animation";
+
+// components
+@import "components/button";
+@import "components/cart";
+@import "components/checkbox";
+@import "components/context";
+@import "components/hero";
+@import "components/loader";
+@import "components/pagination";
+
+// layouts
+
+// pages
+
+// helpers
+@import "helpers/grid";
+@import "helpers/utility";

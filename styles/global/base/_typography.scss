@@ -1,0 +1,30 @@
+h1,
+h2,
+h3 {
+  @include heading;
+  @include font-size(x-large);
+}
+
+h4,
+h5,
+h6 {
+  @include heading;
+  @include font-size(large);
+}
+
+p,
+li,
+a {
+  @include font-weight(regular);
+  @include font-size(regular);
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+ul {
+  list-style: none;
+}

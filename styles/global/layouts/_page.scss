@@ -1,6 +1,6 @@
 .page {
   &__body {
-    min-height: 80vh;
+    min-height: calc(100vh - 170px);
     background-color: color(white);
   }
 }

@@ -1,14 +1,14 @@
 import Head from "next/head";
 
-export default function Home() {
+export default function LiveTV() {
   return (
-    <div className="home">
+    <div className="live-tv">
       <Head>
-        <title>Home | NBA-Ikeja</title>
+        <title>Live TV | NBA-Ikeja</title>
       </Head>
 
       <div className="container">
-        <h2>Home page</h2>
+        <h2>Live TV</h2>
       </div>
     </div>
   );

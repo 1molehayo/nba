@@ -14,30 +14,81 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-angle-down::before {
+.icon-angle-bottom:before {
+  content: "\e913";
+}
+.icon-angle-left:before {
+  content: "\e917";
+}
+.icon-angle-right:before {
+  content: "\e918";
+}
+.icon-angle-up:before {
+  content: "\e919";
+}
+.icon-success:before {
+  content: "\e912";
+}
+.icon-play:before {
+  content: "\e914";
+}
+.icon-tv:before {
+  content: "\e915";
+}
+.icon-book:before {
   content: "\e900";
 }
-.icon-angle-left::before {
+.icon-card:before {
   content: "\e901";
 }
-.icon-angle-right::before {
+.icon-dashboard:before {
   content: "\e902";
 }
-.icon-check::before {
+.icon-email:before {
   content: "\e903";
 }
-.icon-close::before {
+.icon-facebook-circle:before {
   content: "\e904";
 }
-.icon-logo::before {
+.icon-fail:before {
   content: "\e905";
 }
-.icon-settings::before {
+.icon-globe:before {
   content: "\e906";
 }
-.icon-shopping-cart::before {
+.icon-gmail:before {
   content: "\e907";
 }
-.icon-sort::before {
+.icon-instagram-circle:before {
   content: "\e908";
+}
+.icon-linkedin-circle:before {
+  content: "\e909";
+}
+.icon-linkedin:before {
+  content: "\e90a";
+}
+.icon-login:before {
+  content: "\e90b";
+}
+.icon-map:before {
+  content: "\e90c";
+}
+.icon-meeting:before {
+  content: "\e90d";
+}
+.icon-phone:before {
+  content: "\e90e";
+}
+.icon-right-arrow:before {
+  content: "\e90f";
+}
+.icon-settings:before {
+  content: "\e910";
+}
+.icon-shop:before {
+  content: "\e911";
+}
+.icon-twitter-circle:before {
+  content: "\e916";
 }

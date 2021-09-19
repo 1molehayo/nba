@@ -1,14 +1,14 @@
 import Head from "next/head";
 
-export default function Home() {
+export default function AboutUs() {
   return (
-    <div className="home">
+    <div className="about-us">
       <Head>
-        <title>Home | NBA-Ikeja</title>
+        <title>About | NBA-Ikeja</title>
       </Head>
 
       <div className="container">
-        <h2>Home page</h2>
+        <h2>About Us</h2>
       </div>
     </div>
   );

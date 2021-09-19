@@ -10,6 +10,7 @@
 // vendors
 @import "vendors/icomoon";
 @import "vendors/nprogress";
+@import "vendors/slick";
 
 // base
 @import "base/resets";
@@ -20,14 +21,18 @@
 
 // components
 @import "components/button";
-@import "components/cart";
 @import "components/checkbox";
 @import "components/context";
+@import "components/dropdown";
 @import "components/hero";
 @import "components/loader";
 @import "components/pagination";
 
 // layouts
+@import "layouts/footer";
+@import "layouts/header";
+@import "layouts/page";
+@import "layouts/section";
 
 // pages
 

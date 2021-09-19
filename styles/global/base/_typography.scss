@@ -2,7 +2,11 @@ h1,
 h2,
 h3 {
   @include heading;
-  @include font-size(x-large);
+  @include font-size(m-large);
+
+  @include respond(large) {
+    @include font-size(x-large);
+  }
 }
 
 h4,

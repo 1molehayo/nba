@@ -15,6 +15,13 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&amp;family=Ubuntu:wght@400;500;700&amp;display=swap"
             rel="stylesheet"
           />
+
+          <link rel="icon" href="/favicon.ico" />
+
+          <meta
+            name="description"
+            content="National Bar Association, Ikeja chapter"
+          />
         </Head>
         <body>
           <Main />

@@ -16,9 +16,102 @@
     height: 100%;
   }
 
+  &__logo {
+    display: inherit;
+  }
+
   &__nav {
-    &__link {
-      text-transform: uppercase;
+    display: flex;
+    align-items: center;
+
+    &__button {
+      @include font-size(small);
+      @include font-weight(medium);
+      border-radius: 5px;
+      margin: 0 1.2rem;
+      padding: 1rem 1.6rem;
+      background: linear-gradient(
+        90deg,
+        color(primary) -6.45%,
+        color(green) 95.97%
+      );
+      color: color(white);
+      transition: color 0.4s ease;
+      transition-property: background-color, color, box-shadow, transform;
+
+      @include respond(large) {
+        &:hover {
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+      }
     }
+
+    &__link {
+      @include link;
+    }
+
+    &__tv {
+      @extend .header__nav__button;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid color(green);
+      margin-left: 3rem;
+      background: color(white);
+      color: color(primary);
+
+      &__icon {
+        @include font-size(small);
+        position: relative;
+        width: 24px;
+        height: 24px;
+
+        span {
+          &:first-child {
+            @include font-size(medium);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          &:last-child {
+            @include font-size(xx-small);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: 1px;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+
+      &__text {
+        @include font-size(small);
+        @include font-weight(medium);
+      }
+    }
+  }
+}
+
+.header__mobile {
+  position: relative;
+
+  &__bottombar {
+  }
+
+  #burger {
+  }
+
+  &__container {
+  }
+
+  &__nav {
+    &__item {
+    }
+
+    &__link {
+    }
+  }
+
+  &__topbar {
   }
 }

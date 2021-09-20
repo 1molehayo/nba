@@ -1,13 +1,13 @@
+import { useFormik } from "formik";
 import React from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useFormik } from "formik";
-import styles from "../../styles/dashboard/pages/register.module.scss";
+import styles from "../../styles/dashboard/pages/reset-password.module.scss";
 import Logo from "../../assets/images/logo.png";
 import { FormField } from "../../components/global/formfield";
 
-export default function Register() {
+export default function ResetPassword() {
   const handleRegister = async (values) => {
     // eslint-disable-next-line no-console
     console.log(values);
@@ -15,14 +15,7 @@ export default function Register() {
 
   const formik = useFormik({
     initialValues: {
-      address: "",
-      bio: "",
-      courtNumber: "",
       email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      phoneNumber: "",
     },
     onSubmit: (values) => {
       // eslint-disable-next-line no-alert
@@ -34,7 +27,7 @@ export default function Register() {
   return (
     <section className={styles.wrapper}>
       <Head>
-        <title>Register | NBA-Ikeja</title>
+        <title>Reset Password | NBA-Ikeja</title>
       </Head>
 
       <div className="container">
@@ -53,67 +46,15 @@ export default function Register() {
               <FormField
                 id="email"
                 type="email"
-                label="Email address"
+                label="Email"
                 display="inline"
                 onChange={formik.handleChange}
                 value={formik.values.email}
                 error={formik.errors.email}
               />
 
-              <FormField
-                id="phoneNumber"
-                type="text"
-                label="Phone number"
-                display="inline"
-                onChange={formik.handleChange}
-                value={formik.values.phoneNumber}
-                error={formik.errors.phoneNumber}
-              />
-
-              <FormField
-                id="address"
-                type="textarea"
-                label="Address"
-                rows={10}
-                display="inline"
-                onChange={formik.handleChange}
-                value={formik.values.address}
-                error={formik.errors.address}
-              />
-
-              <FormField
-                id="courtNumber"
-                type="text"
-                label="Supreme court number"
-                display="inline"
-                onChange={formik.handleChange}
-                value={formik.values.courtNumber}
-                error={formik.errors.courtNumber}
-              />
-
-              <FormField
-                id="bio"
-                type="textarea"
-                label="Bio"
-                rows={10}
-                display="inline"
-                onChange={formik.handleChange}
-                value={formik.values.bio}
-                error={formik.errors.bio}
-              />
-
-              <FormField
-                id="password"
-                type="password"
-                label="Password"
-                display="inline"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                error={formik.errors.password}
-              />
-
               <button type="submit" className="button button--primary mt-4">
-                Register
+                Reset Password
               </button>
 
               <div className="pt-4 extra-info">

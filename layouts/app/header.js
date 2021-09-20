@@ -101,7 +101,7 @@ const AppHeader = () => {
               <a className={styles.nav__tv}>
                 <span className={styles.nav__tv__icon}>
                   <span className="icon-tv" />
-                  <span className="icon-play" />
+                  <span className="icon-play color-green" />
                 </span>
 
                 <span className={styles.nav__tv__text}>Live TV</span>

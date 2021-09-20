@@ -13,13 +13,6 @@
   }
 
   &--inline {
-    .form__group {
-      @include respond(medium) {
-        display: inline-flex;
-        align-items: center;
-      }
-    }
-
     button,
     .extra-info {
       @include respond(medium) {
@@ -27,9 +20,22 @@
       }
     }
 
+    .form__group {
+      @include respond(medium) {
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+
     .form__input__wrapper {
       @include respond(medium) {
         flex: 1;
+      }
+    }
+
+    .form__logo {
+      @include respond(medium) {
+        margin-left: 20rem;
       }
     }
 
@@ -72,7 +78,6 @@
 
   &__logo {
     margin-bottom: 3rem;
-    text-align: center;
   }
 
   &__textarea {

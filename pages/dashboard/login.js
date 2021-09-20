@@ -54,8 +54,9 @@ export default function Login() {
             <div className={styles.form}>
               <form className="form" onSubmit={formik.handleSubmit}>
                 <FormField
+                  id="email"
                   type="email"
-                  placeholder="Username"
+                  placeholder="Email"
                   className="bg-white"
                   onChange={formik.handleChange}
                   value={formik.values.email}
@@ -63,6 +64,7 @@ export default function Login() {
                 />
 
                 <FormField
+                  id="password"
                   type="password"
                   placeholder="Password"
                   className="bg-white"
@@ -83,10 +85,16 @@ export default function Login() {
                     <a className="form__link">Sign up</a>
                   </Link>
                 </p>
-                <p className="font-size-small mb-0">
+                <p className="font-size-small">
                   Forgot Password?{" "}
                   <Link href="/dashboard/reset-password">
                     <a className="form__link">Click here</a>
+                  </Link>
+                </p>
+                <p className="font-size-small mb-0">
+                  <span className="icon-left-arrow mr-2" />
+                  <Link href="/">
+                    <a className="form__link">Back to the website</a>
                   </Link>
                 </p>
               </div>

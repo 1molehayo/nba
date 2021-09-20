@@ -14,21 +14,25 @@ const AppHeader = () => {
     return (
       <header className={classnames("header", styles.header__mobile)}>
         <div className={styles.header__mobile__container}>
-          <div>
-            <Link href="/">
-              <a className={styles.header__mobile__logo}>
-                <Image
-                  src={Logo}
-                  alt="NBA Ikeja logo"
-                  width={221}
-                  height={55}
-                />
-              </a>
-            </Link>
+          <div className="container">
+            <div className=" d-flex justify-content-between align-items-center">
+              <Link href="/">
+                <a className={styles.header__mobile__logo}>
+                  <Image
+                    src={Logo}
+                    alt="NBA Ikeja logo"
+                    width={151}
+                    height={37}
+                  />
+                </a>
+              </Link>
 
-            <div id="burger">
-              <div className={styles.header__mobile__topbar}></div>
-              <div className={styles.header__mobile__bottombar}></div>
+              <div className={styles.header__mobile__toggler}>
+                <div id="header__bars">
+                  <div className={styles.header__mobile__topbar}></div>
+                  <div className={styles.header__mobile__bottombar}></div>
+                </div>
+              </div>
             </div>
           </div>
 

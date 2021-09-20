@@ -13,7 +13,11 @@ h4,
 h5,
 h6 {
   @include heading;
-  @include font-size(large);
+  @include font-size(medium);
+
+  @include respond(large) {
+    @include font-size(large);
+  }
 }
 
 p,

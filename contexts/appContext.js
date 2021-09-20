@@ -16,9 +16,9 @@ export const AppProvider = ({ children }) => {
   const [isLargeTab, setIsLargeTab] = useState(false);
 
   const updateWindowDimensions = () => {
-    setIsLargeTab(window.screen.width < 990);
-    setIsTab(window.screen.width < 768);
-    setIsMobile(window.screen.width < 600);
+    setIsLargeTab(window.innerWidth < 990);
+    setIsTab(window.innerWidth < 768);
+    setIsMobile(window.innerWidth < 600);
   };
 
   useEffect(() => {

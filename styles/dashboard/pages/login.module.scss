@@ -1,0 +1,54 @@
+@import "../../global/helpers/index";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - 70px);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 2rem;
+
+  @include respond(medium) {
+    padding: 4rem 6rem;
+  }
+}
+
+.grid {
+  position: relative;
+  display: block;
+  border-radius: 15px;
+  margin: 0 auto;
+  width: 100%;
+  background-color: color(light-blue);
+
+  @include respond(large) {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    width: $form-width;
+    min-height: 560px;
+  }
+}
+
+.image {
+  position: relative;
+  border-radius: 15px;
+
+  &__border {
+    border-radius: 15px 0 0 15px;
+  }
+}
+
+.logo {
+  margin-bottom: 3rem;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+}

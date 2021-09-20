@@ -12,16 +12,18 @@ const Hero = () => {
   };
 
   return (
-    <Slider {...settings} className={styles.hero__slider}>
-      <div className="container hero__container">
-        <div className="hero__content">
-          <h2 className="color-primary">
-            FAWEHIMI II <br /> SM 2021
-          </h2>
+    <section>
+      <Slider {...settings} className={styles.hero__slider}>
+        <div className="container hero__container">
+          <div className="hero__content">
+            <h2 className="color-primary">
+              FAWEHIMI II <br /> SM 2021
+            </h2>
+          </div>
+          <div className="hero__image"></div>
         </div>
-        <div className="hero__image"></div>
-      </div>
-    </Slider>
+      </Slider>
+    </section>
   );
 };
 

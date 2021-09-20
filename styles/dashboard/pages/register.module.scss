@@ -1,0 +1,18 @@
+@import "../../global/helpers/index";
+
+.container {
+  margin: 0 auto;
+  padding-top: 3rem;
+  width: 100%;
+
+  @include respond(large) {
+    padding-top: 6rem;
+    width: $form-width;
+  }
+}
+
+.form {
+}
+
+.wrapper {
+}

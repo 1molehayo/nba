@@ -83,6 +83,11 @@
 .icon-right-arrow:before {
   content: "\e90f";
 }
+.icon-left-arrow:before {
+  display: inline-block;
+  content: "\e90f";
+  transform: rotate(180deg);
+}
 .icon-settings:before {
   content: "\e910";
 }

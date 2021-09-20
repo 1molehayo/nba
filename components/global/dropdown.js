@@ -25,11 +25,7 @@ export const Dropdown = ({ title, items, children }) => {
         {!children &&
           items.map((item, index) => (
             <li key={index} className="dropdown__item">
-              {!!item.url ? (
-                <Link href={item.url}>{item.name}</Link>
-              ) : (
-                item.name
-              )}
+              {item.url ? <Link href={item.url}>{item.name}</Link> : item.name}
             </li>
           ))}
       </ul>

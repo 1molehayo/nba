@@ -12,12 +12,12 @@ const AppHeader = () => {
 
   if (isLargeTab) {
     return (
-      <header className={classnames("header", styles.header__mobile)}>
-        <div className={styles.header__mobile__container}>
+      <header className={classnames("header", styles.mobile)}>
+        <div className={styles.mobile__container}>
           <div className="container">
             <div className=" d-flex justify-content-between align-items-center">
               <Link href="/">
-                <a className={styles.header__mobile__logo}>
+                <a className={styles.mobile__logo}>
                   <Image
                     src={Logo}
                     alt="NBA Ikeja logo"
@@ -27,43 +27,43 @@ const AppHeader = () => {
                 </a>
               </Link>
 
-              <div className={styles.header__mobile__toggler}>
+              <div className={styles.mobile__toggler}>
                 <div id="header__bars">
-                  <div className={styles.header__mobile__topbar}></div>
-                  <div className={styles.header__mobile__bottombar}></div>
+                  <div className={styles.mobile__topbar}></div>
+                  <div className={styles.mobile__bottombar}></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <ul className={styles.header__mobile__nav}>
-            <li className={styles.header__mobile__nav__item}>
+          <ul className={styles.mobile__nav}>
+            <li className={styles.mobile__nav__item}>
               <Link href="/">
-                <a className={styles.header__nav__link}>Home</a>
+                <a className={styles.nav__link}>Home</a>
               </Link>
 
               <Link href="/news">
-                <a className={styles.header__nav__link}>News</a>
+                <a className={styles.nav__link}>News</a>
               </Link>
 
               <Link href="/events">
-                <a className={styles.header__nav__link}>Events</a>
+                <a className={styles.nav__link}>Events</a>
               </Link>
 
               <Link href="/about-us">
-                <a className={styles.header__nav__link}>About us</a>
+                <a className={styles.nav__link}>About us</a>
               </Link>
 
               <Link href="/dashboard/login">
-                <a className={styles.header__nav__link}>Members Portal</a>
+                <a className={styles.nav__link}>Members Portal</a>
               </Link>
 
               <Link href="/live-tv">
-                <a className={styles.header__nav__link}>Live TV</a>
+                <a className={styles.nav__link}>Live TV</a>
               </Link>
 
               <Link href="/find-lawyer">
-                <a className={styles.header__nav__link}>Find a lawyer</a>
+                <a className={styles.nav__link}>Find a lawyer</a>
               </Link>
             </li>
           </ul>
@@ -73,43 +73,43 @@ const AppHeader = () => {
   }
 
   return (
-    <header className={classnames("header", styles.header)}>
+    <header className={classnames("header", styles.wrapper)}>
       <div className="container">
-        <div className={styles.header__container}>
+        <div className={styles.container}>
           <Link href="/">
-            <a className={styles.header__logo}>
+            <a className={styles.logo}>
               <Image src={Logo} alt="NBA Ikeja logo" width={221} height={55} />
             </a>
           </Link>
 
-          <nav className={styles.header__nav}>
+          <nav className={styles.nav}>
             <Link href="/">
-              <a className={styles.header__nav__link}>Home</a>
+              <a className={styles.nav__link}>Home</a>
             </Link>
 
             <Dropdown items={MEDIA_MENU} title="Media" />
 
             <Link href="/about-us">
-              <a className={styles.header__nav__link}>About us</a>
+              <a className={styles.nav__link}>About us</a>
             </Link>
 
             <Link href="/dashboard/login">
-              <a className={styles.header__nav__link}>Members Portal</a>
+              <a className={styles.nav__link}>Members Portal</a>
             </Link>
 
             <Link href="/live-tv">
-              <a className={styles.header__nav__tv}>
-                <span className={styles.header__nav__tv__icon}>
+              <a className={styles.nav__tv}>
+                <span className={styles.nav__tv__icon}>
                   <span className="icon-tv" />
                   <span className="icon-play" />
                 </span>
 
-                <span className={styles.header__nav__tv__text}>Live TV</span>
+                <span className={styles.nav__tv__text}>Live TV</span>
               </a>
             </Link>
 
             <Link href="/find-lawyer">
-              <a className={styles.header__nav__button}>Find a lawyer</a>
+              <a className={styles.nav__button}>Find a lawyer</a>
             </Link>
           </nav>
         </div>

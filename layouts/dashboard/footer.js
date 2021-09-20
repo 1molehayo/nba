@@ -7,9 +7,9 @@ const DashboardFooter = () => {
   };
 
   return (
-    <footer className={classnames("footer", styles.footer)}>
+    <footer className={classnames("footer", styles.wrapper)}>
       <div className="container footer__container">
-        <p className="footer__text copyright">
+        <p className={styles.copyright}>
           © {getYear()} NBA Ikeja - All rights reserved.
         </p>
       </div>

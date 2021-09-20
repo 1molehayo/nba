@@ -1,5 +1,7 @@
 .form {
   &__error {
+    @include font-size(x-small);
+    color: color(red);
   }
 
   &__group {
@@ -56,6 +58,7 @@
   }
 
   &__input {
+    @include font-size(small);
     display: inline-block;
     border: 1px solid #dadada;
     border-radius: 5px;

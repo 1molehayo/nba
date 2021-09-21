@@ -9,6 +9,8 @@ export default function Home() {
 
       <div className="container">
         <h2>Home page</h2>
+
+        {/* <BlobImage image={BgImage.src} /> */}
       </div>
     </section>
   );

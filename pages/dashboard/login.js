@@ -36,7 +36,13 @@ export default function Login() {
       <div className="container">
         <div className={styles.container}>
           <div className="form__logo">
-            <Image src={Logo} alt="NBA Ikeja logo" width={221} height={55} />
+            <Image
+              src={Logo}
+              alt="NBA Ikeja logo"
+              width={221}
+              height={55}
+              placeholder="blur"
+            />
           </div>
 
           <div className={styles.grid}>

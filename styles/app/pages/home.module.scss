@@ -1,13 +1,26 @@
-.home {
-  &__products {
-    display: block;
+@import "../../global/helpers/index";
+
+.about {
+  background-color: rgba($color: color(green), $alpha: 0.2);
+
+  &__content {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 48rem;
+    height: 100%;
+    text-align: center;
 
     @include respond(large) {
-      display: grid;
-      grid-template-columns: 37.5rem calc(100% - 37.5rem);
+      padding-top: 12rem;
+      padding-right: 2rem;
+      width: 100%;
+      max-width: 100%;
+      text-align: left;
     }
   }
 
-  &__sort {
+  &__image {
+    width: 100%;
+    height: 100%;
   }
 }

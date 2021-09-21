@@ -76,19 +76,22 @@ const AppFooter = () => {
                     <span className="icon-linkedin-circle" />
                   </a>
 
-                  <a href="https://twitter.com" className={styles.social__link}>
+                  <a
+                    href="https://twitter.com/NigBarAssoc"
+                    className={styles.social__link}
+                  >
                     <span className="icon-twitter-circle" />
                   </a>
 
                   <a
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/nigerianbar/"
                     className={styles.social__link}
                   >
                     <span className="icon-instagram-circle" />
                   </a>
 
                   <a
-                    href="https://facebook.com"
+                    href="https://www.facebook.com/NigerianBarAssociationHQ/"
                     className={styles.social__link}
                   >
                     <span className="icon-facebook-circle" />

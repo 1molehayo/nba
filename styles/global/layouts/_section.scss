@@ -6,9 +6,11 @@
     padding: 6rem 0;
   }
 
-  &__app {
-  }
+  &--lg {
+    padding: 6rem 0;
 
-  &__dashboard {
+    @include respond(large) {
+      padding: 10rem 0;
+    }
   }
 }

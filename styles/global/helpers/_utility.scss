@@ -1,4 +1,6 @@
-// font utilities
+/* 
+  font utilities
+*/
 
 .text-center {
   text-align: center !important;
@@ -24,6 +26,10 @@
   text-transform: capitalize !important;
 }
 
+.font-italic {
+  font-style: italic !important;
+}
+
 @each $name, $weight in $font-weights {
   .font-#{"" + $name} {
     font-weight: $weight !important;
@@ -46,7 +52,9 @@
   }
 }
 
-// layout utilities
+/* 
+  layout utilities
+*/
 
 $spaces: 5;
 $start: 0;

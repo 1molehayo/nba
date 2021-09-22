@@ -5,3 +5,6 @@ export const ObjHasProp = (obj, prop) => {
 
   return Object.prototype.hasOwnProperty.call(obj, prop);
 };
+
+export const formatCharLength = (str, len) =>
+  str ? (str.length > len ? `${str.substring(0, len - 1)}...` : str) : "";

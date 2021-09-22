@@ -68,6 +68,10 @@
     background: rgba(218, 218, 218, 0.34);
     color: color(black);
 
+    &:focus-visible {
+      outline: color(green) auto 1px;
+    }
+
     &__wrapper {
       width: 100%;
     }
@@ -86,5 +90,9 @@
   &__textarea {
     @extend .form__input;
     height: auto;
+
+    &:focus-visible {
+      outline: color(green) auto 1px;
+    }
   }
 }

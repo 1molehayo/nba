@@ -1,0 +1,20 @@
+.searchbar {
+  display: inline-flex;
+  align-items: center;
+
+  button {
+    margin-left: 2rem;
+    height: 5rem;
+    background: color(green) !important;
+  }
+
+  .form__group {
+    margin-bottom: 0;
+    width: 350px;
+    max-width: 100%;
+
+    .form__input {
+      background: color(light-blue);
+    }
+  }
+}

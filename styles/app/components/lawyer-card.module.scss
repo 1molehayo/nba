@@ -1,0 +1,78 @@
+@import "../../global/helpers/index";
+
+.bio {
+  @include font-size(small);
+  padding-bottom: 35px;
+}
+
+.image {
+  border-radius: 50%;
+}
+
+.job {
+  @include font-family(montserrat);
+}
+
+.name {
+  @include font-size(medium);
+  @include font-weight(semi-bold);
+  @include font-family(montserrat);
+  margin-bottom: 0;
+  margin-top: 1.5rem;
+  color: color(black);
+}
+
+.social {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: flex;
+  width: 100%;
+  transform: translateX(-50%);
+
+  @include respond(large) {
+    width: calc(95% - 3rem);
+  }
+
+  a {
+    position: relative;
+    flex: 1;
+    padding: 0.5rem 0;
+
+    &:not(:last-child) {
+      &::before {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        content: "";
+        width: 1px;
+        height: 70%;
+        background-color: color(lighter-grey);
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  hr {
+    position: absolute;
+  }
+}
+
+.wrapper {
+  position: relative;
+  border-radius: 9px;
+  padding: 3rem 1.5rem 0;
+  width: 100%;
+  height: 100%;
+  background-color: color(light-blue);
+  text-align: center;
+
+  @include respond(large) {
+    margin: 0 auto;
+    width: 95%;
+  }
+
+  hr {
+    margin-bottom: 1.5rem;
+  }
+}

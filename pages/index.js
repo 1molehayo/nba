@@ -4,7 +4,7 @@ import classnames from "classnames";
 import Hero from "../components/app/hero";
 import { useAppContext } from "../contexts/appContext";
 import styles from "../styles/app/pages/home.module.scss";
-import { BlobImage } from "../components/app/blob-image";
+import { BlobImage } from "../components/global/blob-image";
 import AboutImage from "../assets/images/home/about-image.png";
 
 export default function Home() {
@@ -30,11 +30,7 @@ export default function Home() {
             )}
 
             <div className="col-lg-5">
-              <div
-                className={classnames(styles.about__content, {
-                  "text-center": !isLargeTab,
-                })}
-              >
+              <div className={styles.about__content}>
                 <h2 className="mb-4">About Us</h2>
                 <p className="color-black pb-5">
                   The NBA IKEJA Branch has been in existence for several decades

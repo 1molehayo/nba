@@ -1,8 +1,8 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-export const FormField = (props) => {
+export const FormField = forwardRef((props, ref) => {
   return (
     <div className={classnames("form__group", props.wrapperClass)}>
       {props.label && <label>{props.label}</label>}
@@ -13,11 +13,13 @@ export const FormField = (props) => {
             {...props}
             id={props.id}
             name={props.id}
+            ref={ref}
             className={classnames("form__textarea", props.className)}
           />
         ) : (
           <input
             {...props}
+            ref={ref}
             id={props.id}
             name={props.id}
             className={classnames("form__input", props.className)}
@@ -28,7 +30,9 @@ export const FormField = (props) => {
       </div>
     </div>
   );
-};
+});
+
+FormField.displayName = "FormField";
 
 FormField.propTypes = {
   className: PropTypes.string,

@@ -139,14 +139,7 @@ $start: 0;
 }
 
 .divider {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border: 1px solid color(lighter-grey);
+  border: 1px solid rgba($color: color(lighter-grey), $alpha: 0.3);
   margin: 0;
   width: 100%;
-
-  @include respond(large) {
-    position: static;
-  }
 }

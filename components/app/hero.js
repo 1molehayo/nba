@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import styles from "../../styles/app/components/hero.module.scss";
-import { BlobImage } from "./blob-image";
+import { BlobImage } from "../global/blob-image";
 import classnames from "classnames";
 import { HERO_SLIDES } from "../../utility/constants";
 import { useAppContext } from "../../contexts/appContext";

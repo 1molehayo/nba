@@ -29,6 +29,16 @@
   @include font-weight(semi-bold);
   @include font-size(medium);
   color: color(primary);
+  cursor: pointer;
+  text-decoration: underline;
+
+  @include respond(large) {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .wrapper {

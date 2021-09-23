@@ -12,12 +12,15 @@ export const EventsCard = ({ item }) => {
       </div>
 
       <div className={styles.body}>
-        <p className={styles.title}>{item.title}</p>
+        <Link href={`/events/${item.id}`} passHref>
+          <p className={styles.title}>{item.title}</p>
+        </Link>
+
         <p className="font-size-small mb-4">{item.desc}</p>
 
         <hr className="divider" />
 
-        <div className="row mt-3 mb-4">
+        <div className="row mt-3">
           <div className="col-6">
             <p>
               <strong>Date &amp; Time</strong>
@@ -35,10 +38,6 @@ export const EventsCard = ({ item }) => {
             <p className="font-size-small">{item.venue}</p>
           </div>
         </div>
-
-        <Link href={`/events/${item.id}`} passHref>
-          <button className="button button--primary">See details</button>
-        </Link>
       </div>
     </div>
   );

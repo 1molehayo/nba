@@ -1,15 +1,20 @@
 import Head from "next/head";
+import { Banner } from "../components/app";
 
 export default function AboutUs() {
   return (
-    <div className="about-us">
+    <section className="about-us">
       <Head>
         <title>About | NBA-Ikeja</title>
       </Head>
 
-      <div className="container">
-        <h2>About Us</h2>
+      <Banner title="About Us" />
+
+      <div className="section">
+        <div className="container">
+          <p>About Us page</p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

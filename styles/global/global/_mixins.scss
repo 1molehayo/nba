@@ -75,3 +75,16 @@
     }
   }
 }
+
+@mixin card-shadow {
+  border-radius: 15px;
+  box-shadow: $card-shadow;
+
+  @include respond(large) {
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 12px 12px 24px -1px rgba(3, 3, 3, 0.3);
+    }
+  }
+}

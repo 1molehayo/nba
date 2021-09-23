@@ -20,6 +20,17 @@
     opacity: 0.4;
   }
 
+  &--link {
+    color: color(green);
+    transition: color 0.3s ease;
+
+    @include respond(large) {
+      &:hover {
+        color: color(black);
+      }
+    }
+  }
+
   span {
     @include font-size(medium);
     vertical-align: middle;

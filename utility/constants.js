@@ -11,6 +11,17 @@ import Bartholomew from "../assets/images/about/bartholomew.png";
 import Ezekiel from "../assets/images/about/ezekiel.png";
 import Avatar from "../assets/images/avatar.png";
 
+// news
+import NewsImage1 from "../assets/images/news/news1.png";
+import NewsImage2 from "../assets/images/news/news2.png";
+import NewsImage3 from "../assets/images/news/news3.png";
+
+// events
+import EventsImage1 from "../assets/images/events/event1.png";
+import EventsImage2 from "../assets/images/events/event2.png";
+import EventsImage3 from "../assets/images/events/event3.png";
+import EventsImage4 from "../assets/images/events/event4.png";
+
 export const MEDIA_MENU = [
   {
     name: "News",
@@ -142,5 +153,68 @@ export const LAWYERS = [
       linkedin: "#",
       phone: "#",
     },
+  },
+];
+
+export const NEWS = [
+  {
+    id: "news-1",
+    date: "Aug 5, 2021",
+    title: "Moment captured at the 17th FAWEHIM II SM ",
+    desc: "perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae ",
+    image: NewsImage1.src,
+  },
+  {
+    id: "news-2",
+    date: "Aug 6, 2021",
+    title: "Moment captured at the 17th FAWEHIM II SM ",
+    desc: "perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae ",
+    image: NewsImage2.src,
+  },
+  {
+    id: "news-3",
+    date: "Aug 7, 2021",
+    title: "Moment captured at the 17th FAWEHIM II SM ",
+    desc: "perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae ",
+    image: NewsImage3.src,
+  },
+];
+
+export const EVENTS = [
+  {
+    id: "event-1",
+    date: "Aug 5, 2021",
+    time: "10:00am",
+    title: "FAWEHIM II SM 2021",
+    desc: "The Nigerian Bar Association (NBA) held her 1st National Executive Committee (NEC) meeting of 2021 on March 18, 2021 at the Emerald Event Centre, Uyo, Akwa Ibom State...",
+    image: EventsImage1.src,
+    venue: "Lagos, Nigeria",
+  },
+  {
+    id: "event-2",
+    date: "Aug 6, 2021",
+    time: "11:00am",
+    title: "FAWEHIM II SM 2021",
+    desc: "The Nigerian Bar Association (NBA) held her 1st National Executive Committee (NEC) meeting of 2021 on March 18, 2021 at the Emerald Event Centre, Uyo, Akwa Ibom State...",
+    image: EventsImage2.src,
+    venue: "Lagos, Nigeria",
+  },
+  {
+    id: "event-3",
+    date: "Aug 7, 2021",
+    time: "10:00am",
+    title: "FAWEHIM II SM 2021",
+    desc: "The Nigerian Bar Association (NBA) held her 1st National Executive Committee (NEC) meeting of 2021 on March 18, 2021 at the Emerald Event Centre, Uyo, Akwa Ibom State...",
+    image: EventsImage3.src,
+    venue: "Lagos, Nigeria",
+  },
+  {
+    id: "event-4",
+    date: "Aug 7, 2021",
+    time: "12:00am",
+    title: "FAWEHIM II SM 2021",
+    desc: "The Nigerian Bar Association (NBA) held her 1st National Executive Committee (NEC) meeting of 2021 on March 18, 2021 at the Emerald Event Centre, Uyo, Akwa Ibom State...",
+    image: EventsImage4.src,
+    venue: "Lagos, Nigeria",
   },
 ];

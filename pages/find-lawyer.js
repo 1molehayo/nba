@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { Banner } from "../components/app";
 import { LawyerCard } from "../components/app/lawyer-card";
 import { Searchbar } from "../components/global/searchbar";
 import { LAWYERS } from "../utility/constants";
@@ -18,7 +19,9 @@ export default function FindLawyer() {
         <title>Find Lawyer | NBA-Ikeja</title>
       </Head>
 
-      <div className="section pt-0">
+      <Banner title="Find Lawyer" />
+
+      <div className="section pb-0">
         <div className="container">
           <Searchbar
             value={searchValue}

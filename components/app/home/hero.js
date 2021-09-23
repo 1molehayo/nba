@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import Slider from "react-slick";
-import styles from "../../styles/app/components/hero.module.scss";
-import { BlobImage } from "../global/blob-image";
+import styles from "../../../styles/app/components/hero.module.scss";
+import { BlobImage } from "../../global/blob-image";
 import classnames from "classnames";
-import { HERO_SLIDES } from "../../utility/constants";
-import { useAppContext } from "../../contexts/appContext";
+import { HERO_SLIDES } from "../../../utility/constants";
+import { useAppContext } from "../../../contexts/appContext";
 
-const Hero = () => {
+export default function Hero() {
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { isTab } = useAppContext();
+  const { isTab, isMobile } = useAppContext();
 
   const settings = {
     arrows: false,
@@ -17,8 +18,8 @@ const Hero = () => {
     fade: true,
     infinite: true,
     autoplay: true,
-    speed: 800,
-    autoplaySpeed: 2000,
+    speed: 500,
+    autoplaySpeed: 10000,
     cssEase: "linear",
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -28,10 +29,23 @@ const Hero = () => {
 
   return (
     <section className={styles.wrapper}>
-      <div className="container">
-        <Slider {...settings} className={styles.hero__slider}>
-          {HERO_SLIDES.map((item, i) => (
-            <div key={i}>
+      <Slider {...settings} className={styles.hero__slider}>
+        {HERO_SLIDES.map((item, i) => (
+          <div key={i}>
+            {isMobile && (
+              <div className={styles.image__bg}>
+                <div className={styles.image__overlay} />
+
+                <Image
+                  src={item.image}
+                  alt=""
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+            )}
+
+            <div className="container">
               <div className={styles.container}>
                 <div className={styles.content}>
                   <h2
@@ -66,11 +80,9 @@ const Hero = () => {
                 )}
               </div>
             </div>
-          ))}
-        </Slider>
-      </div>
+          </div>
+        ))}
+      </Slider>
     </section>
   );
-};
-
-export default Hero;
+}

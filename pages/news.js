@@ -1,15 +1,26 @@
 import Head from "next/head";
+import { Banner } from "../components/app";
+import { NewsCard } from "../components/app/news-card";
+import { NEWS } from "../utility/constants";
 
 export default function News() {
   return (
-    <div className="news">
+    <section className="news">
       <Head>
         <title>News | NBA-Ikeja</title>
       </Head>
 
-      <div className="container">
-        <h2>News</h2>
+      <Banner title="News" />
+
+      <div className="section container">
+        <div className="row">
+          {NEWS.map((item, i) => (
+            <div className="col-md-4 mb-5" key={i}>
+              <NewsCard item={item} />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

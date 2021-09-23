@@ -1,0 +1,11 @@
+@import "../../global/helpers/index";
+
+.container {
+  padding: 3rem 0;
+  background-color: color(green);
+
+  h2 {
+    color: color(white);
+    margin-bottom: 0;
+  }
+}

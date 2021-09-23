@@ -13,9 +13,11 @@ export const EventsCard = ({ item }) => {
 
       <div className={styles.body}>
         <p className={styles.title}>{item.title}</p>
-        <p className="font-size-small">{item.desc}</p>
+        <p className="font-size-small mb-4">{item.desc}</p>
 
-        <div className="row mt-4 mb-4">
+        <hr className="divider" />
+
+        <div className="row mt-3 mb-4">
           <div className="col-6">
             <p>
               <strong>Date &amp; Time</strong>

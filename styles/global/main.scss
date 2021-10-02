@@ -3,41 +3,43 @@
 */
 
 // global
-@import "global/variables";
-@import "global/functions";
-@import "global/mixins";
+@import 'global/variables';
+@import 'global/functions';
+@import 'global/mixins';
 
 // vendors
-@import "vendors/icomoon";
-@import "vendors/nprogress";
-@import "vendors/slick";
+@import 'vendors/icomoon';
+@import 'vendors/nprogress';
+@import 'vendors/react-player';
+@import 'vendors/slick';
 
 // base
-@import "base/resets";
-@import "base/fonts";
-@import "base/typography";
-@import "base/base";
-@import "base/animation";
+@import 'base/resets';
+@import 'base/fonts';
+@import 'base/typography';
+@import 'base/base';
+@import 'base/animation';
 
 // components
-@import "components/blob-image";
-@import "components/button";
-@import "components/checkbox";
-@import "components/context";
-@import "components/dropdown";
-@import "components/form";
-@import "components/loader";
-@import "components/pagination";
-@import "components/searchbar";
+@import 'components/blob-image';
+@import 'components/button';
+@import 'components/checkbox';
+@import 'components/context';
+@import 'components/dropdown';
+@import 'components/form';
+@import 'components/loader';
+@import 'components/modal';
+@import 'components/pagination';
+@import 'components/searchbar';
 
 // layouts
-@import "layouts/footer";
-@import "layouts/header";
-@import "layouts/page";
-@import "layouts/section";
+@import 'layouts/footer';
+@import 'layouts/header';
+@import 'layouts/page';
+@import 'layouts/section';
 
 // pages
 
 // helpers
-@import "helpers/grid";
-@import "helpers/utility";
+@import 'helpers/grid';
+@import 'helpers/utility';

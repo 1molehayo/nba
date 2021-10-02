@@ -1,2 +1,55 @@
-.sidebar {
+@import '../../global/helpers/index';
+@import '../helpers/index';
+
+.inner {
+  width: 100%;
+  height: 100%;
+
+  ul {
+    margin: 0;
+    padding: 2rem 0.7rem;
+    width: 100%;
+    height: 100%;
+
+    li {
+      margin: 2rem 0;
+
+      a {
+        @include font-family(montserrat);
+        @include font-size(small);
+        @include font-weight(semi-bold);
+        display: inline-flex;
+        align-items: center;
+        border-radius: 16px;
+        padding: 1.3rem 2.4rem;
+        width: 100%;
+        transition: all 0.3s ease;
+
+        &:hover {
+          @include font-weight(bold);
+          background-color: rgba($color: color(green), $alpha: 0.15);
+          color: color(green);
+        }
+      }
+
+      span {
+        @include font-size(medium);
+        display: inline-block;
+        width: 35px;
+      }
+    }
+  }
+}
+
+.large__icon {
+  font-size: 2.4rem !important;
+}
+
+.wrapper {
+  border-radius: 15px;
+  width: $sidebar-width;
+  height: 100%;
+  background-color: color(light-blue);
+  overflow-x: hidden;
+  overflow-y: auto;
 }

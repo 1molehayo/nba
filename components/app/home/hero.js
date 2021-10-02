@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import Slider from "react-slick";
-import styles from "../../../styles/app/components/hero.module.scss";
-import { BlobImage } from "../../global/blob-image";
-import classnames from "classnames";
-import { HERO_SLIDES } from "../../../utility/constants";
-import { useAppContext } from "../../../contexts/appContext";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Slider from 'react-slick';
+import styles from '../../../styles/app/components/hero.module.scss';
+import { BlobImage } from '../../global/blob-image';
+import classnames from 'classnames';
+import { HERO_SLIDES } from '../../../utility/constants';
+import { useAppContext } from '../../../contexts/appContext';
 
 export default function Hero() {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -20,11 +20,11 @@ export default function Hero() {
     autoplay: true,
     speed: 500,
     autoplaySpeed: 10000,
-    cssEase: "linear",
+    cssEase: 'linear',
     slidesToShow: 1,
     slidesToScroll: 1,
     afterChange: () => setSlideIndex((prevState) => prevState++),
-    beforeChange: (current, next) => setSlideIndex(next),
+    beforeChange: (current, next) => setSlideIndex(next)
   };
 
   return (
@@ -50,7 +50,7 @@ export default function Hero() {
                 <div className={styles.content}>
                   <h2
                     dangerouslySetInnerHTML={{
-                      __html: item.title,
+                      __html: item.title
                     }}
                     className={styles.title}
                   />
@@ -66,7 +66,7 @@ export default function Hero() {
                       <span
                         key={j}
                         className={classnames(styles.slider__dot, {
-                          [styles.slider__dot__active]: j === slideIndex,
+                          [styles.slider__dot__active]: j === slideIndex
                         })}
                       />
                     ))}

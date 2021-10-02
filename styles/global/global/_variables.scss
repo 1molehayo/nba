@@ -10,23 +10,23 @@ $colors: (
   orange: #db7600,
   primary: #2d6936,
   red: #f00,
-  white: #ffffff,
+  white: #ffffff
 );
 
-$ubuntu: "Ubuntu", sans-serif;
-$montserrat: "Montserrat", sans-serif;
+$ubuntu: 'Ubuntu', sans-serif;
+$montserrat: 'Montserrat', sans-serif;
 
 $font-families: (
-  icomoon: "icomoon",
+  icomoon: 'icomoon',
   montserrat: $montserrat,
-  ubuntu: $ubuntu,
+  ubuntu: $ubuntu
 );
 
 $font-weights: (
   regular: 400,
   medium: 500,
   semi-bold: 600,
-  bold: 700,
+  bold: 700
 );
 
 $font-sizes: (
@@ -38,7 +38,7 @@ $font-sizes: (
   large: 2.4rem,
   m-large: 3rem,
   x-large: 4.5rem,
-  xx-large: 6rem,
+  xx-large: 6rem
 );
 
 $max-width: 129rem;
@@ -59,10 +59,10 @@ $break-points: (
 );
 
 $device-sizes: (
-  sm: "small",
-  md: "medium",
-  lg: "large",
-  xl: "largest",
+  sm: 'small',
+  md: 'medium',
+  lg: 'large',
+  xl: 'largest'
 );
 
 $sides: (top, bottom, left, right);
@@ -72,3 +72,7 @@ $button-gradient: linear-gradient(90deg, #2d6936 -6.45%, #00a419 95.97%);
 $form-width: 825px;
 
 $card-shadow: 12px 12px 24px -1px rgba(3, 3, 3, 0.1);
+
+$header-height: 100px;
+
+$header-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);

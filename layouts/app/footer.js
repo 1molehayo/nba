@@ -1,5 +1,5 @@
-import styles from "../../styles/app/layouts/footer.module.scss";
-import classnames from "classnames";
+import styles from '../../styles/app/layouts/footer.module.scss';
+import classnames from 'classnames';
 
 const AppFooter = () => {
   const getYear = () => {
@@ -7,7 +7,7 @@ const AppFooter = () => {
   };
 
   return (
-    <footer className={classnames("footer", styles.wrapper)}>
+    <footer className={classnames('footer', styles.wrapper)}>
       <div className="container">
         <div className="row">
           <div className="col-md-4 mb-4">
@@ -84,14 +84,14 @@ const AppFooter = () => {
                   </a>
 
                   <a
-                    href="https://www.instagram.com/nigerianbar/"
+                    href="https://www.instagram.com/nbaikeja/"
                     className={styles.social__link}
                   >
                     <span className="icon-instagram-circle" />
                   </a>
 
                   <a
-                    href="https://www.facebook.com/NigerianBarAssociationHQ/"
+                    href="https://www.facebook.com/YoungLawyersForumNBAIkeja"
                     className={styles.social__link}
                   >
                     <span className="icon-facebook-circle" />

@@ -1,4 +1,4 @@
-@import "../../global/helpers/index";
+@import '../../global/helpers/index';
 
 .contact {
   &__icon {
@@ -60,7 +60,10 @@ a.contact__text {
 }
 
 .wrapper {
+  z-index: 2;
+  position: relative;
   border-top: 1px solid rgb(45 105 54 / 15%);
   padding: 5rem 0 3rem;
   width: 100%;
+  background-color: color(white);
 }

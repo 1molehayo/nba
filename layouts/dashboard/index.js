@@ -1,10 +1,10 @@
-import styles from "../../styles/dashboard/layouts/dashboard.module.scss";
-import classnames from "classnames";
-import PropTypes from "prop-types";
-import DashboardFooter from "./footer";
-import DashboardHeader from "./header";
-import DashboardSidebar from "./sidebar";
-import Head from "next/head";
+import styles from '../../styles/dashboard/layouts/dashboard.module.scss';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import DashboardFooter from './footer';
+import DashboardHeader from './header';
+import DashboardSidebar from './sidebar';
+import Head from 'next/head';
 
 export default function DashboardLayout({ children, hasSidebar, hasNav }) {
   return (
@@ -15,11 +15,11 @@ export default function DashboardLayout({ children, hasSidebar, hasNav }) {
 
       {hasNav && <DashboardHeader />}
 
-      <main className={classnames("page__body", styles.wrapper)}>
+      <div className={classnames('page__body', styles.wrapper)}>
         {hasSidebar && <DashboardSidebar />}
 
-        <div className={styles.body}>{children}</div>
-      </main>
+        <main className={styles.body}>{children}</main>
+      </div>
 
       <DashboardFooter />
     </>
@@ -29,10 +29,10 @@ export default function DashboardLayout({ children, hasSidebar, hasNav }) {
 DashboardLayout.propTypes = {
   children: PropTypes.node,
   hasNav: PropTypes.bool,
-  hasSidebar: PropTypes.bool,
+  hasSidebar: PropTypes.bool
 };
 
 DashboardLayout.defaultProps = {
   hasSidebar: true,
-  hasNav: true,
+  hasNav: true
 };

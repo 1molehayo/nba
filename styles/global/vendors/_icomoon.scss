@@ -1,7 +1,7 @@
-[class^="icon-"],
-[class*=" icon-"] {
+[class^='icon-'],
+[class*=' icon-'] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "icomoon" !important;
+  font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -14,86 +14,92 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-calendar:before {
+  content: '\e91a';
+}
+.icon-timer:before {
+  content: '\e91b';
+}
 .icon-angle-bottom:before {
-  content: "\e913";
+  content: '\e913';
 }
 .icon-angle-left:before {
-  content: "\e917";
+  content: '\e917';
 }
 .icon-angle-right:before {
-  content: "\e918";
+  content: '\e918';
 }
 .icon-angle-up:before {
-  content: "\e919";
+  content: '\e919';
 }
 .icon-success:before {
-  content: "\e912";
+  content: '\e912';
 }
 .icon-play:before {
-  content: "\e914";
+  content: '\e914';
 }
 .icon-tv:before {
-  content: "\e915";
+  content: '\e915';
 }
 .icon-book:before {
-  content: "\e900";
+  content: '\e900';
 }
 .icon-card:before {
-  content: "\e901";
+  content: '\e901';
 }
 .icon-dashboard:before {
-  content: "\e902";
+  content: '\e902';
 }
 .icon-email:before {
-  content: "\e903";
+  content: '\e903';
 }
 .icon-facebook-circle:before {
-  content: "\e904";
+  content: '\e904';
 }
 .icon-fail:before {
-  content: "\e905";
+  content: '\e905';
 }
 .icon-globe:before {
-  content: "\e906";
+  content: '\e906';
 }
 .icon-gmail:before {
-  content: "\e907";
+  content: '\e907';
 }
 .icon-instagram-circle:before {
-  content: "\e908";
+  content: '\e908';
 }
 .icon-linkedin-circle:before {
-  content: "\e909";
+  content: '\e909';
 }
 .icon-linkedin:before {
-  content: "\e90a";
+  content: '\e90a';
 }
 .icon-login:before {
-  content: "\e90b";
+  content: '\e90b';
 }
 .icon-map:before {
-  content: "\e90c";
+  content: '\e90c';
 }
 .icon-meeting:before {
-  content: "\e90d";
+  content: '\e90d';
 }
 .icon-phone:before {
-  content: "\e90e";
+  content: '\e90e';
 }
 .icon-right-arrow:before {
-  content: "\e90f";
+  content: '\e90f';
 }
 .icon-left-arrow:before {
   display: inline-block;
-  content: "\e90f";
+  content: '\e90f';
   transform: rotate(180deg);
 }
 .icon-settings:before {
-  content: "\e910";
+  content: '\e910';
 }
 .icon-shop:before {
-  content: "\e911";
+  content: '\e911';
 }
 .icon-twitter-circle:before {
-  content: "\e916";
+  content: '\e916';
 }

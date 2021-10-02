@@ -1,3 +1,40 @@
-.header {
+@import '../../global/helpers/index';
+@import '../helpers/index';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: $width;
+  height: 100%;
+}
+
+.logo {
+  display: inherit;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  margin-left: 3rem;
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
   width: 100%;
+  height: $header-height;
+  box-shadow: $header-shadow;
+  background-color: color(white);
 }

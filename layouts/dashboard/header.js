@@ -1,18 +1,61 @@
-import styles from "../../styles/dashboard/layouts/header.module.scss";
-import classnames from "classnames";
-import Link from "next/link";
+import styles from '../../styles/dashboard/layouts/header.module.scss';
+import classnames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
+import Logo from '../../assets/images/logo.png';
+import Avatar from '../../assets/images/avatar.png';
+import { Dropdown } from '../../components/global/dropdown';
+import { Searchbar } from '../../components/global';
+import { useState } from 'react';
+import { Context } from '../../components/global/context';
+import { PROFILE_MENU } from '../../utility/constants';
 
 const DashboardHeader = () => {
-  return (
-    <header className={classnames("header", styles.header)}>
-      <div className="container">
-        <div className="header__container">
-          <Link href="/">
-            <a className="header__logo">Logo</a>
-          </Link>
-        </div>
+  const [searchValue, setSearchValue] = useState();
+  const [showContext, setShowContext] = useState();
+  const toggleContext = () => setShowContext((prevState) => !prevState);
 
-        <hr className="divider" />
+  const handleSearch = async () => {
+    // await api call
+    // eslint-disable-next-line no-console
+    console.log(`searched for ${searchValue}`);
+  };
+
+  const ProfileImage = (
+    <Image
+      src={Avatar}
+      alt="user avatar"
+      width={60}
+      height={60}
+      objectFit="cover"
+      objectPosition="center"
+    />
+  );
+
+  return (
+    <header className={classnames('header', styles.wrapper)}>
+      <div className={styles.container}>
+        <Link href="/">
+          <a className={styles.logo}>
+            <Image src={Logo} alt="NBA Ikeja logo" width={151} height={37} />
+          </a>
+        </Link>
+
+        <nav className={styles.nav}>
+          <Searchbar
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onSearch={handleSearch}
+            placeholder="Search"
+            className="searchbar--sm"
+          />
+
+          <div className={styles.profile}>
+            <div role="button" onClick={toggleContext}></div>
+
+            <Dropdown titleNode={ProfileImage} items={PROFILE_MENU} />
+          </div>
+        </nav>
       </div>
     </header>
   );

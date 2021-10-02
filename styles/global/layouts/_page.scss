@@ -1,6 +1,19 @@
 .page {
   &__body {
+    position: relative;
     min-height: calc(100vh - 170px);
     background-color: color(white);
+  }
+
+  &__oval {
+    display: none;
+
+    @include respond(large) {
+      display: block;
+      position: absolute;
+      top: 50rem;
+      right: -20%;
+      opacity: 0.4;
+    }
   }
 }

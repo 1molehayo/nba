@@ -1,0 +1,51 @@
+@import '../../global/helpers/index';
+@import '../../global/components/card';
+
+.image {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  width: 173px;
+  height: 173px;
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.job {
+  @include font-size(small);
+  margin-bottom: 0;
+  color: color(grey);
+  text-transform: uppercase;
+}
+
+.title {
+  @include font-family(montserrat);
+  @include font-weight(semi-bold);
+  @include font-size(medium);
+  margin-bottom: 0;
+  color: color(black);
+  cursor: pointer;
+  text-decoration: underline;
+
+  @include respond(large) {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.wrapper {
+  @extend .card;
+  text-align: center;
+  cursor: pointer;
+  padding: 2rem;
+
+  @include respond(large) {
+    padding: 4rem 3rem;
+  }
+}

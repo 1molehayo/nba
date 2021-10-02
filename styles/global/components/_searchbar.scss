@@ -17,4 +17,18 @@
       background: color(light-blue);
     }
   }
+
+  &--sm {
+    button {
+      height: 4rem;
+    }
+
+    .form__group {
+      width: 250px;
+    }
+
+    .form__input {
+      height: 4rem;
+    }
+  }
 }

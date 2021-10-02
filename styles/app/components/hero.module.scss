@@ -67,6 +67,7 @@
     opacity: 0.35;
     transition: 0.3s opacity ease;
     transition-property: opacity, background-color;
+    cursor: pointer;
 
     &:not(:last-child) {
       margin-right: 1rem;

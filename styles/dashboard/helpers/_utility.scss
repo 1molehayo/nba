@@ -1,0 +1,19 @@
+@mixin card {
+  position: relative;
+  display: flex;
+  border-radius: 7px;
+  padding: 2rem 3rem;
+  width: 100%;
+  background-color: color(light-green);
+
+  &::after {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 5px;
+    width: 3px;
+    height: 45px;
+    background-color: color(green);
+    content: '';
+  }
+}

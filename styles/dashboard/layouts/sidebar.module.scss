@@ -20,7 +20,7 @@
         @include font-weight(semi-bold);
         display: inline-flex;
         align-items: center;
-        border-radius: 16px;
+        border-radius: 10px;
         padding: 1.3rem 2.4rem;
         width: 100%;
         transition: all 0.3s ease;
@@ -39,6 +39,11 @@
       }
     }
   }
+}
+
+.isActive {
+  background-color: rgba($color: color(green), $alpha: 0.15);
+  color: color(primary);
 }
 
 .large__icon {

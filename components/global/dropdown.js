@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Link from 'next/link';
 import useOnClickOutside from '../../services/useOnClickOutside';
 
-export const Dropdown = ({ title, items, children, titleNode }) => {
+export const Dropdown = ({ title, items, children, titleNode, isActive }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen((prevState) => !prevState);
   const dropdownRef = useRef(null);
@@ -12,7 +12,10 @@ export const Dropdown = ({ title, items, children, titleNode }) => {
 
   return (
     <div
-      className={classnames('dropdown', { 'dropdown--active': isOpen })}
+      className={classnames('dropdown', {
+        'dropdown--active': isOpen,
+        'dropdown--urlActive': isActive
+      })}
       ref={dropdownRef}
     >
       <span className="dropdown__toggle" onClick={toggleDropdown}>
@@ -35,6 +38,7 @@ export const Dropdown = ({ title, items, children, titleNode }) => {
 
 Dropdown.propTypes = {
   children: PropTypes.node,
+  isActive: PropTypes.bool,
   items: PropTypes.array,
   title: PropTypes.string,
   titleNode: PropTypes.node

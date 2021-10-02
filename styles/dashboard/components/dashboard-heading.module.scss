@@ -1,0 +1,17 @@
+@import '../../global/helpers/index';
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 3.5rem;
+
+  a {
+    @include font-family(montserrat);
+    color: color(black);
+
+    &:hover {
+      color: color(green);
+    }
+  }
+}

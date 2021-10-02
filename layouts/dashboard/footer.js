@@ -1,5 +1,5 @@
-import styles from "../../styles/dashboard/layouts/footer.module.scss";
-import classnames from "classnames";
+import styles from '../../styles/dashboard/layouts/footer.module.scss';
+import classnames from 'classnames';
 
 const DashboardFooter = () => {
   const getYear = () => {
@@ -7,12 +7,10 @@ const DashboardFooter = () => {
   };
 
   return (
-    <footer className={classnames("footer", styles.wrapper)}>
-      <div className="container footer__container">
-        <p className={styles.copyright}>
-          © {getYear()} NBA Ikeja - All rights reserved.
-        </p>
-      </div>
+    <footer className={classnames('footer', styles.wrapper)}>
+      <p className={styles.copyright}>
+        © {getYear()} NBA Ikeja - All rights reserved.
+      </p>
     </footer>
   );
 };

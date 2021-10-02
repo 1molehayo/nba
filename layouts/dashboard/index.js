@@ -15,7 +15,9 @@ export default function DashboardLayout({ children, hasSidebar, hasNav }) {
 
       {hasNav && <DashboardHeader />}
 
-      <div className={classnames('page__body', styles.wrapper)}>
+      <div
+        className={classnames('page__body', { [styles.wrapper]: hasSidebar })}
+      >
         {hasSidebar && <DashboardSidebar />}
 
         <main className={styles.body}>{children}</main>

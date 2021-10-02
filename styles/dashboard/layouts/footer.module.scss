@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   width: $width;
+  max-width: $max-width;
   height: $footer-height;
   transform: translateX(-50%);
 }

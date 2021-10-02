@@ -9,6 +9,9 @@
   overflow-y: auto;
 }
 
+.container {
+}
+
 .wrapper {
   position: fixed;
   top: $header-height;
@@ -17,6 +20,7 @@
   grid-template-columns: $sidebar-width calc(100% - $sidebar-width);
   padding-top: 4rem;
   width: $width;
+  max-width: $max-width;
   height: calc(100vh - ($header-height + $footer-height));
   transform: translateX(-50%);
 }

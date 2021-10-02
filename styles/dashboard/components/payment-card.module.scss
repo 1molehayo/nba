@@ -1,0 +1,31 @@
+@import '../../global/helpers/index';
+@import '../helpers/index';
+
+.buttonwrapper {
+  width: 100px;
+
+  button {
+    width: 100%;
+  }
+}
+
+.content {
+  width: calc(100% - 100px);
+}
+
+.price {
+  @include font-size(medium);
+  color: color(black);
+  margin-bottom: 0;
+}
+
+.title {
+  @include font-family(montserrat);
+  @include font-size(small);
+  color: color(black);
+}
+
+.wrapper {
+  @include card;
+  align-items: flex-start;
+}

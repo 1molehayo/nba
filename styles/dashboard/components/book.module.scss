@@ -1,0 +1,47 @@
+@import '../../global/helpers/index';
+
+.author {
+  @include font-family(montserrat);
+  @include font-size(x-small);
+  color: color(black);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-left: 12px;
+
+  button {
+    @include font-family(montserrat);
+    @include font-size(x-small);
+    padding: 5px 8px;
+  }
+}
+
+.desc {
+  @include font-size(x-small);
+  color: color(dark);
+}
+
+.image {
+  width: 108px;
+
+  img {
+    border-radius: 10px;
+  }
+}
+
+.title {
+  @include font-family(montserrat);
+  @include font-size(small);
+  @include font-weight(semi-bold);
+  margin-bottom: 0;
+  color: color(black);
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 108px calc(100% - 108px);
+}

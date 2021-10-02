@@ -1,15 +1,22 @@
 import styles from '../../styles/dashboard/layouts/sidebar.module.scss';
 import classnames from 'classnames';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const DashboardSidebar = () => {
+  const router = useRouter();
+
   return (
     <aside className={styles.wrapper}>
       <div className={styles.inner}>
         <ul>
           <li>
             <Link href="/dashboard">
-              <a>
+              <a
+                className={classnames({
+                  [styles.isActive]: router.pathname === '/dashboard'
+                })}
+              >
                 <span className="icon-dashboard" />
                 Dashboard
               </a>
@@ -17,8 +24,12 @@ const DashboardSidebar = () => {
           </li>
 
           <li>
-            <Link href="/dashboard/meeting">
-              <a>
+            <Link href="/dashboard/meetings">
+              <a
+                className={classnames({
+                  [styles.isActive]: router.pathname === '/dashboard/meetings'
+                })}
+              >
                 <span
                   className={classnames('icon-meeting', styles.large__icon)}
                 />
@@ -29,7 +40,11 @@ const DashboardSidebar = () => {
 
           <li>
             <Link href="/dashboard/library">
-              <a>
+              <a
+                className={classnames({
+                  [styles.isActive]: router.pathname === '/dashboard/library'
+                })}
+              >
                 <span className="icon-book" />
                 library
               </a>
@@ -45,7 +60,11 @@ const DashboardSidebar = () => {
 
           <li>
             <Link href="/dashboard/payments">
-              <a>
+              <a
+                className={classnames({
+                  [styles.isActive]: router.pathname === '/dashboard/payments'
+                })}
+              >
                 <span className="icon-card" />
                 Payments
               </a>
@@ -54,7 +73,11 @@ const DashboardSidebar = () => {
 
           <li>
             <Link href="/dashboard/settings">
-              <a>
+              <a
+                className={classnames({
+                  [styles.isActive]: router.pathname === '/dashboard/settings'
+                })}
+              >
                 <span className="icon-settings" />
                 Settings
               </a>

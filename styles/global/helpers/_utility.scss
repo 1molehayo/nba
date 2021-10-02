@@ -60,7 +60,7 @@ $spaces: 5;
 $start: 0;
 
 @each $side in $sides {
-  @for $i from 1 through 6 {
+  @for $i from 1 through 10 {
     $start: $start + 0.5;
 
     .p#{str-slice($side, 0, 1)}-#{$i} {

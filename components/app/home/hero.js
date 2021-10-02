@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Slider from 'react-slick';
 import styles from '../../../styles/app/components/hero.module.scss';
@@ -9,8 +9,8 @@ import { useAppContext } from '../../../contexts/appContext';
 
 export default function Hero() {
   const [slideIndex, setSlideIndex] = useState(0);
-
   const { isTab, isMobile } = useAppContext();
+  const sliderRef = useRef(null);
 
   const settings = {
     arrows: false,
@@ -27,9 +27,13 @@ export default function Hero() {
     beforeChange: (current, next) => setSlideIndex(next)
   };
 
+  const goToSlide = (index) => {
+    sliderRef.current.slickGoTo(index);
+  };
+
   return (
     <section className={styles.wrapper}>
-      <Slider {...settings} className={styles.hero__slider}>
+      <Slider {...settings} ref={sliderRef} className={styles.hero__slider}>
         {HERO_SLIDES.map((item, i) => (
           <div key={i}>
             {isMobile && (
@@ -68,6 +72,7 @@ export default function Hero() {
                         className={classnames(styles.slider__dot, {
                           [styles.slider__dot__active]: j === slideIndex
                         })}
+                        onClick={() => goToSlide(j)}
                       />
                     ))}
                   </div>

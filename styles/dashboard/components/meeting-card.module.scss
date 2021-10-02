@@ -1,0 +1,45 @@
+@import '../../global/helpers/index';
+@import '../helpers/index';
+
+.content {
+  width: calc(100% - 165px);
+  padding: 0 2rem;
+}
+
+.desc {
+  @include font-size(small);
+  color: color(dark);
+}
+
+.image {
+  width: 65px;
+}
+
+.time {
+  width: 100px;
+
+  a {
+    @include font-size(small);
+    padding: 5px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  p {
+    @include font-size(small);
+    margin-bottom: 1.5rem;
+  }
+}
+
+.title {
+  @include font-family(montserrat);
+  @include font-size(small);
+  @include font-weight(semi-bold);
+  color: color(black);
+}
+
+.wrapper {
+  @include card;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}

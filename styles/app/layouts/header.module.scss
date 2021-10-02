@@ -36,6 +36,12 @@
 
   &__link {
     @include nav-link;
+
+    &__active {
+      &::before {
+        opacity: 1;
+      }
+    }
   }
 
   &__tv {

@@ -1,0 +1,51 @@
+@import '../../global/helpers/index';
+
+.table {
+  @include font-size(small);
+  border-radius: 7px;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+
+  th {
+    @include font-family(montserrat);
+    @include font-size(regular);
+    color: color(primary);
+  }
+
+  td,
+  th {
+    padding: 1.8rem 2.7rem;
+    background-color: color(light-blue);
+  }
+
+  tr {
+    width: 100%;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 96%;
+      height: 1px;
+      background-color: color(white);
+      content: '';
+      transform: translateX(-50%);
+    }
+
+    &:last-child {
+      &::before {
+        background-color: color(light-blue);
+      }
+    }
+  }
+
+  thead tr::before {
+    background-color: color(white) !important;
+  }
+}
+
+.wrapper {
+  width: 100%;
+}

@@ -16,11 +16,11 @@ export default function Payments() {
           <h4 className="pb-5">Payments</h4>
 
           <div className="row">
-            <div className="col-md-6 col-xl-4 mb-4">
+            <div className="col-md-6 col-xl-5 mb-4">
               <PaymentCard title="Annual dues" amount={30000} />
             </div>
 
-            <div className="col-md-6 col-xl-4 mb-4">
+            <div className="col-md-6 col-xl-5 mb-4">
               <PaymentCard title="Monthly dues" amount={5000} />
             </div>
           </div>

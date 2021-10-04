@@ -17,3 +17,32 @@
     content: '';
   }
 }
+
+@mixin fullname {
+  display: flex;
+
+  &__form {
+    display: inline-flex;
+    flex: 1 1;
+    align-items: flex-start;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: right;
+    padding-bottom: 1.5rem;
+    width: 20rem;
+
+    @include respond(large) {
+      padding-right: 4rem;
+      text-align: right;
+    }
+
+    p {
+      @include font-size(small);
+      color: color(black);
+      margin-bottom: 0;
+    }
+  }
+}

@@ -75,7 +75,7 @@ export default function Register() {
                     error={formik.errors.firstName}
                   />
 
-                  <div className={styles.w20} />
+                  <div className="w20" />
 
                   <FormField
                     id="lastName"

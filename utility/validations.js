@@ -4,7 +4,7 @@ import 'yup-phone';
 export const RegisterSchema = Yup.object().shape({
   address: Yup.string(),
   bio: Yup.string(),
-  courtNumber: Yup.string(),
+  courtNumber: Yup.string().required('Required'),
   firstName: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
@@ -30,4 +30,19 @@ export const RegisterSchema = Yup.object().shape({
 export const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().required('Password is required')
+});
+
+export const SettingsSchema = Yup.object().shape({
+  address: Yup.string(),
+  bio: Yup.string(),
+  courtNumber: Yup.string().required('Required'),
+  firstName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  lastName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  phoneNumber: Yup.string().phone().required()
 });

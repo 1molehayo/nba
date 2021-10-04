@@ -7,7 +7,8 @@ const ContextDefaultValues = {
   isMobile: false,
   isTab: false,
   isMenuOpen: false,
-  toggleMenu: () => null
+  toggleMenu: () => null,
+  closeMenu: () => null
 };
 
 export const AppContext = createContext(ContextDefaultValues);
@@ -18,6 +19,7 @@ export const AppProvider = ({ children }) => {
   const [isLargeTab, setIsLargeTab] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => setMenuOpen((prevState) => !prevState);
+  const closeMenu = () => setMenuOpen(false);
 
   const updateWindowDimensions = () => {
     setIsLargeTab(window.innerWidth < 990);
@@ -38,7 +40,8 @@ export const AppProvider = ({ children }) => {
         isMenuOpen,
         isMobile,
         isTab,
-        toggleMenu
+        toggleMenu,
+        closeMenu
       }}
     >
       {children}

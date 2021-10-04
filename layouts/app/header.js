@@ -9,7 +9,7 @@ import { useAppContext } from '../../contexts/appContext';
 import { useRouter } from 'next/router';
 
 const AppHeader = ({ toggleModal }) => {
-  const { isLargeTab, isMenuOpen, toggleMenu } = useAppContext();
+  const { isLargeTab, isMenuOpen, toggleMenu, closeMenu } = useAppContext();
   const router = useRouter();
 
   const goToPage = (url) => {
@@ -29,7 +29,10 @@ const AppHeader = ({ toggleModal }) => {
             <div className={styles.mobile__inner}>
               <span
                 role="button"
-                onClick={() => goToPage('/')}
+                onClick={() => {
+                  closeMenu();
+                  router.push('/');
+                }}
                 className={styles.mobile__logo}
               >
                 <Image

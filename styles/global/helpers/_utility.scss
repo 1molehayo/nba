@@ -150,16 +150,26 @@ $start: 0;
 
 .close-icon {
   z-index: 10;
-  position: absolute;
-  top: -35px;
-  right: -5px;
+  position: relative;
+  top: 0;
+  right: 0;
   display: block;
+  margin-left: auto;
   padding: 1.2rem;
   width: 35px;
   height: 35px;
   cursor: pointer;
   color: color(black);
   transition: all 0.3s ease;
+
+  @include respond(medium) {
+    position: absolute;
+    // top: -35px;
+    // right: -5px;
+    top: 0;
+    right: 0;
+    margin-left: 0;
+  }
 
   &:hover {
     transform: scale(1.1);

@@ -103,8 +103,6 @@ const AppHeader = ({ toggleModal }) => {
     );
   }
 
-  console.log(router.pathname === '/news' || router.pathname === '/events');
-
   return (
     <header className={classnames('header', styles.wrapper)}>
       <div className="container">

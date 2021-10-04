@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player/youtube';
-import ReactModal from 'react-modal';
 import { VIDEO_PLAYER_SETTINGS } from '../../utility/constants';
+import { Modal } from './modal';
 
 export const VideoModal = ({ link, show, onClose }) => {
   return (
-    <ReactModal
-      isOpen={show}
-      onRequestClose={onClose}
-      className="modal-content"
-      role="dialog"
-      ariaHideApp={false}
-    >
+    <Modal show={show} onClose={onClose}>
       <div className="modal-body">
         <div className="modal-close close-icon" onClick={onClose}>
           <span></span>
@@ -30,7 +24,7 @@ export const VideoModal = ({ link, show, onClose }) => {
           />
         </div>
       </div>
-    </ReactModal>
+    </Modal>
   );
 };
 

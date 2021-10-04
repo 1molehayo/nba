@@ -24,6 +24,12 @@
     width: 90%;
     background: transparent;
     transform: translate(-50%, -50%);
+
+    &:focus-visible,
+    &:focus,
+    &:focus-within {
+      outline: none;
+    }
   }
 
   .player-wrapper {

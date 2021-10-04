@@ -31,3 +31,19 @@ export const getStatus = (val) => {
     </>
   );
 };
+
+export const isArrayEmpty = (arr) => !arr || arr.length === 0;
+
+export const isObjectEmpty = (obj) => {
+  if (!obj) {
+    return true;
+  }
+
+  for (const prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
+};

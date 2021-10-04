@@ -21,6 +21,39 @@
   text-transform: uppercase;
 }
 
+.modal {
+  background-color: color(white);
+  padding: 3rem;
+
+  @include respond(medium) {
+    padding: 6rem 3rem;
+    display: flex;
+  }
+
+  &__content {
+    @include respond(medium) {
+      flex: 0 0 65%;
+      padding-left: 5rem;
+      width: 65%;
+    }
+  }
+
+  &__image {
+    position: relative;
+    max-height: 400px;
+
+    @include respond(medium) {
+      flex: 0 0 35%;
+      width: 35%;
+    }
+  }
+
+  &__wrapper {
+    margin: 0 auto;
+    max-width: 900px;
+  }
+}
+
 .title {
   @include font-family(montserrat);
   @include font-weight(semi-bold);

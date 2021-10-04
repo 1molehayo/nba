@@ -12,6 +12,13 @@
       @include font-size(small);
       color: color(black);
     }
+
+    &--error {
+      .form__input,
+      .form__textarea {
+        border-color: color(red);
+      }
+    }
   }
 
   &--inline {

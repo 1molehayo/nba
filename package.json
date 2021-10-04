@@ -15,6 +15,7 @@
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-hot-toast": "^2.1.1",
     "react-modal": "^3.14.3",
     "react-player": "^2.9.0",
     "react-slick": "^0.28.1",
@@ -22,7 +23,8 @@
     "react-twitter-widgets": "^1.10.0",
     "sass": "^1.41.1",
     "slick-carousel": "^1.8.1",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "yup-phone": "^1.2.19"
   },
   "devDependencies": {
     "eslint": "7.32.0",

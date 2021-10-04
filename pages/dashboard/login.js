@@ -1,30 +1,33 @@
-import React from "react";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { useFormik } from "formik";
-import styles from "../../styles/dashboard/pages/login.module.scss";
-import BgImage from "../../assets/images/login-bg.png";
-import Logo from "../../assets/images/logo.png";
-import { FormField } from "../../components/global/formfield";
+import React from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useFormik } from 'formik';
+import styles from '../../styles/dashboard/pages/login.module.scss';
+import BgImage from '../../assets/images/login-bg.png';
+import Logo from '../../assets/images/logo.png';
+import { FormField } from '../../components/global/formfield';
+import { useRouter } from 'next/router';
 
 export default function Login() {
+  const router = useRouter();
+
   const handleLogin = async (values) => {
     // eslint-disable-next-line no-console
     console.log(values);
+    router.push('/dashboard');
   };
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: ''
     },
     onSubmit: (values) => {
       // eslint-disable-next-line no-alert
-      alert(JSON.stringify(values, null, 2));
-
+      // alert(JSON.stringify(values, null, 2));
       handleLogin(values);
-    },
+    }
   });
 
   return (
@@ -86,13 +89,13 @@ export default function Login() {
 
               <div className="pt-4">
                 <p className="font-size-small">
-                  Don&apos;t have an account?{" "}
+                  Don&apos;t have an account?{' '}
                   <Link href="/dashboard/register">
                     <a className="form__link">Sign up</a>
                   </Link>
                 </p>
                 <p className="font-size-small">
-                  Forgot Password?{" "}
+                  Forgot Password?{' '}
                   <Link href="/dashboard/reset-password">
                     <a className="form__link">Click here</a>
                   </Link>
@@ -116,7 +119,7 @@ export async function getStaticProps() {
   return {
     props: {
       hasNav: false,
-      hasSidebar: false,
-    }, // will be passed to the page component as props
+      hasSidebar: false
+    } // will be passed to the page component as props
   };
 }

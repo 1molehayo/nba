@@ -1,34 +1,41 @@
-import React from "react";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { useFormik } from "formik";
-import styles from "../../styles/dashboard/pages/register.module.scss";
-import Logo from "../../assets/images/logo.png";
-import { FormField } from "../../components/global/formfield";
+import React from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useFormik } from 'formik';
+import styles from '../../styles/dashboard/pages/register.module.scss';
+import Logo from '../../assets/images/logo.png';
+import { FormField } from '../../components/global/formfield';
+import { RegisterSchema } from '../../utility/validations';
+import { useRouter } from 'next/router';
 
 export default function Register() {
+  const router = useRouter();
+
   const handleRegister = async (values) => {
     // eslint-disable-next-line no-console
     console.log(values);
+    router.push('/dashboard');
   };
 
   const formik = useFormik({
     initialValues: {
-      address: "",
-      bio: "",
-      courtNumber: "",
-      email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      phoneNumber: "",
+      address: '',
+      bio: '',
+      courtNumber: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      password: '',
+      passwordConfirm: '',
+      phoneNumber: ''
     },
+    validationSchema: RegisterSchema,
     onSubmit: (values) => {
       // eslint-disable-next-line no-alert
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       handleRegister(values);
-    },
+    }
   });
 
   return (
@@ -50,6 +57,38 @@ export default function Register() {
                 />
               </div>
 
+              <div className={styles.fullname}>
+                <div className={styles.fullname__label}>
+                  <p>
+                    Full name <span className="color-red">*</span>
+                  </p>
+                </div>
+
+                <div className={styles.fullname__form}>
+                  <FormField
+                    id="firstName"
+                    type="text"
+                    placeholder="First Name"
+                    display="inline"
+                    onChange={formik.handleChange}
+                    value={formik.values.firstName}
+                    error={formik.errors.firstName}
+                  />
+
+                  <div className={styles.w20} />
+
+                  <FormField
+                    id="lastName"
+                    type="text"
+                    placeholder="Last Name"
+                    display="inline"
+                    onChange={formik.handleChange}
+                    value={formik.values.lastName}
+                    error={formik.errors.lastName}
+                  />
+                </div>
+              </div>
+
               <FormField
                 id="email"
                 type="email"
@@ -58,6 +97,7 @@ export default function Register() {
                 onChange={formik.handleChange}
                 value={formik.values.email}
                 error={formik.errors.email}
+                isRequired
               />
 
               <FormField
@@ -68,6 +108,7 @@ export default function Register() {
                 onChange={formik.handleChange}
                 value={formik.values.phoneNumber}
                 error={formik.errors.phoneNumber}
+                isRequired
               />
 
               <FormField
@@ -89,6 +130,7 @@ export default function Register() {
                 onChange={formik.handleChange}
                 value={formik.values.courtNumber}
                 error={formik.errors.courtNumber}
+                isRequired
               />
 
               <FormField
@@ -110,6 +152,18 @@ export default function Register() {
                 onChange={formik.handleChange}
                 value={formik.values.password}
                 error={formik.errors.password}
+                isRequired
+              />
+
+              <FormField
+                id="passwordConfirm"
+                type="password"
+                label="Confirm Password"
+                display="inline"
+                onChange={formik.handleChange}
+                value={formik.values.passwordConfirm}
+                error={formik.errors.passwordConfirm}
+                isRequired
               />
 
               <button type="submit" className="button button--primary mt-4">
@@ -118,7 +172,7 @@ export default function Register() {
 
               <div className="pt-4 extra-info">
                 <p className="font-size-small">
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <Link href="/dashboard/login">
                     <a className="form__link">Login</a>
                   </Link>
@@ -142,7 +196,7 @@ export async function getStaticProps() {
   return {
     props: {
       hasNav: false,
-      hasSidebar: false,
-    }, // will be passed to the page component as props
+      hasSidebar: false
+    } // will be passed to the page component as props
   };
 }

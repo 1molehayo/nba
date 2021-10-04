@@ -23,7 +23,7 @@ export default function DashboardLayout({ children, hasSidebar, hasNav }) {
         <main className={styles.body}>{children}</main>
       </div>
 
-      <DashboardFooter />
+      <DashboardFooter isFixed={hasSidebar} />
     </>
   );
 }

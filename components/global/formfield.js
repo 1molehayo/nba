@@ -1,28 +1,43 @@
-import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
-import classnames from "classnames";
+import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 export const FormField = forwardRef((props, ref) => {
+  const formProps = { ...props };
+  delete formProps.isRequired;
+  delete formProps.label;
+  delete formProps.wrapperClass;
+  delete formProps.error;
+
   return (
-    <div className={classnames("form__group", props.wrapperClass)}>
-      {props.label && <label>{props.label}</label>}
+    <div
+      className={classnames('form__group', props.wrapperClass, {
+        'form__group--error': props.error
+      })}
+    >
+      {props.label && (
+        <label>
+          {props.label}{' '}
+          {props.isRequired && <span className="color-red">*</span>}
+        </label>
+      )}
 
       <div className="form__input__wrapper">
-        {props.type === "textarea" ? (
+        {props.type === 'textarea' ? (
           <textarea
-            {...props}
+            {...formProps}
             id={props.id}
             name={props.id}
             ref={ref}
-            className={classnames("form__textarea", props.className)}
+            className={classnames('form__textarea', props.className)}
           />
         ) : (
           <input
-            {...props}
+            {...formProps}
             ref={ref}
             id={props.id}
             name={props.id}
-            className={classnames("form__input", props.className)}
+            className={classnames('form__input', props.className)}
           />
         )}
 
@@ -32,7 +47,7 @@ export const FormField = forwardRef((props, ref) => {
   );
 });
 
-FormField.displayName = "FormField";
+FormField.displayName = 'FormField';
 
 FormField.propTypes = {
   className: PropTypes.string,
@@ -41,4 +56,5 @@ FormField.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,
   wrapperClass: PropTypes.string,
+  isRequired: PropTypes.bool
 };

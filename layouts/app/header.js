@@ -12,6 +12,11 @@ const AppHeader = ({ toggleModal }) => {
   const { isLargeTab, isMenuOpen, toggleMenu } = useAppContext();
   const router = useRouter();
 
+  const goToPage = (url) => {
+    toggleMenu();
+    router.push(url);
+  };
+
   if (isLargeTab) {
     return (
       <header
@@ -22,20 +27,22 @@ const AppHeader = ({ toggleModal }) => {
         <div className={styles.mobile__container}>
           <div className="container h-100">
             <div className={styles.mobile__inner}>
-              <Link href="/">
-                <a className={styles.mobile__logo}>
-                  <Image
-                    src={Logo}
-                    alt="NBA Ikeja logo"
-                    width={151}
-                    height={37}
-                  />
-                </a>
-              </Link>
+              <span
+                role="button"
+                onClick={() => goToPage('/')}
+                className={styles.mobile__logo}
+              >
+                <Image
+                  src={Logo}
+                  alt="NBA Ikeja logo"
+                  width={151}
+                  height={37}
+                />
+              </span>
 
               <div
                 role="button"
-                onClick={toggleMenu}
+                onClick={() => toggleMenu()}
                 className={classnames(styles.mobile__toggler, {
                   [styles.mobile__toggler__opened]: isMenuOpen
                 })}
@@ -57,44 +64,75 @@ const AppHeader = ({ toggleModal }) => {
 
             <ul className={styles.mobile__nav}>
               <li className={styles.mobile__nav__item}>
-                <Link href="/">
-                  <a className={styles.nav__link}>Home</a>
-                </Link>
+                <span
+                  role="button"
+                  onClick={() => goToPage('/')}
+                  className={styles.nav__link}
+                >
+                  Home
+                </span>
               </li>
 
               <li className={styles.mobile__nav__item}>
-                <Link href="/news">
-                  <a className={styles.nav__link}>News</a>
-                </Link>
-              </li>
-              <li className={styles.mobile__nav__item}>
-                <Link href="/events">
-                  <a className={styles.nav__link}>Events</a>
-                </Link>
-              </li>
-
-              <li className={styles.mobile__nav__item}>
-                <Link href="/about-us">
-                  <a className={styles.nav__link}>About us</a>
-                </Link>
+                <span
+                  role="button"
+                  onClick={() => goToPage('/news')}
+                  className={styles.nav__link}
+                >
+                  News
+                </span>
               </li>
 
               <li className={styles.mobile__nav__item}>
-                <Link href="/dashboard/login">
-                  <a className={styles.nav__link}>Members Portal</a>
-                </Link>
+                <span
+                  role="button"
+                  onClick={() => goToPage('/events')}
+                  className={styles.nav__link}
+                >
+                  Events
+                </span>
               </li>
 
               <li className={styles.mobile__nav__item}>
-                <span role="button" onClick={toggleModal}>
+                <span
+                  role="button"
+                  onClick={() => goToPage('/about-us')}
+                  className={styles.nav__link}
+                >
+                  About us
+                </span>
+              </li>
+
+              <li className={styles.mobile__nav__item}>
+                <span
+                  role="button"
+                  onClick={() => goToPage('/dashboard/login')}
+                  className={styles.nav__link}
+                >
+                  Members Portal
+                </span>
+              </li>
+
+              <li className={styles.mobile__nav__item}>
+                <span
+                  role="button"
+                  onClick={() => {
+                    toggleMenu();
+                    toggleModal();
+                  }}
+                >
                   <a className={styles.nav__link}>Live TV</a>
                 </span>
               </li>
 
               <li className={styles.mobile__nav__item}>
-                <Link href="/find-lawyer">
-                  <a className={styles.nav__link}>Find a lawyer</a>
-                </Link>
+                <span
+                  role="button"
+                  onClick={() => goToPage('/find-lawyer')}
+                  className={styles.nav__link}
+                >
+                  Find a lawyer
+                </span>
               </li>
             </ul>
           </div>

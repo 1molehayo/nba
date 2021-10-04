@@ -36,6 +36,7 @@
 
   &__link {
     @include nav-link;
+    display: inline-block;
 
     &__active {
       &::before {

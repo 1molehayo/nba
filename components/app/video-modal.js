@@ -7,22 +7,15 @@ import { Modal } from './modal';
 export const VideoModal = ({ link, show, onClose }) => {
   return (
     <Modal show={show} onClose={onClose}>
-      <div className="modal-body">
-        <div className="modal-close close-icon" onClick={onClose}>
-          <span></span>
-          <span></span>
-        </div>
-
-        <div className="player-wrapper">
-          <ReactPlayer
-            url={link}
-            className="react-player"
-            width={VIDEO_PLAYER_SETTINGS.width}
-            height={VIDEO_PLAYER_SETTINGS.height}
-            config={VIDEO_PLAYER_SETTINGS.config}
-            controls={false}
-          />
-        </div>
+      <div className="player-wrapper">
+        <ReactPlayer
+          url={link}
+          className="react-player"
+          width={VIDEO_PLAYER_SETTINGS.width}
+          height={VIDEO_PLAYER_SETTINGS.height}
+          config={VIDEO_PLAYER_SETTINGS.config}
+          controls={false}
+        />
       </div>
     </Modal>
   );

@@ -12,7 +12,7 @@ export default function News({ data }) {
     <section className={classnames('section section--lg', styles.news)}>
       <div className="container">
         <h2 className="color-primary text-center pb-5">Recent News</h2>
-
+        {/* test */}
         {!isArrayEmpty(data) && (
           <div className="row justify-content-center">
             {data.slice(0, 3).map((item, i) => (

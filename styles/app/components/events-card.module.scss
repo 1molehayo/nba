@@ -1,4 +1,4 @@
-@import "../../global/helpers/index";
+@import '../../global/helpers/index';
 
 .body {
   padding: 2rem;
@@ -30,7 +30,6 @@
   @include font-size(medium);
   color: color(primary);
   cursor: pointer;
-  text-decoration: underline;
 
   @include respond(large) {
     text-decoration: none;

@@ -1,8 +1,8 @@
 @import '../../global/helpers/index';
 
 .container {
-  position: relative;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   width: 100%;
@@ -11,22 +11,22 @@
   @include respond(medium) {
     display: grid;
     grid-template-columns: 48% 52%;
-    padding: 6rem 3rem;
     min-height: auto;
+    padding: 6rem 3rem;
   }
 
   @include respond(large) {
     grid-template-columns: 52% 48%;
+    min-height: calc(100vh - 18rem);
     padding-top: 0;
     padding-bottom: 3rem;
-    min-height: calc(100vh - 18rem);
   }
 }
 
 .content {
-  z-index: 2;
-  position: relative;
   display: flex;
+  position: relative;
+  z-index: 2;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -46,12 +46,12 @@
   width: 100%;
 
   &__overlay {
-    z-index: 1;
     position: absolute;
+    z-index: 1;
     width: 100%;
     height: 100%;
-    background-color: color(white);
     opacity: 0.9;
+    background-color: color(white);
   }
 }
 
@@ -60,13 +60,13 @@
 
   &__dot {
     display: inline-block;
-    border-radius: 50%;
     width: 16px;
     height: 16px;
-    background-color: color(grey);
-    opacity: 0.35;
     transition: 0.3s opacity ease;
     transition-property: opacity, background-color;
+    border-radius: 50%;
+    opacity: 0.35;
+    background-color: color(grey);
     cursor: pointer;
 
     &:not(:last-child) {
@@ -108,7 +108,7 @@
 }
 
 .wrapper {
-  margin-top: -4rem;
   width: 100%;
   height: 100%;
+  margin-top: -4rem;
 }

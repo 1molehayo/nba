@@ -15,8 +15,8 @@
 
 .price {
   @include font-size(medium);
-  color: color(black);
   margin-bottom: 0;
+  color: color(black);
 }
 
 .title {

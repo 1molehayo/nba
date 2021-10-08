@@ -13,10 +13,10 @@
 .wrapper {
   display: flex;
   align-items: center;
-  margin: 0 auto;
   width: $width;
   max-width: $max-width;
   height: $footer-height;
+  margin: 0 auto;
 
   &__fixed {
     position: fixed;

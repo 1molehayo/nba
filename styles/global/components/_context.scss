@@ -1,23 +1,23 @@
 .context {
-  z-index: 5;
   position: absolute;
+  z-index: 5;
   top: 100%;
   right: 0;
-  padding: 1.7rem 2.5rem;
   width: calc(100vw - 4rem);
+  padding: 1.7rem 2.5rem;
   border: 2px solid color(grey);
   background-color: color(white);
 
   @include respond(medium) {
-    padding: 2.2rem 3rem;
     width: 450px;
+    padding: 2.2rem 3rem;
   }
 
   &__close {
     @include font-size(medium);
-    border: 0;
     margin-right: -6px;
     padding: 6px;
+    border: 0;
     background-color: color(white);
   }
 
@@ -28,8 +28,8 @@
 
   &__list {
     .divider {
-      border-width: 1px;
       margin: 1.5rem 0;
+      border-width: 1px;
     }
   }
 
@@ -46,10 +46,10 @@
     p {
       @include font-size(regular);
       width: 100%;
-      white-space: nowrap;
+      margin-bottom: 0;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 0;
+      white-space: nowrap;
 
       @include respond(medium) {
         @include font-size(medium);

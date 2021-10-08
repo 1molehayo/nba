@@ -5,15 +5,15 @@
   height: 80px;
 
   div {
-    box-sizing: border-box;
     display: block;
     position: absolute;
+    box-sizing: border-box;
     width: 64px;
     height: 64px;
     margin: 8px;
+    animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border: 8px solid color(primary);
     border-radius: 50%;
-    animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: color(primary) transparent transparent transparent;
 
     &:nth-child(1) {
@@ -30,9 +30,9 @@
   }
 
   &__wrapper {
-    z-index: 1000;
-    position: absolute;
     display: flex;
+    position: absolute;
+    z-index: 1000;
     align-items: center;
     justify-content: center;
     width: 100%;

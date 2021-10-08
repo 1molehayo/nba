@@ -1,20 +1,20 @@
 @mixin card {
-  position: relative;
   display: flex;
-  border-radius: 7px;
-  padding: 2rem 3rem;
+  position: relative;
   width: 100%;
+  padding: 2rem 3rem;
+  border-radius: 7px;
   background-color: color(light-green);
 
   &::after {
+    content: '';
     position: absolute;
     top: 10px;
     left: 10px;
-    border-radius: 5px;
     width: 3px;
     height: 45px;
+    border-radius: 5px;
     background-color: color(green);
-    content: '';
   }
 }
 
@@ -31,8 +31,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: right;
-    padding-bottom: 1.5rem;
     width: 20rem;
+    padding-bottom: 1.5rem;
 
     @include respond(large) {
       padding-right: 4rem;
@@ -41,8 +41,8 @@
 
     p {
       @include font-size(small);
-      color: color(black);
       margin-bottom: 0;
+      color: color(black);
     }
   }
 }

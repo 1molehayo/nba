@@ -5,10 +5,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto;
   width: $width;
   max-width: $max-width;
   height: 100%;
+  margin: 0 auto;
 }
 
 .logo {
@@ -29,13 +29,13 @@
 }
 
 .wrapper {
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
   align-items: center;
   width: 100%;
   height: $header-height;
-  box-shadow: $header-shadow;
   background-color: color(white);
+  box-shadow: $header-shadow;
 }

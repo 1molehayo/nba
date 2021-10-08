@@ -1,4 +1,4 @@
-@import "../../global/helpers/index";
+@import '../../global/helpers/index';
 
 .body {
   padding: 2rem;
@@ -14,8 +14,8 @@
   }
 
   img {
-    border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
   }
 }
 

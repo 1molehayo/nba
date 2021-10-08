@@ -1,9 +1,13 @@
 import Head from 'next/head';
 import { Banner } from '../../components/app';
 import { NewsCard } from '../../components/app/news-card';
-import { NEWS } from '../../utility/constants';
+import { Empty } from '../../components/global/empty';
+import axios from '../../services/axios';
+import handleApiError from '../../services/handleApiError';
+import { isArrayEmpty } from '../../utility';
 
-export default function News() {
+export default function News({ articles }) {
+  console.log(articles);
   return (
     <section className="news">
       <Head>
@@ -13,14 +17,41 @@ export default function News() {
       <Banner title="News" />
 
       <div className="section container">
-        <div className="row">
-          {NEWS.map((item, i) => (
-            <div className="col-md-4 mb-5" key={i}>
-              <NewsCard item={item} />
-            </div>
-          ))}
-        </div>
+        {!isArrayEmpty(articles) && (
+          <div className="row">
+            {articles.map((item, i) => (
+              <div className="col-md-4 mb-5" key={i}>
+                <NewsCard item={item} />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isArrayEmpty(articles) && (
+          <div className="mt-8">
+            <Empty icon="icon-calendar" />
+          </div>
+        )}
       </div>
     </section>
   );
+}
+
+export async function getStaticProps() {
+  let articles = null;
+  let error = null;
+
+  try {
+    const articleResponse = await axios.get('/articles');
+    articles = articleResponse.data;
+  } catch (err) {
+    error = handleApiError(err);
+  } finally {
+    return {
+      props: {
+        articles,
+        error
+      } // will be passed to the page component as props
+    };
+  }
 }

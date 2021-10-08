@@ -5,8 +5,10 @@ import Hero from '../components/app/home/hero';
 import News from '../components/app/home/news';
 import Quote from '../components/app/home/quote';
 import TwitterFeeds from '../components/app/home/twitter-feeds';
+import axios from '../services/axios';
+import handleApiError from '../services/handleApiError';
 
-export default function Home() {
+export default function Home({ articles, events, error }) {
   return (
     <section className="home">
       <Head>
@@ -19,9 +21,9 @@ export default function Home() {
 
       <Quote />
 
-      <News />
+      <News data={articles} />
 
-      <Events />
+      <Events data={events} />
 
       <TwitterFeeds />
     </section>
@@ -29,9 +31,27 @@ export default function Home() {
 }
 
 export async function getStaticProps() {
-  return {
-    props: {
-      hasOval: false
-    } // will be passed to the page component as props
-  };
+  let events = null;
+  let articles = null;
+  let slides = null;
+  let error = null;
+
+  try {
+    const eventResponse = await axios.get('/events');
+    const articleResponse = await axios.get('/articles');
+    events = eventResponse.data;
+    articles = articleResponse.data;
+  } catch (err) {
+    error = handleApiError(err);
+  } finally {
+    return {
+      props: {
+        articles,
+        error,
+        events,
+        hasOval: false,
+        slides
+      } // will be passed to the page component as props
+    };
+  }
 }

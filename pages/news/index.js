@@ -1,7 +1,7 @@
-import Head from "next/head";
-import { Banner } from "../components/app";
-import { NewsCard } from "../components/app/news-card";
-import { NEWS } from "../utility/constants";
+import Head from 'next/head';
+import { Banner } from '../../components/app';
+import { NewsCard } from '../../components/app/news-card';
+import { NEWS } from '../../utility/constants';
 
 export default function News() {
   return (

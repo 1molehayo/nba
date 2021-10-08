@@ -1,0 +1,17 @@
+.empty-card {
+  width: 100%;
+  text-align: center;
+
+  &__icon {
+    margin-bottom: 1.5rem;
+    font-size: 10rem;
+  }
+
+  &__image {
+  }
+
+  &__inner {
+    display: inline-block;
+    width: auto;
+  }
+}

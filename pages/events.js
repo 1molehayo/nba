@@ -1,6 +1,6 @@
 import Head from 'next/head';
+import PropTypes from 'prop-types';
 import { Banner, EventsCard } from '../components/app';
-import { EVENTS } from '../utility/constants';
 import axios from '../services/axios';
 import handleApiError from '../services/handleApiError';
 import { Empty } from '../components/global/empty';
@@ -36,6 +36,10 @@ export default function Events({ events }) {
   );
 }
 
+Events.propTypes = {
+  events: PropTypes.object
+};
+
 export async function getStaticProps() {
   let events = null;
   let error = null;
@@ -46,6 +50,7 @@ export async function getStaticProps() {
   } catch (err) {
     error = handleApiError(err);
   } finally {
+    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         events,

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import PropTypes from 'prop-types';
 import About from '../components/app/home/about';
 import Events from '../components/app/home/events';
 import Hero from '../components/app/home/hero';
@@ -8,7 +9,7 @@ import TwitterFeeds from '../components/app/home/twitter-feeds';
 import axios from '../services/axios';
 import handleApiError from '../services/handleApiError';
 
-export default function Home({ articles, events, error }) {
+export default function Home({ articles, events }) {
   return (
     <section className="home">
       <Head>
@@ -30,10 +31,16 @@ export default function Home({ articles, events, error }) {
   );
 }
 
+Home.propTypes = {
+  articles: PropTypes.array,
+  error: PropTypes.object,
+  events: PropTypes.array
+};
+
 export async function getStaticProps() {
   let events = null;
   let articles = null;
-  let slides = null;
+  // let slides = null;
   let error = null;
 
   try {
@@ -44,13 +51,14 @@ export async function getStaticProps() {
   } catch (err) {
     error = handleApiError(err);
   } finally {
+    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         articles,
         error,
         events,
-        hasOval: false,
-        slides
+        hasOval: false
+        // slides
       } // will be passed to the page component as props
     };
   }

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import styles from '../../styles/app/components/events-card.module.scss';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import styles from '../../styles/app/components/events-card.module.scss';
 import { formatCharLength } from '../../utility';
 
 export const EventsCard = ({ item }) => {
+  // eslint-disable-next-line no-unused-vars
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => setShowModal((prevState) => !prevState);
 

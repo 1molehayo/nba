@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styles from '../../../styles/app/pages/home.module.scss';
-import { NEWS } from '../../../utility/constants';
 import { NewsCard } from '../news-card';
 import { Empty } from '../../global/empty';
 import { isArrayEmpty } from '../../../utility';

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import PropTypes from 'prop-types';
 import { Banner } from '../../components/app';
 import { NewsCard } from '../../components/app/news-card';
 import { Empty } from '../../components/global/empty';
@@ -7,7 +8,6 @@ import handleApiError from '../../services/handleApiError';
 import { isArrayEmpty } from '../../utility';
 
 export default function News({ articles }) {
-  console.log(articles);
   return (
     <section className="news">
       <Head>
@@ -37,6 +37,10 @@ export default function News({ articles }) {
   );
 }
 
+News.propTypes = {
+  articles: PropTypes.object
+};
+
 export async function getStaticProps() {
   let articles = null;
   let error = null;
@@ -47,6 +51,7 @@ export async function getStaticProps() {
   } catch (err) {
     error = handleApiError(err);
   } finally {
+    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         articles,

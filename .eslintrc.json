@@ -5,7 +5,6 @@
     "plugin:react-hooks/recommended",
     "airbnb-base",
     "prettier",
-    "prettier/@typescript-eslint",
     "next/core-web-vitals"
   ],
   "plugins": ["react", "react-hooks"],
@@ -40,6 +39,7 @@
     "array-callback-return": 2,
     "block-scoped-var": 2,
     "no-restricted-syntax": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off"
   }
 }

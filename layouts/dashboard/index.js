@@ -1,10 +1,10 @@
-import styles from '../../styles/dashboard/layouts/dashboard.module.scss';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import Head from 'next/head';
+import styles from '../../styles/dashboard/layouts/dashboard.module.scss';
 import DashboardFooter from './footer';
 import DashboardHeader from './header';
 import DashboardSidebar from './sidebar';
-import Head from 'next/head';
 
 export default function DashboardLayout({ children, hasSidebar, hasNav }) {
   return (

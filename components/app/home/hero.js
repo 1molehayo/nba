@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Slider from 'react-slick';
+import classnames from 'classnames';
 import styles from '../../../styles/app/components/hero.module.scss';
 import { BlobImage } from '../../global/blob-image';
-import classnames from 'classnames';
 import { HERO_SLIDES } from '../../../utility/constants';
 import { useAppContext } from '../../../contexts/appContext';
 
@@ -23,7 +23,7 @@ export default function Hero() {
     cssEase: 'linear',
     slidesToShow: 1,
     slidesToScroll: 1,
-    afterChange: () => setSlideIndex((prevState) => prevState++),
+    afterChange: () => setSlideIndex((prevState) => prevState + 1),
     beforeChange: (current, next) => setSlideIndex(next)
   };
 
@@ -66,7 +66,7 @@ export default function Hero() {
                   </button>
 
                   <div className={styles.slider__dots}>
-                    {HERO_SLIDES.map((item, j) => (
+                    {HERO_SLIDES.map((dot, j) => (
                       <span
                         key={j}
                         className={classnames(styles.slider__dot, {

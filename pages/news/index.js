@@ -38,7 +38,7 @@ export default function News({ articles }) {
 }
 
 News.propTypes = {
-  articles: PropTypes.object
+  articles: PropTypes.array
 };
 
 export async function getStaticProps() {

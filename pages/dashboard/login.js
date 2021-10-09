@@ -20,42 +20,43 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { setUser } = useAppContext();
 
-  const handleLogin = async (values) => {
-    setLoading(true);
-
-    const userData = {
-      identifier: values.email,
-      password: values.values
-    };
-
-    const config = {
-      headers: {
-        Accept: 'application/json'
-      }
-    };
-
-    try {
-      await axios.post('/auth/local/', userData, config);
-      const { data } = await axios.get('/profiles/me');
-      setUser(data);
-      router.push('/dashboard');
-    } catch (err) {
-      setError(handleApiError(err));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
-      handleLogin(values);
+    onSubmit: async (values) => {
+      setLoading(true);
+
+      const userData = {
+        identifier: values.email,
+        password: values.values
+      };
+
+      const config = {
+        headers: {
+          Accept: 'application/json'
+        }
+      };
+
+      try {
+        await axios.post('/auth/local', userData, config);
+        const { data } = await axios.get('/profiles/me');
+        setUser(data);
+        router.push('/dashboard');
+      } catch (err) {
+        setError(handleApiError(err));
+      } finally {
+        setLoading(false);
+      }
     }
   });
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    formik.handleSubmit(e);
+  };
 
   return (
     <section className={styles.wrapper}>
@@ -88,7 +89,7 @@ export default function Login() {
             </div>
 
             <div className={styles.form}>
-              <form className="form" onSubmit={formik.handleSubmit}>
+              <form className="form" onSubmit={handleLogin}>
                 {!isObjectEmpty(error) && (
                   <p className="color-red">{error.message}</p>
                 )}

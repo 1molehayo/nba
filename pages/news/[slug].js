@@ -1,24 +1,57 @@
 import React from 'react';
-import Link from 'next/link';
+import Head from 'next/head';
+import Image from 'next/image';
+import PropTypes from 'prop-types';
+import axios from '../../services/axios';
+import { Banner } from '../../components/app';
+import { getImagePath } from '../../utility';
+import styles from '../../styles/app/pages/news.module.scss';
 
-export default function Post({ post }) {
+export default function Article({ article }) {
   return (
-    <div>
-      <Link href="/">
-        <a>Go Home</a>
-      </Link>
-      <h2>{post.Title}</h2>
-    </div>
+    <section className="news">
+      <Head>
+        <title>News | NBA-Ikeja</title>
+      </Head>
+
+      <Banner title="News" hasBackButton />
+
+      <div className="section container pb-0">
+        <h2 className="text-center pb-8">{article.title}</h2>
+
+        <div className={styles.image}>
+          {article && article.image && (
+            <Image
+              src={getImagePath(article.image.url)}
+              alt={article.title}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="section container">
+        <div
+          className={styles.content}
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        ></div>
+      </div>
+    </section>
   );
 }
 
+Article.propTypes = {
+  article: PropTypes.object
+};
+
 // tell next.js how many pages there are
 export async function getStaticPaths() {
-  const res = await fetch('http://localhost:1337/posts');
-  const posts = await res.json();
+  const { data } = await axios.get('/articles');
 
-  const paths = posts.map((post) => ({
-    params: { slug: post.Slug }
+  const paths = data.map((item) => ({
+    params: { slug: item.slug }
   }));
 
   return {
@@ -31,13 +64,12 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { slug } = params;
 
-  const res = await fetch(`http://localhost:1337/posts?Slug=${slug}`);
-  const data = await res.json();
-  const post = data[0];
+  const { data } = await axios.get(`articles?slug=${slug}`);
+  const article = data[0];
 
   return {
     props: {
-      post
+      article
     }
   };
 }

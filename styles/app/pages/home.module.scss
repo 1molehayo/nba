@@ -1,20 +1,20 @@
-@import "../../global/helpers/index";
+@import '../../global/helpers/index';
 
 .about {
   background-color: rgba($color: color(green), $alpha: 0.2);
 
   &__content {
-    margin: 0 auto;
     width: 100%;
     max-width: 48rem;
     height: 100%;
+    margin: 0 auto;
     text-align: center;
 
     @include respond(large) {
-      padding-top: 12rem;
-      padding-right: 2rem;
       width: 100%;
       max-width: 100%;
+      padding-top: 12rem;
+      padding-right: 2rem;
       text-align: left;
     }
   }
@@ -31,14 +31,14 @@
 
 .quote {
   position: relative;
-  margin: 5rem auto 0;
   max-width: 50rem;
+  margin: 5rem auto 0;
 
   @include respond(large) {
     display: flex;
     align-items: center;
-    margin-top: 0rem;
     max-width: 85rem;
+    margin-top: 0rem;
   }
 
   &__content {
@@ -65,9 +65,9 @@
     margin-top: -5rem;
     padding-right: 2rem;
     opacity: 0.2;
+    color: color(black);
     font-size: 12rem;
     font-style: italic;
-    color: color(black);
 
     @include respond(large) {
       margin-top: 0;
@@ -79,15 +79,16 @@
 
   &__image {
     position: relative;
-    border-radius: 50%;
+    flex: 0 0 6rem;
     width: 6rem;
     height: 6rem;
-    flex: 0 0 6rem;
+    border-radius: 50%;
 
     @include respond(large) {
+      flex: 0 0 20rem;
+
       width: 20rem;
       height: 20rem;
-      flex: 0 0 20rem;
     }
 
     img {
@@ -97,8 +98,8 @@
     &__wrapper {
       display: flex;
       align-items: center;
-      margin: 2rem auto 0;
       max-width: 20rem;
+      margin: 2rem auto 0;
 
       @include respond(large) {
         margin-top: 0;
@@ -106,8 +107,8 @@
 
       p {
         @include font-size(xx-small);
-        margin-left: 1.3rem;
         margin-bottom: 0;
+        margin-left: 1.3rem;
 
         @include respond(large) {
           display: none;

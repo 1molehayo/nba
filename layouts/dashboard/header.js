@@ -1,19 +1,16 @@
-import styles from '../../styles/dashboard/layouts/header.module.scss';
 import classnames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+import styles from '../../styles/dashboard/layouts/header.module.scss';
 import Logo from '../../assets/images/logo.png';
 import Avatar from '../../assets/images/avatar.png';
 import { Dropdown } from '../../components/global/dropdown';
 import { Searchbar } from '../../components/global';
-import { useState } from 'react';
-import { Context } from '../../components/global/context';
 import { PROFILE_MENU } from '../../utility/constants';
 
 const DashboardHeader = () => {
   const [searchValue, setSearchValue] = useState();
-  const [showContext, setShowContext] = useState();
-  const toggleContext = () => setShowContext((prevState) => !prevState);
 
   const handleSearch = async () => {
     // await api call
@@ -51,8 +48,6 @@ const DashboardHeader = () => {
           />
 
           <div className={styles.profile}>
-            <div role="button" onClick={toggleContext}></div>
-
             <Dropdown titleNode={ProfileImage} items={PROFILE_MENU} />
           </div>
         </nav>

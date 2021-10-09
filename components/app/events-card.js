@@ -3,7 +3,7 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../../styles/app/components/events-card.module.scss';
-import { formatCharLength } from '../../utility';
+import { formatCharLength, getImagePath } from '../../utility';
 
 export const EventsCard = ({ item }) => {
   // eslint-disable-next-line no-unused-vars
@@ -14,7 +14,7 @@ export const EventsCard = ({ item }) => {
     <div className={styles.wrapper}>
       <div className={styles.image}>
         <Image
-          src={`${process.env.API_BASE_URL}${item.image.url}`}
+          src={getImagePath(item.image.url)}
           alt={item.title}
           layout="fill"
           objectFit="cover"

@@ -4,13 +4,13 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../../styles/app/components/news-card.module.scss';
-import { formatCharLength } from '../../utility';
+import { formatCharLength, getImagePath } from '../../utility';
 
 export const NewsCard = ({ item }) => (
   <div className={styles.wrapper}>
     <div className={styles.image}>
       <Image
-        src={`${process.env.API_BASE_URL}${item.image.url}`}
+        src={getImagePath(item.image.url)}
         alt={item.title}
         layout="fill"
         objectFit="cover"
@@ -26,7 +26,7 @@ export const NewsCard = ({ item }) => (
         {formatCharLength(item.short_description, 70)}
       </p>
 
-      <Link href={`/news/${item.id}`}>
+      <Link href={`/news/${item.slug}`}>
         <a className="button--link">
           Read more <span className="icon-right-arrow ml-5" />
         </a>

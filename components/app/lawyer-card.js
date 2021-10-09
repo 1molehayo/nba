@@ -1,8 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import PropTypes from "prop-types";
-import styles from "../../styles/app/components/lawyer-card.module.scss";
-import { formatCharLength } from "../../utility";
+import React from 'react';
+import Image from 'next/image';
+import PropTypes from 'prop-types';
+import styles from '../../styles/app/components/lawyer-card.module.scss';
+import { formatCharLength } from '../../utility';
 
 export const LawyerCard = ({ item }) => {
   return (
@@ -61,7 +61,7 @@ LawyerCard.propTypes = {
     social_media: PropTypes.shape({
       email: PropTypes.string,
       linkedin: PropTypes.string,
-      phone: PropTypes.string,
-    }),
-  }),
+      phone: PropTypes.string
+    })
+  })
 };

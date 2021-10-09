@@ -11,6 +11,7 @@ export const MeetingCard = ({ item }) => {
       <div className={styles.image}>
         <Image
           src={Zoom.src}
+          alt="zoom"
           placeholder={Zoom.blurDataURL}
           width={65}
           height={24}
@@ -26,7 +27,12 @@ export const MeetingCard = ({ item }) => {
         <p className="text-right mb-0">{item.date}</p>
         <p className="text-right">{item.time}</p>
 
-        <a href={item.url} target="_blank" className="button button--primary">
+        <a
+          href={item.url}
+          target="_blank"
+          className="button button--primary"
+          rel="noreferrer"
+        >
           Enter
         </a>
       </div>

@@ -6,8 +6,17 @@ export const ObjHasProp = (obj, prop) => {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 };
 
-export const formatCharLength = (str, len) =>
-  str ? (str.length > len ? `${str.substring(0, len - 1)}...` : str) : '';
+export const formatCharLength = (str, len) => {
+  if (!str) {
+    return '';
+  }
+
+  if (str.length > len) {
+    return `${str.substring(0, len - 1)}...`;
+  }
+
+  return str;
+};
 
 export const formatPrice = (amount) => {
   const result = amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -46,4 +55,12 @@ export const isObjectEmpty = (obj) => {
   }
 
   return true;
+};
+
+export const getImagePath = (url) => {
+  if (!url) {
+    return '';
+  }
+
+  return `${process.env.API_BASE_URL}${url}`;
 };

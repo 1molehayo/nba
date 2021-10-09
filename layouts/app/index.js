@@ -1,14 +1,14 @@
-import styles from '../../styles/app/layouts/app.module.scss';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import AppFooter from './footer';
-import AppHeader from './header';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useState } from 'react';
+import styles from '../../styles/app/layouts/app.module.scss';
+import AppFooter from './footer';
+import AppHeader from './header';
 import { useAppContext } from '../../contexts/appContext';
 import ovalShape from '../../assets/images/oval.svg';
 import { VideoModal } from '../../components/app';
-import { useState } from 'react';
 
 export default function AppLayout({ children, hasOval }) {
   const { isLargeTab } = useAppContext();
@@ -34,6 +34,7 @@ export default function AppLayout({ children, hasOval }) {
           <div className="page__oval">
             <Image
               src={ovalShape}
+              alt="oval"
               className="page__oval-image"
               width={650}
               height={505}

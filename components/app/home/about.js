@@ -1,16 +1,16 @@
-import React from "react";
-import classnames from "classnames";
-import Link from "next/link";
-import { useAppContext } from "../../../contexts/appContext";
-import styles from "../../../styles/app/pages/home.module.scss";
-import { BlobImage } from "../../global/blob-image";
-import AboutImage from "../../../assets/images/home/about-image.png";
+import React from 'react';
+import classnames from 'classnames';
+import Link from 'next/link';
+import { useAppContext } from '../../../contexts/appContext';
+import styles from '../../../styles/app/pages/home.module.scss';
+import { BlobImage } from '../../global/blob-image';
+import AboutImage from '../../../assets/images/home/about-image.png';
 
 export default function About() {
   const { isLargeTab } = useAppContext();
 
   return (
-    <section className={classnames(styles.about, "section section--lg")}>
+    <section className={classnames(styles.about, 'section section--lg')}>
       <div className="container">
         <div className="row justify-content-between">
           {!isLargeTab && (
@@ -32,7 +32,7 @@ export default function About() {
               </p>
 
               <Link href="/about-us" passHref>
-                <button className={"button button--primary"}>
+                <button className={'button button--primary'}>
                   Read more <span className="icon-right-arrow ml-5" />
                 </button>
               </Link>

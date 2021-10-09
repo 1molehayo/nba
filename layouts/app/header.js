@@ -1,12 +1,13 @@
-import styles from '../../styles/app/layouts/header.module.scss';
 import classnames from 'classnames';
 import Link from 'next/link';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import styles from '../../styles/app/layouts/header.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { Dropdown } from '../../components/global/dropdown';
 import { MEDIA_MENU } from '../../utility/constants';
 import { useAppContext } from '../../contexts/appContext';
-import { useRouter } from 'next/router';
 
 const AppHeader = ({ toggleModal }) => {
   const { isLargeTab, isMenuOpen, toggleMenu, closeMenu } = useAppContext();
@@ -211,6 +212,10 @@ const AppHeader = ({ toggleModal }) => {
       </div>
     </header>
   );
+};
+
+AppHeader.propTypes = {
+  toggleModal: PropTypes.func
 };
 
 export default AppHeader;

@@ -1,16 +1,12 @@
 import '../styles/global/main.scss';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
-import AppLayout from '../layouts/app';
-import DashboardLayout from '../layouts/dashboard';
+import ReactModal from 'react-modal';
 import { AppProvider } from '../contexts/appContext';
 import { Loader } from '../components/global';
-import ReactModal from 'react-modal';
+import { Layout } from '../layouts';
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-  const [pageType, setPageType] = useState('app');
   const [actPreload, setActPreload] = useState(true);
 
   /*  TODO:
@@ -27,36 +23,13 @@ function MyApp({ Component, pageProps }) {
     };
   }, []);
 
-  useLayoutEffect(() => {
-    if (router.pathname.includes('dashboard')) {
-      setPageType('admin');
-    } else {
-      setPageType('app');
-    }
-  }, [router.pathname]);
-
   if (actPreload) {
     return <Loader />;
   }
 
-  if (pageType === 'admin') {
-    return (
-      <AppProvider>
-        <DashboardLayout
-          hasSidebar={pageProps.hasSidebar}
-          hasNav={pageProps.hasNav}
-        >
-          <Component {...pageProps} />
-        </DashboardLayout>
-      </AppProvider>
-    );
-  }
-
   return (
     <AppProvider>
-      <AppLayout hasOval={pageProps.hasOval}>
-        <Component {...pageProps} />
-      </AppLayout>
+      <Layout Component={Component} pageProps={pageProps} />
     </AppProvider>
   );
 }

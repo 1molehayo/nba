@@ -1,8 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import styles from "../../../styles/app/pages/home.module.scss";
-import ChairmanImage from "../../../assets/images/home/chairman.png";
-import { useAppContext } from "../../../contexts/appContext";
+import React from 'react';
+import Image from 'next/image';
+import styles from '../../../styles/app/pages/home.module.scss';
+import ChairmanImage from '../../../assets/images/home/chairman.png';
+import { useAppContext } from '../../../contexts/appContext';
 
 export default function Quote() {
   const { isLargeTab } = useAppContext();
@@ -18,7 +18,7 @@ export default function Quote() {
               <p>
                 <span className="color-primary">
                   BARTHOLOMEW AGUEGBODO, ESQ
-                </span>{" "}
+                </span>{' '}
                 Chairman
               </p>
             )}
@@ -28,7 +28,7 @@ export default function Quote() {
             <p>
               Bartholomew Aguegbodo is the Chairman, Nigerian Bar Association,
               Ikeja Branch. He holds LL.B degree from the University of Lagos
-              and has been called to the Nigerian Bar over two decades ago.{" "}
+              and has been called to the Nigerian Bar over two decades ago.{' '}
             </p>
           </div>
 

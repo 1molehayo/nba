@@ -1,6 +1,6 @@
-import styles from '../../styles/dashboard/layouts/footer.module.scss';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import styles from '../../styles/dashboard/layouts/footer.module.scss';
 
 const DashboardFooter = ({ isFixed }) => {
   const getYear = () => {

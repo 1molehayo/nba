@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import styles from '../../styles/dashboard/components/dashboard-heading.module.scss';
 import PropTypes from 'prop-types';
+import styles from '../../styles/dashboard/components/dashboard-heading.module.scss';
 
 export const DashboardHeading = ({ title, url }) => {
   return (

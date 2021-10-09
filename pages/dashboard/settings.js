@@ -6,6 +6,7 @@ import { FormField } from '../../components/global';
 import { SettingsSchema } from '../../utility/validations';
 
 export default function Settings() {
+  // eslint-disable-next-line no-unused-vars
   const handleSubmit = async (values) => {};
 
   const formik = useFormik({

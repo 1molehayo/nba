@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import styles from '../../styles/dashboard/components/book.module.scss';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
+import styles from '../../styles/dashboard/components/book.module.scss';
 import { formatCharLength } from '../../utility';
 import { Modal } from '../app';
-import dynamic from 'next/dynamic';
 
 export const Book = ({ item }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -16,7 +16,13 @@ export const Book = ({ item }) => {
     <>
       <div className={styles.wrapper}>
         <div className={styles.image}>
-          <Image src={item.image} width={108} height={150} objectFit="cover" />
+          <Image
+            src={item.image}
+            alt={item.title}
+            width={108}
+            height={150}
+            objectFit="cover"
+          />
         </div>
 
         <div className={styles.content}>

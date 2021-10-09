@@ -1,21 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import styles from '../../styles/dashboard/pages/login.module.scss';
 import BgImage from '../../assets/images/login-bg.png';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
-import { useRouter } from 'next/router';
+import axios from '../../services/axios';
+import handleApiError from '../../services/handleApiError';
+import { useAppContext } from '../../contexts/appContext';
+import { isObjectEmpty } from '../../utility';
+import { LoginSchema } from '../../utility/validations';
 
 export default function Login() {
   const router = useRouter();
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+  const { setUser } = useAppContext();
 
   const handleLogin = async (values) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
-    router.push('/dashboard');
+    setLoading(true);
+
+    const userData = {
+      identifier: values.email,
+      password: values.values
+    };
+
+    const config = {
+      headers: {
+        Accept: 'application/json'
+      }
+    };
+
+    try {
+      await axios.post('/auth/local/', userData, config);
+      const { data } = await axios.get('/profiles/me');
+      setUser(data);
+      router.push('/dashboard');
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formik = useFormik({
@@ -23,9 +51,8 @@ export default function Login() {
       email: '',
       password: ''
     },
+    validationSchema: LoginSchema,
     onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      // alert(JSON.stringify(values, null, 2));
       handleLogin(values);
     }
   });
@@ -62,6 +89,10 @@ export default function Login() {
 
             <div className={styles.form}>
               <form className="form" onSubmit={formik.handleSubmit}>
+                {!isObjectEmpty(error) && (
+                  <p className="color-red">{error.message}</p>
+                )}
+
                 <FormField
                   id="email"
                   type="email"
@@ -82,8 +113,13 @@ export default function Login() {
                   error={formik.errors.password}
                 />
 
-                <button type="submit" className="button button--primary mt-4">
-                  Login <span className="icon-login ml-5" />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="button button--primary mt-4"
+                >
+                  {loading ? 'Loading...' : 'Login'}{' '}
+                  <span className="icon-login ml-5" />
                 </button>
               </form>
 

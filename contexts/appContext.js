@@ -8,7 +8,9 @@ const ContextDefaultValues = {
   isTab: false,
   isMenuOpen: false,
   toggleMenu: () => null,
-  closeMenu: () => null
+  closeMenu: () => null,
+  user: null,
+  setUser: null
 };
 
 export const AppContext = createContext(ContextDefaultValues);
@@ -20,6 +22,7 @@ export const AppProvider = ({ children }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => setMenuOpen((prevState) => !prevState);
   const closeMenu = () => setMenuOpen(false);
+  const [user, setUser] = useState();
 
   const updateWindowDimensions = () => {
     setIsLargeTab(window.innerWidth < 990);
@@ -41,7 +44,9 @@ export const AppProvider = ({ children }) => {
         isMobile,
         isTab,
         toggleMenu,
-        closeMenu
+        closeMenu,
+        user,
+        setUser
       }}
     >
       {children}
@@ -53,6 +58,4 @@ AppProvider.propTypes = {
   children: PropTypes.node
 };
 
-export const useAppContext = () => {
-  return useContext(AppContext);
-};
+export const useAppContext = () => useContext(AppContext);

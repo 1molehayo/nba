@@ -4,6 +4,7 @@
     "plugin:react-hooks/recommended",
     "airbnb-base",
     "prettier",
+    "plugin:prettier/recommended",
     "next/core-web-vitals"
   ],
   "plugins": ["react", "react-hooks"],

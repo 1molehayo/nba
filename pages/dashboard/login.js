@@ -31,17 +31,11 @@ export default function Login() {
 
       const userData = {
         identifier: values.email,
-        password: values.values
-      };
-
-      const config = {
-        headers: {
-          Accept: 'application/json'
-        }
+        password: values.password
       };
 
       try {
-        await axios.post('/auth/local', userData, config);
+        await axios.post('/auth/local', userData);
         const { data } = await axios.get('/profiles/me');
         setUser(data);
         router.push('/dashboard');

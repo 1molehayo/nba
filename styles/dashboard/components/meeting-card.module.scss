@@ -2,8 +2,8 @@
 @import '../helpers/index';
 
 .content {
-  width: calc(100% - 165px);
-  padding: 0 2rem;
+  width: calc(100% - 100px);
+  padding-right: 1.5rem;
 }
 
 .desc {
@@ -12,11 +12,15 @@
 }
 
 .image {
+  display: inline-block;
   width: 65px;
+  margin-bottom: 1rem;
+  text-align: right;
 }
 
 .time {
   width: 100px;
+  text-align: right;
 
   a {
     @include font-size(small);

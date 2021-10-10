@@ -2,16 +2,17 @@ import '../styles/global/main.scss';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
-import { AppProvider } from '../contexts/appContext';
+import { AppProvider } from '../contexts/app-context';
 import { Loader } from '../components/global';
 import { Layout } from '../layouts';
+import { CurrentUserProvider } from '../contexts/current-user';
 
 function MyApp({ Component, pageProps }) {
   const [actPreload, setActPreload] = useState(true);
 
   /*  TODO:
       1. Get page type from router --- DONE
-      2. Get user access type from backend using context and usereducer
+      2. Get user access type from backend using context and usereducer --DONE
   */
 
   useEffect(() => {
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AppProvider>
-      <Layout Component={Component} pageProps={pageProps} />
+      <CurrentUserProvider>
+        <Layout Component={Component} pageProps={pageProps} />
+      </CurrentUserProvider>
     </AppProvider>
   );
 }

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { Banner, EventsCard } from '../components/app';
 import axios from '../services/axios';
-import handleApiError from '../services/handleApiError';
+import handleApiError from '../services/handle-api-error';
 import { Empty } from '../components/global/empty';
 import { isArrayEmpty } from '../utility';
 

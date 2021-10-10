@@ -71,7 +71,8 @@ $menu_width: 150px;
         color: color(white);
       }
 
-      a {
+      a,
+      span {
         display: inline-flex;
         align-items: center;
         width: 100%;

@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import styles from '../../../styles/app/pages/home.module.scss';
 import ChairmanImage from '../../../assets/images/home/chairman.png';
-import { useAppContext } from '../../../contexts/appContext';
+import { useAppContext } from '../../../contexts/app-context';
 
 export default function Quote() {
   const { isLargeTab } = useAppContext();

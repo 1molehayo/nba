@@ -7,8 +7,9 @@ import styles from '../../styles/dashboard/pages/reset-password.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
 import { ForgotPasswordSchema } from '../../utility/validations';
+import isAuth from '../../services/is-auth';
 
-export default function ResetPassword() {
+function ResetPassword() {
   const handleRegister = async (values) => {
     // eslint-disable-next-line no-console
     console.log(values);
@@ -80,6 +81,8 @@ export default function ResetPassword() {
     </section>
   );
 }
+
+export default isAuth(ResetPassword);
 
 export async function getStaticProps() {
   return {

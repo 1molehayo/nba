@@ -8,8 +8,9 @@ import styles from '../../styles/dashboard/pages/register.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
 import { RegisterSchema } from '../../utility/validations';
+import isAuth from '../../services/is-auth';
 
-export default function Register() {
+function Register() {
   const router = useRouter();
 
   const handleRegister = async (values) => {
@@ -191,6 +192,8 @@ export default function Register() {
     </section>
   );
 }
+
+export default isAuth(Register);
 
 export async function getStaticProps() {
   return {

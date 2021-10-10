@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import Link from 'next/link';
-import { useAppContext } from '../../../contexts/appContext';
+import { useAppContext } from '../../../contexts/app-context';
 import styles from '../../../styles/app/pages/home.module.scss';
 import { BlobImage } from '../../global/blob-image';
 import AboutImage from '../../../assets/images/home/about-image.png';

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import styles from '../../styles/app/layouts/app.module.scss';
 import AppFooter from './footer';
 import AppHeader from './header';
-import { useAppContext } from '../../contexts/appContext';
+import { useAppContext } from '../../contexts/app-context';
 import ovalShape from '../../assets/images/oval.svg';
 import { VideoModal } from '../../components/app';
 

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import styles from '../../../styles/app/components/hero.module.scss';
 import { BlobImage } from '../../global/blob-image';
 import { HERO_SLIDES } from '../../../utility/constants';
-import { useAppContext } from '../../../contexts/appContext';
+import { useAppContext } from '../../../contexts/app-context';
 
 export default function Hero() {
   const [slideIndex, setSlideIndex] = useState(0);

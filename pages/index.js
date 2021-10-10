@@ -7,7 +7,7 @@ import News from '../components/app/home/news';
 import Quote from '../components/app/home/quote';
 import TwitterFeeds from '../components/app/home/twitter-feeds';
 import axios from '../services/axios';
-import handleApiError from '../services/handleApiError';
+import handleApiError from '../services/handle-api-error';
 
 export default function Home({ articles, events }) {
   return (

@@ -1,9 +1,9 @@
-export const ObjHasProp = (obj, prop) => {
-  if (!obj || !prop) {
-    return false;
+export const capitalizeFirstLetter = (str) => {
+  if (!str) {
+    return '';
   }
 
-  return Object.prototype.hasOwnProperty.call(obj, prop);
+  return `${str.substr(0, 1).toUpperCase()}${str.substr(1)}`;
 };
 
 export const formatCharLength = (str, len) => {
@@ -19,8 +19,19 @@ export const formatCharLength = (str, len) => {
 };
 
 export const formatPrice = (amount) => {
+  if (amount) {
+    return '';
+  }
   const result = amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
   return `₦${result}`;
+};
+
+export const getImagePath = (url) => {
+  if (!url) {
+    return '';
+  }
+
+  return `${process.env.API_BASE_URL}${url}`;
 };
 
 export const getStatus = (val) => {
@@ -43,6 +54,8 @@ export const getStatus = (val) => {
 
 export const isArrayEmpty = (arr) => !arr || arr.length === 0;
 
+export const isBrowser = () => typeof window !== 'undefined';
+
 export const isObjectEmpty = (obj) => {
   if (!obj) {
     return true;
@@ -57,10 +70,15 @@ export const isObjectEmpty = (obj) => {
   return true;
 };
 
-export const getImagePath = (url) => {
-  if (!url) {
-    return '';
+export const ObjHasProp = (obj, prop) => {
+  if (!obj || !prop) {
+    return false;
   }
 
-  return `${process.env.API_BASE_URL}${url}`;
+  return Object.prototype.hasOwnProperty.call(obj, prop);
 };
+
+export const updateObject = (oldObject, updatedProperties) => ({
+  ...oldObject,
+  ...updatedProperties
+});

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import useEventListener from '../services/useEventListener';
+import useEventListener from '../services/use-event-listener';
 
 const ContextDefaultValues = {
   isLargeTab: false,
@@ -8,9 +8,7 @@ const ContextDefaultValues = {
   isTab: false,
   isMenuOpen: false,
   toggleMenu: () => null,
-  closeMenu: () => null,
-  user: null,
-  setUser: null
+  closeMenu: () => null
 };
 
 export const AppContext = createContext(ContextDefaultValues);
@@ -22,7 +20,6 @@ export const AppProvider = ({ children }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => setMenuOpen((prevState) => !prevState);
   const closeMenu = () => setMenuOpen(false);
-  const [user, setUser] = useState();
 
   const updateWindowDimensions = () => {
     setIsLargeTab(window.innerWidth < 990);
@@ -44,9 +41,7 @@ export const AppProvider = ({ children }) => {
         isMobile,
         isTab,
         toggleMenu,
-        closeMenu,
-        user,
-        setUser
+        closeMenu
       }}
     >
       {children}

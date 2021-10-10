@@ -16,8 +16,9 @@ import {
   PAYMENT_HEADERS
 } from '../../utility/constants';
 import { getStatus } from '../../utility';
+import withAuth from '../../services/with-auth';
 
-export default function Dashboard() {
+function Dashboard() {
   const DASHBOARD_CARDS = [
     {
       title: '1,589',
@@ -109,3 +110,5 @@ export default function Dashboard() {
     </section>
   );
 }
+
+export default withAuth(Dashboard);

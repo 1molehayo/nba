@@ -4,21 +4,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import axios from '../../services/axios';
+import handleApiError from '../../services/handle-api-error';
+import { FormField } from '../../components/global/formfield';
+import { capitalizeFirstLetter, isObjectEmpty } from '../../utility';
+import { LoginSchema } from '../../utility/validations';
+import {
+  useCurrentUser,
+  useDispatchCurrentUser
+} from '../../contexts/current-user';
 import styles from '../../styles/dashboard/pages/login.module.scss';
 import BgImage from '../../assets/images/login-bg.png';
 import Logo from '../../assets/images/logo.png';
-import { FormField } from '../../components/global/formfield';
-import axios from '../../services/axios';
-import handleApiError from '../../services/handleApiError';
-import { useAppContext } from '../../contexts/appContext';
-import { isObjectEmpty } from '../../utility';
-import { LoginSchema } from '../../utility/validations';
+import { LOGIN_START, LOGIN_COMPLETED } from '../../utility/constants';
+import isAuth from '../../services/is-auth';
 
-export default function Login() {
+function Login() {
   const router = useRouter();
   const [error, setError] = useState();
-  const [loading, setLoading] = useState(false);
-  const { setUser } = useAppContext();
+  const [loggingIn, setLoggingIn] = useState(false);
+  const dispatch = useDispatchCurrentUser();
+  const { loading } = useCurrentUser();
 
   const formik = useFormik({
     initialValues: {
@@ -27,7 +33,9 @@ export default function Login() {
     },
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      setLoading(true);
+      dispatch({ type: LOGIN_START });
+      setLoggingIn(true);
+      setError();
 
       const userData = {
         identifier: values.email,
@@ -37,12 +45,19 @@ export default function Login() {
       try {
         await axios.post('/auth/local', userData);
         const { data } = await axios.get('/profiles/me');
-        setUser(data);
+
+        dispatch({ type: LOGIN_COMPLETED, user: data });
         router.push('/dashboard');
       } catch (err) {
-        setError(handleApiError(err));
+        const errorObj = handleApiError(err);
+
+        if (errorObj.statusCode === 400) {
+          errorObj.message = 'wrong email address and password combination!';
+        }
+
+        setError(errorObj);
       } finally {
-        setLoading(false);
+        setLoggingIn(false);
       }
     }
   });
@@ -85,7 +100,9 @@ export default function Login() {
             <div className={styles.form}>
               <form className="form" onSubmit={handleLogin}>
                 {!isObjectEmpty(error) && (
-                  <p className="color-red">{error.message}</p>
+                  <p className="font-size-small color-red">
+                    {capitalizeFirstLetter(error.message)}
+                  </p>
                 )}
 
                 <FormField
@@ -110,10 +127,10 @@ export default function Login() {
 
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || loggingIn}
                   className="button button--primary mt-4"
                 >
-                  {loading ? 'Loading...' : 'Login'}{' '}
+                  {loading || loggingIn ? 'Loading...' : 'Login'}{' '}
                   <span className="icon-login ml-5" />
                 </button>
               </form>
@@ -145,6 +162,8 @@ export default function Login() {
     </section>
   );
 }
+
+export default isAuth(Login);
 
 export async function getStaticProps() {
   return {

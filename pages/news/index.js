@@ -4,7 +4,7 @@ import { Banner } from '../../components/app';
 import { NewsCard } from '../../components/app/news-card';
 import { Empty } from '../../components/global/empty';
 import axios from '../../services/axios';
-import handleApiError from '../../services/handleApiError';
+import handleApiError from '../../services/handle-api-error';
 import { isArrayEmpty } from '../../utility';
 
 export default function News({ articles }) {

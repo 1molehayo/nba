@@ -7,7 +7,7 @@ import styles from '../../styles/app/layouts/header.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { Dropdown } from '../../components/global/dropdown';
 import { MEDIA_MENU } from '../../utility/constants';
-import { useAppContext } from '../../contexts/appContext';
+import { useAppContext } from '../../contexts/app-context';
 
 const AppHeader = ({ toggleModal }) => {
   const { isLargeTab, isMenuOpen, toggleMenu, closeMenu } = useAppContext();

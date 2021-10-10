@@ -20,13 +20,13 @@ module.exports = {
   },
   images: {
     domains: ['localhost', `${removehttp(process.env.API_BASE_URL)}`]
-  }
-  // webpack: (config, options) => {
-  //   config.module.rules.push({
-  //     test: /\.node$/,
-  //     loader: 'node-loader'
-  //   });
+  },
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.node$/,
+      loader: 'node-loader'
+    });
 
-  //   return config;
-  // }
+    return config;
+  }
 };

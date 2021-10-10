@@ -21,11 +21,12 @@ module.exports = {
   images: {
     domains: ['localhost', `${removehttp(process.env.API_BASE_URL)}`]
   },
-  webpack: (config, options) => {
-    config.module.rules.push({
-      test: /\.node$/,
-      loader: 'node-loader'
-    });
+  webpack: (config) => {
+    config.externals = {
+      ...config.externals,
+      canvas: 'canvas',
+      critters: 'critters'
+    };
 
     return config;
   }

@@ -3,16 +3,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
 import { FormField } from '../../components/global/formfield';
 import { capitalizeFirstLetter, isObjectEmpty } from '../../utility';
 import { LoginSchema } from '../../utility/validations';
-import {
-  useCurrentUser,
-  useDispatchCurrentUser
-} from '../../contexts/current-user';
+import { useDispatchCurrentUser } from '../../contexts/current-user';
 import styles from '../../styles/dashboard/pages/login.module.scss';
 import BgImage from '../../assets/images/login-bg.png';
 import Logo from '../../assets/images/logo.png';
@@ -20,11 +16,9 @@ import { LOGIN_START, LOGIN_COMPLETED } from '../../utility/constants';
 import isAuth from '../../services/is-auth';
 
 function Login() {
-  const router = useRouter();
   const [error, setError] = useState();
   const [loggingIn, setLoggingIn] = useState(false);
   const dispatch = useDispatchCurrentUser();
-  const { loading } = useCurrentUser();
 
   const formik = useFormik({
     initialValues: {
@@ -45,9 +39,7 @@ function Login() {
       try {
         await axios.post('/auth/local', userData);
         const { data } = await axios.get('/profiles/me');
-
         dispatch({ type: LOGIN_COMPLETED, user: data });
-        router.push('/dashboard');
       } catch (err) {
         const errorObj = handleApiError(err);
 
@@ -55,9 +47,8 @@ function Login() {
           errorObj.message = 'wrong email address and password combination!';
         }
 
-        setError(errorObj);
-      } finally {
         setLoggingIn(false);
+        setError(errorObj);
       }
     }
   });
@@ -127,10 +118,10 @@ function Login() {
 
                 <button
                   type="submit"
-                  disabled={loading || loggingIn}
+                  disabled={loggingIn}
                   className="button button--primary mt-4"
                 >
-                  {loading || loggingIn ? 'Loading...' : 'Login'}{' '}
+                  {loggingIn ? 'Loading...' : 'Login'}{' '}
                   <span className="icon-login ml-5" />
                 </button>
               </form>

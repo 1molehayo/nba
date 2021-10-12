@@ -15,7 +15,7 @@ const handleApiError = (e) => {
   }
 
   return {
-    statusCode: 404,
+    statusCode: 500,
     error: 'No Internet Connection',
     message: 'please, check your internet connection!'
   };

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useLayoutEffect, useState } from 'react';
+import { CurrentUserProvider } from '../contexts/current-user';
 import AppLayout from './app';
 import DashboardLayout from './dashboard';
 
@@ -18,12 +19,14 @@ export const Layout = ({ Component, pageProps }) => {
 
   if (pageType === 'admin') {
     return (
-      <DashboardLayout
-        hasSidebar={pageProps.hasSidebar}
-        hasNav={pageProps.hasNav}
-      >
-        <Component {...pageProps} />
-      </DashboardLayout>
+      <CurrentUserProvider>
+        <DashboardLayout
+          hasSidebar={pageProps.hasSidebar}
+          hasNav={pageProps.hasNav}
+        >
+          <Component {...pageProps} />
+        </DashboardLayout>
+      </CurrentUserProvider>
     );
   }
 

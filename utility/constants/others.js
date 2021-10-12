@@ -19,9 +19,21 @@ export const VIDEO_PLAYER_SETTINGS = {
   }
 };
 
-export const PAYMENT_HEADERS = ['Payment details', 'Status', 'Date'];
+export const PAYMENT_HEADERS = [
+  'S/N',
+  'Date',
+  'Payment details',
+  'Amount',
+  'Status'
+];
 
-export const MEETING_HEADERS = ['Title', 'Description', 'Date', 'Start Time'];
+export const MEETING_HEADERS = [
+  'S/N',
+  'Title',
+  'Description',
+  'Date',
+  'Start Time'
+];
 
 // delete later
 export const LAWYERS = [

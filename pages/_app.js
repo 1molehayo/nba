@@ -5,7 +5,6 @@ import ReactModal from 'react-modal';
 import { AppProvider } from '../contexts/app-context';
 import { Loader } from '../components/global';
 import { Layout } from '../layouts';
-import { CurrentUserProvider } from '../contexts/current-user';
 
 function MyApp({ Component, pageProps }) {
   const [actPreload, setActPreload] = useState(true);
@@ -30,9 +29,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AppProvider>
-      <CurrentUserProvider>
-        <Layout Component={Component} pageProps={pageProps} />
-      </CurrentUserProvider>
+      <Layout Component={Component} pageProps={pageProps} />
     </AppProvider>
   );
 }

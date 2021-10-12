@@ -34,7 +34,8 @@ export default function Home({ articles, events }) {
 Home.propTypes = {
   articles: PropTypes.array,
   error: PropTypes.object,
-  events: PropTypes.array
+  events: PropTypes.array,
+  dues: PropTypes.array
 };
 
 export async function getStaticProps() {
@@ -46,6 +47,7 @@ export async function getStaticProps() {
   try {
     const eventResponse = await axios.get('/events');
     const articleResponse = await axios.get('/articles');
+
     events = eventResponse.data;
     articles = articleResponse.data;
   } catch (err) {

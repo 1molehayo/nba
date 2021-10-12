@@ -1,8 +1,11 @@
 import _axios from 'axios';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const axios = _axios.create({
-  baseURL: process.env.API_BASE_URL,
-  timeout: 1000,
+  baseURL: publicRuntimeConfig.baseUrl,
+  timeout: 5000,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'

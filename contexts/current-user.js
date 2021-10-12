@@ -10,7 +10,7 @@ import axios from '../services/axios';
 
 const ContextDefaultValues = {
   isAuthenticated: false,
-  loading: false
+  loading: true
 };
 
 const CurrentUserStateContext = createContext(ContextDefaultValues);
@@ -24,8 +24,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         ...action.user,
-        loading: false,
-        isAuthenticated: true
+        isAuthenticated: true,
+        loading: false
       };
     case LOGOUT_START:
       return { loading: true };

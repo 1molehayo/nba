@@ -1,34 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
+import axios from '../../services/axios';
+import handleApiError from '../../services/handle-api-error';
+import { FormField } from '../../components/global/formfield';
+import { capitalizeFirstLetter, isObjectEmpty } from '../../utility';
+import { LoginSchema } from '../../utility/validations';
+import { useDispatchCurrentUser } from '../../contexts/current-user';
 import styles from '../../styles/dashboard/pages/login.module.scss';
 import BgImage from '../../assets/images/login-bg.png';
 import Logo from '../../assets/images/logo.png';
-import { FormField } from '../../components/global/formfield';
-import { useRouter } from 'next/router';
+import { LOGIN_START, LOGIN_COMPLETED } from '../../utility/constants';
+import isAuth from '../../services/is-auth';
 
-export default function Login() {
-  const router = useRouter();
-
-  const handleLogin = async (values) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
-    router.push('/dashboard');
-  };
+function Login() {
+  const [error, setError] = useState();
+  const [loggingIn, setLoggingIn] = useState(false);
+  const dispatch = useDispatchCurrentUser();
 
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
-    onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      // alert(JSON.stringify(values, null, 2));
-      handleLogin(values);
+    validationSchema: LoginSchema,
+    onSubmit: async (values) => {
+      dispatch({ type: LOGIN_START });
+      setLoggingIn(true);
+      setError();
+
+      const userData = {
+        identifier: values.email,
+        password: values.password
+      };
+
+      try {
+        await axios.post('/auth/local', userData);
+        const { data } = await axios.get('/profiles/me');
+        dispatch({ type: LOGIN_COMPLETED, user: data });
+      } catch (err) {
+        const errorObj = handleApiError(err);
+
+        if (errorObj.statusCode === 400) {
+          errorObj.message = 'wrong email address and password combination!';
+        }
+
+        setLoggingIn(false);
+        setError(errorObj);
+      }
     }
   });
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    formik.handleSubmit(e);
+  };
 
   return (
     <section className={styles.wrapper}>
@@ -61,7 +89,13 @@ export default function Login() {
             </div>
 
             <div className={styles.form}>
-              <form className="form" onSubmit={formik.handleSubmit}>
+              <form className="form" onSubmit={handleLogin}>
+                {!isObjectEmpty(error) && (
+                  <p className="font-size-small color-red">
+                    {capitalizeFirstLetter(error.message)}
+                  </p>
+                )}
+
                 <FormField
                   id="email"
                   type="email"
@@ -82,8 +116,13 @@ export default function Login() {
                   error={formik.errors.password}
                 />
 
-                <button type="submit" className="button button--primary mt-4">
-                  Login <span className="icon-login ml-5" />
+                <button
+                  type="submit"
+                  disabled={loggingIn}
+                  className="button button--primary mt-4"
+                >
+                  {loggingIn ? 'Loading...' : 'Login'}{' '}
+                  <span className="icon-login ml-5" />
                 </button>
               </form>
 
@@ -114,6 +153,8 @@ export default function Login() {
     </section>
   );
 }
+
+export default isAuth(Login);
 
 export async function getStaticProps() {
   return {

@@ -1,5 +1,5 @@
-import styles from '../../styles/app/layouts/footer.module.scss';
 import classnames from 'classnames';
+import styles from '../../styles/app/layouts/footer.module.scss';
 
 const AppFooter = () => {
   const getYear = () => {

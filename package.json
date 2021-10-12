@@ -10,12 +10,16 @@
     "lint:fix": "eslint '**/*.{js,jsx}' --fix"
   },
   "dependencies": {
+    "axios": "^0.22.0",
+    "canvas": "^2.8.0",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
+    "moment": "^2.29.1",
     "next": "11.1.2",
+    "nookies": "^2.5.2",
+    "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hot-toast": "^2.1.1",
     "react-modal": "^3.14.3",
     "react-pdf": "^5.4.0",
     "react-player": "^2.9.0",
@@ -24,19 +28,27 @@
     "react-twitter-widgets": "^1.10.0",
     "sass": "^1.41.1",
     "slick-carousel": "^1.8.1",
+    "toastify-js": "^1.11.2",
     "yup": "^0.32.9",
     "yup-phone": "^1.2.19"
   },
   "devDependencies": {
     "eslint": "7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-react": "^7.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^3.1.0",
     "lint-staged": "^11.1.2",
+    "node-loader": "^2.0.0",
     "prettier": "^2.4.1",
-    "prettierrc": "0.0.0-5"
+    "prettierrc": "0.0.0-5",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-property-sort-order-smacss": "^7.1.0",
+    "stylelint-prettier": "^1.2.0"
   },
   "husky": {
     "hooks": {

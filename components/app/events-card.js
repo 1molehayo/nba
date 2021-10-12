@@ -1,22 +1,34 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "../../styles/app/components/events-card.module.scss";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import styles from '../../styles/app/components/events-card.module.scss';
+import { formatCharLength, getImagePath } from '../../utility';
 
 export const EventsCard = ({ item }) => {
+  // eslint-disable-next-line no-unused-vars
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => setShowModal((prevState) => !prevState);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.image}>
-        <Image src={item.image} alt="" layout="fill" objectFit="cover" />
+        <Image
+          src={getImagePath(item.image.url)}
+          alt={item.title}
+          layout="fill"
+          objectFit="cover"
+        />
       </div>
 
       <div className={styles.body}>
-        <Link href={`/events/${item.id}`} passHref>
-          <p className={styles.title}>{item.title}</p>
-        </Link>
+        <p role="button" onClick={toggleModal} className={styles.title}>
+          {item.title}
+        </p>
 
-        <p className="font-size-small mb-4">{item.desc}</p>
+        <p className="font-size-small mb-4">
+          {formatCharLength(item.description, 100)}
+        </p>
 
         <hr className="divider" />
 
@@ -26,7 +38,8 @@ export const EventsCard = ({ item }) => {
               <strong>Date &amp; Time</strong>
             </p>
             <p className="font-size-small">
-              {item.date}, {item.time}
+              {moment(item.date, 'YYYY-MM-DD').format('Do MMM YYYY')},<br />
+              {moment(item.time, 'HH:mm:ss').format('HH:mm')}
             </p>
           </div>
 
@@ -35,7 +48,9 @@ export const EventsCard = ({ item }) => {
               <strong>Venue</strong>
             </p>
 
-            <p className="font-size-small">{item.venue}</p>
+            <p className="font-size-small">
+              {formatCharLength(item.venue, 35)}
+            </p>
           </div>
         </div>
       </div>
@@ -44,5 +59,5 @@ export const EventsCard = ({ item }) => {
 };
 
 EventsCard.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.object
 };

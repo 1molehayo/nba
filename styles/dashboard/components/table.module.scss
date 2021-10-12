@@ -2,9 +2,9 @@
 
 .table {
   @include font-size(small);
-  border-radius: 7px;
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
+  border-radius: 7px;
   text-align: left;
 
   th {
@@ -20,18 +20,18 @@
   }
 
   tr {
-    width: 100%;
     position: relative;
+    width: 100%;
 
     &::before {
+      content: '';
       position: absolute;
       bottom: 0;
       left: 50%;
       width: 96%;
       height: 1px;
-      background-color: color(white);
-      content: '';
       transform: translateX(-50%);
+      background-color: color(white);
     }
 
     &:last-child {

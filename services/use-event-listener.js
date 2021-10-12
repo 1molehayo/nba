@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 const useEventListener = (event, handler, passive = false) => {
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       // initiate the event handler
       window.addEventListener(event, handler, passive);
 

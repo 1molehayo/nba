@@ -1,11 +1,12 @@
 import classnames from 'classnames';
 import React from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import {
   Book,
   DashboardCard,
-  DashboardHeading
+  DashboardHeading,
+  MeetingCard,
+  Table
 } from '../../components/dashboard';
 import styles from '../../styles/dashboard/pages/home.module.scss';
 import {
@@ -14,10 +15,10 @@ import {
   PAYMENT_DETAILS,
   PAYMENT_HEADERS
 } from '../../utility/constants';
-import { MeetingCard, Table } from '../../components/dashboard';
 import { getStatus } from '../../utility';
+import withAuth from '../../services/with-auth';
 
-export default function Dashboard() {
+function Dashboard() {
   const DASHBOARD_CARDS = [
     {
       title: '1,589',
@@ -46,8 +47,8 @@ export default function Dashboard() {
         <div className="container pl-0 pr-0">
           <div className="row">
             {DASHBOARD_CARDS.map((item, i) => (
-              <div className="col-md-4">
-                <DashboardCard key={i} item={item} />
+              <div className="col-md-4" key={i}>
+                <DashboardCard item={item} />
               </div>
             ))}
           </div>
@@ -109,3 +110,6 @@ export default function Dashboard() {
     </section>
   );
 }
+
+export default withAuth(Dashboard);
+// export default Dashboard;

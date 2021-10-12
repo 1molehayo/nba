@@ -1,8 +1,8 @@
 $menu_width: 150px;
 
 .dropdown {
-  position: relative;
   display: block;
+  position: relative;
   cursor: pointer;
 
   &__toggle {
@@ -14,9 +14,9 @@ $menu_width: 150px;
     &::after {
       @include font-family(icomoon);
       @include font-size(x-small);
+      content: '\e913';
       padding-left: 5px;
       color: inherit;
-      content: '\e913';
     }
   }
 
@@ -26,10 +26,10 @@ $menu_width: 150px;
       transition: 0.5s 0.1s padding;
 
       & > * {
+        visibility: visible;
+        height: 40px;
         padding-top: 5px;
         padding-bottom: 5px;
-        height: 40px;
-        visibility: visible;
       }
     }
   }
@@ -43,35 +43,36 @@ $menu_width: 150px;
   }
 
   &__menu {
-    z-index: 100;
     position: absolute;
+    z-index: 100;
     left: 1.6rem;
     min-width: $menu_width;
     padding: 0;
-    background: color(light-blue);
     transition: 0.5s padding, 0.5s background;
+    background: color(light-blue);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 
     & > * {
       @include font-weight(medium);
       @include font-size(small);
+      visibility: hidden;
       z-index: 99;
+      height: 0;
       margin: 0;
       padding: 0 10px;
-      visibility: hidden;
-      height: 0;
-      white-space: nowrap;
       overflow: hidden;
-      text-transform: uppercase;
       transition: 0.5s 0.1s height, 0.5s 0.1s padding, 0.5s 0.1s margin,
         0.3s color, 0.2s background-color, 0.3s color, 0.6s visibility;
+      text-transform: uppercase;
+      white-space: nowrap;
 
       &:hover {
         background: color(primary);
         color: color(white);
       }
 
-      a {
+      a,
+      span {
         display: inline-flex;
         align-items: center;
         width: 100%;

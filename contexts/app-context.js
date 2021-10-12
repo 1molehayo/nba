@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import useEventListener from '../services/useEventListener';
+import useEventListener from '../services/use-event-listener';
 
 const ContextDefaultValues = {
   isLargeTab: false,
@@ -53,6 +53,4 @@ AppProvider.propTypes = {
   children: PropTypes.node
 };
 
-export const useAppContext = () => {
-  return useContext(AppContext);
-};
+export const useAppContext = () => useContext(AppContext);

@@ -1,9 +1,9 @@
-import Head from "next/head";
-import { useState } from "react";
-import { Banner } from "../components/app";
-import { LawyerCard } from "../components/app/lawyer-card";
-import { Searchbar } from "../components/global/searchbar";
-import { LAWYERS } from "../utility/constants";
+import Head from 'next/head';
+import { useState } from 'react';
+import { Banner } from '../components/app';
+import { LawyerCard } from '../components/app/lawyer-card';
+import { Searchbar } from '../components/global/searchbar';
+import { LAWYERS } from '../utility/constants';
 
 export default function FindLawyer() {
   const [searchValue, setSearchValue] = useState();

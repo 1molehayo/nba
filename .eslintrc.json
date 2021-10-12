@@ -1,10 +1,10 @@
 {
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "airbnb-base",
     "prettier",
-    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
     "next/core-web-vitals"
   ],
   "plugins": ["react", "react-hooks"],
@@ -21,19 +21,26 @@
     ]
   },
   "rules": {
-    "react/prop-types": ["error", { "ignore": ["history"] }],
-    "no-use-before-define": ["error", { "variables": true }],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "no-else-return": 1,
-    "no-empty-function": 1,
-    "array-callback-return": 2,
-    "block-scoped-var": 2,
     "curly": 2,
     "eqeqeq": 2,
-    "no-alert": 1,
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "comma-dangle": 0,
+    "linebreak-style": 0,
     "no-unused-vars": "warn",
     "no-console": 1,
-    "no-restricted-syntax": "off"
+    "consistent-return": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": ["error", { "ignore": ["history"] }],
+    "no-alert": 1,
+    "no-else-return": 1,
+    "no-empty-function": 1,
+    "no-use-before-define": ["error", { "variables": true }],
+    "array-callback-return": 2,
+    "block-scoped-var": 2,
+    "no-restricted-syntax": "off",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off"
   }
 }

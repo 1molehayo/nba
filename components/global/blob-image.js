@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classnames from "classnames";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 // eslint-disable-next-line no-unused-vars
 export const BlobImage = ({ image, className }) => {
   return (
-    <div className={classnames("blob-image", className)}>
+    <div className={classnames('blob-image', className)}>
       <svg
         viewBox="0 0 627 587"
         xmlns="http://www.w3.org/2000/svg"
@@ -31,5 +31,5 @@ export const BlobImage = ({ image, className }) => {
 
 BlobImage.propTypes = {
   image: PropTypes.string,
-  className: PropTypes.string,
+  className: PropTypes.string
 };

@@ -18,6 +18,7 @@ export const RegisterSchema = Yup.object().shape({
     .min(6, 'Too Short!')
     .required('Password is required')
     .matches(
+      // eslint-disable-next-line no-useless-escape
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
       'Must Contain at least 6 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
     ),
@@ -45,4 +46,8 @@ export const SettingsSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
   phoneNumber: Yup.string().phone().required()
+});
+
+export const ForgotPasswordSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required')
 });

@@ -2,13 +2,13 @@
 @import '../helpers/index';
 
 .container {
+  width: 100%;
   margin: 0 auto;
   padding-top: 3rem;
-  width: 100%;
 
   @include respond(large) {
-    padding-top: 6rem;
     width: $form-width;
+    padding-top: 6rem;
   }
 }
 

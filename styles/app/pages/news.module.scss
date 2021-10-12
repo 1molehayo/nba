@@ -1,0 +1,12 @@
+@import '../../global/helpers/index';
+
+.content {
+  @include font-size(regular);
+  color: color(black);
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}

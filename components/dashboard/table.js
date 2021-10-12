@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from '../../styles/dashboard/components/table.module.scss';
 
 export const Table = ({ headers, children }) => {
@@ -17,4 +18,9 @@ export const Table = ({ headers, children }) => {
       </table>
     </div>
   );
+};
+
+Table.propTypes = {
+  children: PropTypes.node,
+  headers: PropTypes.array
 };

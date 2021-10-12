@@ -2,14 +2,14 @@
   @include font-size(regular);
   @include font-weight(medium);
   display: inline-block;
-  border-radius: 5px;
-  border: 0;
   padding: 1.2rem 2rem;
-  text-transform: capitalize;
-  letter-spacing: 0.06em;
-  text-align: center;
   transition: color 0.8s ease;
   transition-property: background-color, color, box-shadow, transform;
+  border: 0;
+  border-radius: 5px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: capitalize;
 
   &:focus {
     outline: none;
@@ -21,8 +21,8 @@
   }
 
   &--link {
-    color: color(green);
     transition: color 0.3s ease;
+    color: color(green);
 
     @include respond(large) {
       &:hover {
@@ -42,8 +42,8 @@
 
     @include respond(large) {
       &:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
       }
     }
   }

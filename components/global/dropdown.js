@@ -2,9 +2,16 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Link from 'next/link';
-import useOnClickOutside from '../../services/useOnClickOutside';
+import useOnClickOutside from '../../services/use-on-click-outside';
 
-export const Dropdown = ({ title, items, children, titleNode, isActive }) => {
+export const Dropdown = ({
+  title,
+  items,
+  children,
+  titleNode,
+  isActive,
+  buttonlinks
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen((prevState) => !prevState);
   const dropdownRef = useRef(null);
@@ -28,7 +35,15 @@ export const Dropdown = ({ title, items, children, titleNode, isActive }) => {
         {!children &&
           items.map((item, index) => (
             <li key={index} className="dropdown__item">
-              {item.url ? <Link href={item.url}>{item.name}</Link> : item.name}
+              {item.url && item.type === 'link' && (
+                <Link href={item.url}>{item.name}</Link>
+              )}
+              {item.url && item.type === 'button' && (
+                <span role="button" onClick={buttonlinks[item.url]}>
+                  {item.name}
+                </span>
+              )}
+              {!item.url && item.name}
             </li>
           ))}
       </ul>
@@ -37,6 +52,7 @@ export const Dropdown = ({ title, items, children, titleNode, isActive }) => {
 };
 
 Dropdown.propTypes = {
+  buttonlinks: PropTypes.object,
   children: PropTypes.node,
   isActive: PropTypes.bool,
   items: PropTypes.array,

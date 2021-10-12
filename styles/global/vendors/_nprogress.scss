@@ -1,8 +1,8 @@
 // @import "~nprogress/nprogress.css";
 
 #nprogress .bar {
-  background: color(black);
   height: 5px;
+  background: color(black);
 }
 
 #nprogress .peg {
@@ -10,8 +10,8 @@
 }
 
 #nprogress .spinner-icon {
-  border-top-color: color(black);
-  border-left-color: color(black);
   width: 25px;
   height: 25px;
+  border-top-color: color(black);
+  border-left-color: color(black);
 }

@@ -3,15 +3,15 @@
   align-items: center;
 
   button {
-    margin-left: 2rem;
     height: 5rem;
+    margin-left: 2rem;
     background: color(green) !important;
   }
 
   .form__group {
-    margin-bottom: 0;
     width: 350px;
     max-width: 100%;
+    margin-bottom: 0;
 
     .form__input {
       background: color(light-blue);

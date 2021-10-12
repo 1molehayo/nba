@@ -13,14 +13,14 @@
 }
 
 .wrapper {
+  display: grid;
   position: fixed;
   top: $header-height;
   left: 50%;
-  display: grid;
   grid-template-columns: $sidebar-width calc(100% - $sidebar-width);
-  padding-top: 4rem;
   width: $width;
   max-width: $max-width;
   height: calc(100vh - ($header-height + $footer-height));
+  padding-top: 4rem;
   transform: translateX(-50%);
 }

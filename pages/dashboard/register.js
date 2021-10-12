@@ -3,13 +3,14 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import styles from '../../styles/dashboard/pages/register.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
 import { RegisterSchema } from '../../utility/validations';
-import { useRouter } from 'next/router';
+import isAuth from '../../services/is-auth';
 
-export default function Register() {
+function Register() {
   const router = useRouter();
 
   const handleRegister = async (values) => {
@@ -24,8 +25,8 @@ export default function Register() {
       bio: '',
       courtNumber: '',
       email: '',
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       password: '',
       passwordConfirm: '',
       phoneNumber: ''
@@ -66,25 +67,25 @@ export default function Register() {
 
                 <div className={styles.fullname__form}>
                   <FormField
-                    id="firstName"
+                    id="first_name"
                     type="text"
                     placeholder="First Name"
                     display="inline"
                     onChange={formik.handleChange}
-                    value={formik.values.firstName}
-                    error={formik.errors.firstName}
+                    value={formik.values.first_name}
+                    error={formik.errors.first_name}
                   />
 
                   <div className="w20" />
 
                   <FormField
-                    id="lastName"
+                    id="last_name"
                     type="text"
                     placeholder="Last Name"
                     display="inline"
                     onChange={formik.handleChange}
-                    value={formik.values.lastName}
-                    error={formik.errors.lastName}
+                    value={formik.values.last_name}
+                    error={formik.errors.last_name}
                   />
                 </div>
               </div>
@@ -191,6 +192,8 @@ export default function Register() {
     </section>
   );
 }
+
+export default isAuth(Register);
 
 export async function getStaticProps() {
   return {

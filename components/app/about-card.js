@@ -41,6 +41,7 @@ export const AboutCard = ({ item }) => {
         <div className={styles.image}>
           <Image
             src={item.image}
+            alt={item.name}
             layout="fill"
             objectFit="cover"
             objectPosition="top"
@@ -60,6 +61,7 @@ export const AboutCard = ({ item }) => {
           <div className={styles.modal__image}>
             <Image
               src={item.image}
+              alt={item.name}
               layout="fill"
               objectFit="cover"
               objectPosition="top"

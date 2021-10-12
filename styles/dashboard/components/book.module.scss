@@ -37,9 +37,9 @@
   width: 100%;
 
   &__wrapper {
-    border: 1px solid color(light-grey);
-    padding: 3rem;
     max-width: 700px;
+    padding: 3rem;
+    border: 1px solid color(light-grey);
     background-color: color(white);
   }
 }

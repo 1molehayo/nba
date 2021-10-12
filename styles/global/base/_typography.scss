@@ -25,8 +25,8 @@ li,
 a {
   @include font-weight(regular);
   @include font-size(regular);
-  line-height: 1.6;
   letter-spacing: 0.2px;
+  line-height: 1.6;
 }
 
 p {

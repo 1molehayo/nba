@@ -1,4 +1,4 @@
-@import "../../global/helpers/index";
+@import '../../global/helpers/index';
 
 .container {
   display: flex;
@@ -20,11 +20,11 @@
 }
 
 .grid {
-  position: relative;
   display: block;
-  border-radius: 15px;
-  margin: 0 auto;
+  position: relative;
   width: 100%;
+  margin: 0 auto;
+  border-radius: 15px;
   background-color: color(light-blue);
 
   @include respond(large) {

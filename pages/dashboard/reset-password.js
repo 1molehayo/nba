@@ -1,13 +1,15 @@
-import { useFormik } from "formik";
-import React from "react";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "../../styles/dashboard/pages/reset-password.module.scss";
-import Logo from "../../assets/images/logo.png";
-import { FormField } from "../../components/global/formfield";
+import { useFormik } from 'formik';
+import React from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from '../../styles/dashboard/pages/reset-password.module.scss';
+import Logo from '../../assets/images/logo.png';
+import { FormField } from '../../components/global/formfield';
+import { ForgotPasswordSchema } from '../../utility/validations';
+import isAuth from '../../services/is-auth';
 
-export default function ResetPassword() {
+function ResetPassword() {
   const handleRegister = async (values) => {
     // eslint-disable-next-line no-console
     console.log(values);
@@ -15,13 +17,14 @@ export default function ResetPassword() {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      email: ''
     },
+    validationSchema: ForgotPasswordSchema,
     onSubmit: (values) => {
       // eslint-disable-next-line no-alert
       alert(JSON.stringify(values, null, 2));
       handleRegister(values);
-    },
+    }
   });
 
   return (
@@ -59,7 +62,7 @@ export default function ResetPassword() {
 
               <div className="pt-4 extra-info">
                 <p className="font-size-small">
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <Link href="/dashboard/login">
                     <a className="form__link">Login</a>
                   </Link>
@@ -79,11 +82,13 @@ export default function ResetPassword() {
   );
 }
 
+export default isAuth(ResetPassword);
+
 export async function getStaticProps() {
   return {
     props: {
       hasNav: false,
-      hasSidebar: false,
-    }, // will be passed to the page component as props
+      hasSidebar: false
+    } // will be passed to the page component as props
   };
 }

@@ -15,13 +15,14 @@
 
 .price {
   @include font-size(medium);
-  color: color(black);
   margin-bottom: 0;
+  color: color(black);
 }
 
 .title {
   @include font-family(montserrat);
   @include font-size(small);
+  margin-bottom: 0.3rem;
   color: color(black);
 }
 

@@ -1,20 +1,20 @@
 .checkbox {
-  position: relative;
   display: block;
+  position: relative;
+  min-height: auto;
   margin-right: 5px;
   padding: 10px 0;
-  min-height: auto;
 
   @include respond(large) {
     padding-top: 20px;
     padding-bottom: 20px;
   }
 
-  input[type="checkbox"],
-  input[type="radio"] {
+  input[type='checkbox'],
+  input[type='radio'] {
     display: none;
-    margin: 0;
     width: 23px;
+    margin: 0;
 
     &:checked {
       & + label::before {
@@ -27,32 +27,32 @@
       display: inline-block;
       margin-bottom: 0.5rem;
       padding-left: 0;
-      cursor: pointer;
       color: color(dark);
       text-transform: capitalize;
+      cursor: pointer;
     }
 
     & + label::before {
       @include font-family(icomoon);
       @include font-size(small);
+      content: '\e903';
       display: inline-block;
-      border: 2px solid color(black);
-      margin-right: 2rem;
       width: 23px;
       height: 23px;
-      content: "\e903";
-      vertical-align: bottom;
+      margin-right: 2rem;
+      transition: all 0.2s ease-in-out;
+      border: 2px solid color(black);
       background: transparent;
-      line-height: 1.7;
-      speak: never;
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
+      color: transparent;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      color: transparent;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      line-height: 1.7;
+      vertical-align: bottom;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      speak: never;
 
       @include respond(large) {
         margin-right: 2.3rem;

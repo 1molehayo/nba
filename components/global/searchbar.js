@@ -1,7 +1,7 @@
-import classnames from "classnames";
-import PropTypes from "prop-types";
-import React, { useRef } from "react";
-import { FormField } from "./formfield";
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
+import { FormField } from './formfield';
 
 export const Searchbar = ({
   buttonLabel,
@@ -9,7 +9,7 @@ export const Searchbar = ({
   onChange,
   onSearch,
   placeholder,
-  value,
+  value
 }) => {
   const inputRef = useRef(null);
 
@@ -22,17 +22,17 @@ export const Searchbar = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={classnames("searchbar", className)}
+      className={classnames('searchbar', className)}
     >
       <FormField
         ref={inputRef}
         className=""
-        placeholder={placeholder || "Search"}
+        placeholder={placeholder || 'Search'}
         onChange={onChange}
         value={value}
       />
       <button type="submit" className="button button--primary">
-        {buttonLabel || "Find"}
+        {buttonLabel || 'Find'}
       </button>
     </form>
   );
@@ -44,5 +44,5 @@ Searchbar.propTypes = {
   onChange: PropTypes.func,
   onSearch: PropTypes.func,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.string
 };

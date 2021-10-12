@@ -1,7 +1,7 @@
-import styles from '../../styles/dashboard/layouts/sidebar.module.scss';
 import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import styles from '../../styles/dashboard/layouts/sidebar.module.scss';
 
 const DashboardSidebar = () => {
   const router = useRouter();

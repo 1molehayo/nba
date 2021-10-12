@@ -23,12 +23,12 @@ export default function AboutUs() {
               the branch is led by an Executive Committee for which Election
               hold every 2(two) years. The NBA Ikeja Branch of the Nigerian Bar
               Association is undoubtedly the most vibrant, known respected of
-              all. As the people's Bar, it is the primus inter pares of the Bar.
-              The branch has for several decades upheld the principle of Rule of
-              Law. it is the only branch that leads in the fight for the masses.
-              The Branch exemplifies what the first Nigerian Lawyer, Christopher
-              Sapara Williams said, " A Lawyer leads for the advancement of his
-              society" PROGRAMMES &amp; EVENTS.
+              all. As the people&apos;s Bar, it is the primus inter pares of the
+              Bar. The branch has for several decades upheld the principle of
+              Rule of Law. it is the only branch that leads in the fight for the
+              masses. The Branch exemplifies what the first Nigerian Lawyer,
+              Christopher Sapara Williams said, &quot;A Lawyer leads for the
+              advancement of his society&quot; PROGRAMMES &amp; EVENTS.
             </p>
           </div>
 

@@ -9,6 +9,8 @@ const useOnError = (errorObject) => {
         message: capitalizeFirstLetter(errorObject.message)
       });
     }
+
+    return () => {};
   }, [errorObject]);
 };
 

@@ -8,11 +8,12 @@ export const FormField = forwardRef((props, ref) => {
   delete formProps.label;
   delete formProps.wrapperClass;
   delete formProps.error;
+  delete formProps.touched;
 
   return (
     <div
       className={classnames('form__group', props.wrapperClass, {
-        'form__group--error': props.error
+        'form__group--error': props.touched && props.error
       })}
     >
       {props.label && (
@@ -41,7 +42,9 @@ export const FormField = forwardRef((props, ref) => {
           />
         )}
 
-        {props.error && <p className="form__error">{props.error}</p>}
+        {props.touched && props.error && (
+          <p className="form__error">{props.error}</p>
+        )}
       </div>
     </div>
   );
@@ -53,8 +56,9 @@ FormField.propTypes = {
   className: PropTypes.string,
   error: PropTypes.string,
   id: PropTypes.string,
+  isRequired: PropTypes.bool,
   label: PropTypes.string,
+  touched: PropTypes.bool,
   type: PropTypes.string,
-  wrapperClass: PropTypes.string,
-  isRequired: PropTypes.bool
+  wrapperClass: PropTypes.string
 };

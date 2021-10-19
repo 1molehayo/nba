@@ -8,17 +8,15 @@ import {
   MeetingCard,
   Table
 } from '../../components/dashboard';
+import axios from '../../services/axios';
 import styles from '../../styles/dashboard/pages/home.module.scss';
-import {
-  BOOKS,
-  MEETINGS,
-  PAYMENT_DETAILS,
-  PAYMENT_HEADERS
-} from '../../utility/constants';
-import { getStatus } from '../../utility';
+import { PAYMENT_HEADERS } from '../../utility/constants';
+import { getStatus, getUpcomingMeetings, isArrayEmpty } from '../../utility';
 import withAuth from '../../services/with-auth';
+import { parseCookies } from 'nookies';
+import { Empty } from '../../components/global';
 
-function Dashboard() {
+function Dashboard({ books, meetings, payments }) {
   const DASHBOARD_CARDS = [
     {
       title: '1,589',
@@ -62,13 +60,23 @@ function Dashboard() {
             url="/dashboard/library"
           />
 
-          <div className="row">
-            {BOOKS.map((item, i) => (
-              <div className="col-md-4 mb-10" key={i}>
-                <Book item={item} />
-              </div>
-            ))}
-          </div>
+          {isArrayEmpty(books) && (
+            <Empty
+              className="mt-5 color-black"
+              icon="icon-book"
+              desc="No books available"
+            />
+          )}
+
+          {!isArrayEmpty(books) && (
+            <div className="row">
+              {books.slice(0, 3).map((item, i) => (
+                <div className="col-md-4 mb-10" key={i}>
+                  <Book item={item} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -81,9 +89,19 @@ function Dashboard() {
                 url="/dashboard/meetings"
               />
 
-              {MEETINGS.slice(0, 3).map((imeeting, j) => (
-                <MeetingCard item={imeeting} key={j} />
-              ))}
+              {isArrayEmpty(getUpcomingMeetings(meetings)) && (
+                <Empty
+                  className="mt-5 color-black"
+                  icon="icon-meeting"
+                  desc="No meetings available"
+                />
+              )}
+
+              {getUpcomingMeetings(meetings)
+                .slice(0, 3)
+                .map((imeeting, j) => (
+                  <MeetingCard item={imeeting} key={j} />
+                ))}
             </div>
 
             <div className="col-md-7">
@@ -93,15 +111,25 @@ function Dashboard() {
                   url="/dashboard/payments"
                 />
 
-                <Table headers={PAYMENT_HEADERS}>
-                  {PAYMENT_DETAILS.map((ipayment, k) => (
-                    <tr key={k}>
-                      <td>{ipayment.title}</td>
-                      <td>{getStatus(ipayment.status)}</td>
-                      <td>{ipayment.date}</td>
-                    </tr>
-                  ))}
-                </Table>
+                {isArrayEmpty(payments) && (
+                  <Empty
+                    className="mt-5 color-black"
+                    icon="icon-card"
+                    desc="You have not made any payments"
+                  />
+                )}
+
+                {!isArrayEmpty(payments) && (
+                  <Table headers={PAYMENT_HEADERS}>
+                    {payments.slice(0, 5).map((ipayment, k) => (
+                      <tr key={k}>
+                        <td>{ipayment.title}</td>
+                        <td>{getStatus(ipayment.status)}</td>
+                        <td>{ipayment.date}</td>
+                      </tr>
+                    ))}
+                  </Table>
+                )}
               </div>
             </div>
           </div>
@@ -112,4 +140,39 @@ function Dashboard() {
 }
 
 export default withAuth(Dashboard);
-// export default Dashboard;
+
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${cookies.token}`
+    }
+  };
+
+  let books = null;
+  let meetings = null;
+  let payments = null;
+  let error = {};
+
+  try {
+    const meetingResponse = await axios.get('/meetings', config);
+    meetings = meetingResponse.data;
+    console.log(meetings);
+    const bookResponse = await axios.get('/books', config);
+    books = bookResponse.data;
+    const paymentsResponse = await axios.get('/payments', config);
+    payments = paymentsResponse.data;
+  } catch (err) {
+    error = handleApiError(err);
+  } finally {
+    // eslint-disable-next-line no-unsafe-finally
+    return {
+      props: {
+        books,
+        error,
+        meetings,
+        payments
+      } // will be passed to the page component as props
+    };
+  }
+}

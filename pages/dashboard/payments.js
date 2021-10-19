@@ -1,15 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import axios from '../../services/axios';
+import handleApiError from '../../services/handle-api-error';
+import withAuth from '../../services/with-auth';
+import useOnError from '../../services/use-on-error';
+import { parseCookies } from 'nookies';
 import { PaymentCard, Table } from '../../components/dashboard';
 import { PAYMENT_HEADERS } from '../../utility/constants';
 import { getStatus, isArrayEmpty } from '../../utility';
-import handleApiError from '../../services/handle-api-error';
-import withAuth from '../../services/with-auth';
 import { Empty } from '../../components/global';
-import useOnError from '../../services/use-on-error';
 
 function Payments({ dues, payments, error }) {
   useOnError(error);
@@ -23,6 +23,14 @@ function Payments({ dues, payments, error }) {
       <div className="container">
         <div className="section pt-0">
           <h4 className="pb-5">Payments</h4>
+
+          {isArrayEmpty(dues) && (
+            <Empty
+              className="mt-5 color-black"
+              icon="icon-card"
+              desc="No dues available"
+            />
+          )}
 
           <div className="row">
             {dues.map((due, j) => (
@@ -66,8 +74,7 @@ function Payments({ dues, payments, error }) {
 Payments.propTypes = {
   dues: PropTypes.array,
   error: PropTypes.object,
-  payments: PropTypes.array,
-  cookies: PropTypes.object
+  payments: PropTypes.array
 };
 
 export default withAuth(Payments);
@@ -82,7 +89,7 @@ export async function getServerSideProps(ctx) {
 
   let dues = null;
   let payments = null;
-  let error = null;
+  let error = {};
 
   try {
     const duesResponse = await axios.get('/dues', config);
@@ -91,7 +98,6 @@ export async function getServerSideProps(ctx) {
     payments = paymentsResponse.data;
   } catch (err) {
     error = handleApiError(err);
-    console.log(err);
   } finally {
     // eslint-disable-next-line no-unsafe-finally
     return {

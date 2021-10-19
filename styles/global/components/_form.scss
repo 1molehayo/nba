@@ -4,6 +4,68 @@
     color: color(red);
   }
 
+  &__file {
+    @include font-size(small);
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 5rem;
+    overflow: hidden;
+    border: 2px solid color(light-grey);
+    border-radius: 5px;
+    background: color(white);
+    color: color(dark);
+    line-height: 5rem;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      transition: all 0.3s ease-in-out;
+      border-color: color(primary);
+
+      label {
+        transition: all 0.3s ease-in-out;
+        background: color(primary);
+        color: color(white) !important;
+      }
+    }
+
+    &--active {
+      .form__file-name {
+        color: color(black);
+      }
+    }
+
+    input[type='file'] {
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      filter: alpha(opacity=0);
+    }
+
+    label {
+      display: inline-block;
+      height: 5rem;
+      padding: 0 10px !important;
+      background: color(light-grey);
+      color: color(dark) !important;
+      line-height: 5rem;
+      text-align: center !important;
+    }
+
+    &-name {
+      display: inline-block;
+      padding: 0 10px;
+      color: color(dark);
+      line-height: 40px;
+    }
+  }
+
   &__group {
     width: 100%;
     margin-bottom: 1.5rem;

@@ -46,6 +46,7 @@ export const CurrentUserProvider = ({ children }) => {
         const { data } = await axios.get('/profiles/me');
         dispatch({ type: LOGIN_COMPLETED, user: data });
       } catch (err) {
+        await axios.post('/logout');
         dispatch({ type: LOGOUT_COMPLETED });
       }
     };

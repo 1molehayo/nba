@@ -4,7 +4,7 @@ import 'yup-phone';
 export const RegisterSchema = Yup.object().shape({
   address: Yup.string(),
   bio: Yup.string(),
-  courtNumber: Yup.string().required('Required'),
+  courtNumber: Yup.number('Must be number').required('Required'),
   firstName: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
@@ -22,10 +22,10 @@ export const RegisterSchema = Yup.object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
       'Must Contain at least 6 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
     ),
-  passwordConfirm: Yup.string()
+  passwordConfirmation: Yup.string()
     .required('Password is required')
     .oneOf([Yup.ref('password'), null], 'Passwords must match'),
-  phoneNumber: Yup.string().phone().required()
+  phoneNumber: Yup.string().phone().required('Required')
 });
 
 export const LoginSchema = Yup.object().shape({
@@ -34,8 +34,8 @@ export const LoginSchema = Yup.object().shape({
 });
 
 export const SettingsSchema = Yup.object().shape({
-  address: Yup.string(),
-  bio: Yup.string(),
+  address: Yup.string().nullable(),
+  bio: Yup.string().nullable(),
   courtNumber: Yup.string().required('Required'),
   firstName: Yup.string()
     .min(2, 'Too Short!')
@@ -45,9 +45,26 @@ export const SettingsSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  phoneNumber: Yup.string().phone().required()
+  phoneNumber: Yup.string().phone().required('Required'),
+  linkedin: Yup.string().nullable(),
+  twitter: Yup.string().nullable()
 });
 
 export const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required')
+});
+
+export const ResetPasswordSchema = Yup.object().shape({
+  code: Yup.string().required('Required'),
+  password: Yup.string()
+    .min(6, 'Too Short!')
+    .required('Password is required')
+    .matches(
+      // eslint-disable-next-line no-useless-escape
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      'Must Contain at least 6 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+    ),
+  passwordConfirmation: Yup.string()
+    .required('Password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });

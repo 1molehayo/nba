@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { pdfjs } from 'react-pdf';
+import PropTypes from 'prop-types';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-export const PdfReader = () => {
+export const PdfReader = ({ url }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -22,7 +23,7 @@ export const PdfReader = () => {
 
   return (
     <div className="w-100">
-      <Document file="/sample.pdf" onLoadSuccess={onDocumentLoadSuccess}>
+      <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />
       </Document>
 
@@ -50,6 +51,10 @@ export const PdfReader = () => {
       </div>
     </div>
   );
+};
+
+PdfReader.propTypes = {
+  url: PropTypes.string
 };
 
 export default PdfReader;

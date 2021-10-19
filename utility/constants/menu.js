@@ -14,7 +14,7 @@ export const MEDIA_MENU = [
 export const PROFILE_MENU = [
   {
     name: 'View profile',
-    url: '/profile',
+    url: '/dashboard/settings',
     type: 'link'
   },
   {

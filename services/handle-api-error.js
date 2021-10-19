@@ -3,6 +3,26 @@ import { ERROR_STATUS } from '../utility/constants';
 
 const handleApiError = (e) => {
   if (e.response && e.response.data) {
+    const { data, statusCode, error, message } = e.response.data;
+
+    if (message) {
+      return {
+        statusCode,
+        error,
+        message
+      };
+    }
+
+    if (data && Array.isArray(data)) {
+      const { messages } = data[0];
+
+      return {
+        statusCode,
+        error,
+        message: messages[0].message
+      };
+    }
+
     const arr = ERROR_STATUS.filter(
       (item) => item.statusCode === e.response.data.statusCode
     );

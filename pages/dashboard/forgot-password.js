@@ -3,30 +3,35 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styles from '../../styles/dashboard/pages/reset-password.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
-import { ResetPasswordSchema } from '../../utility/validations';
+import { ForgotPasswordSchema } from '../../utility/validations';
 import isAuth from '../../services/is-auth';
 import axios from '../../services/axios';
-import handleApiError from '../../services/handle-api-error';
 import { capitalizeFirstLetter, isObjectEmpty, notify } from '../../utility';
-import { RESET_PASSWORD_FORM_MODEL } from '../../utility/models';
+import handleApiError from '../../services/handle-api-error';
 
-function ResetPassword() {
+function ForgotPassword() {
   const [error, setError] = useState();
-  const [updating, setUpdating] = useState(false);
+  const [reseting, setReseting] = useState(false);
+  const router = useRouter();
 
   const formik = useFormik({
-    initialValues: RESET_PASSWORD_FORM_MODEL,
-    validationSchema: ResetPasswordSchema,
+    initialValues: {
+      email: ''
+    },
+    validationSchema: ForgotPasswordSchema,
     onSubmit: async (values) => {
       try {
-        await axios.post('/auth/reset-password', values);
+        await axios.post('/auth/forgot-password', values);
         notify({
           type: 'success',
-          message: 'Your password has been reset successfully'
+          message: 'A link has been sent to your email!'
         });
+
+        router.push('/dashboard/login');
       } catch (err) {
         const errorObj = handleApiError(err);
 
@@ -34,7 +39,7 @@ function ResetPassword() {
           errorObj.message = 'There was a problem reseting your password!';
         }
 
-        setUpdating(false);
+        setReseting(false);
         setError(errorObj);
       }
     }
@@ -71,49 +76,23 @@ function ResetPassword() {
               </div>
 
               <FormField
-                id="code"
-                type="text"
-                label="Code"
+                id="email"
+                type="email"
+                label="Email"
                 display="inline"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.code}
-                error={formik.errors.code}
-                touched={formik.touched.code}
-              />
-
-              <FormField
-                id="password"
-                type="password"
-                label="Password"
-                display="inline"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                error={formik.errors.password}
-                touched={formik.touched.password}
-                isRequired
-              />
-
-              <FormField
-                id="passwordConfirmation"
-                type="password"
-                label="Confirm Password"
-                display="inline"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.passwordConfirmation}
-                error={formik.errors.passwordConfirmation}
-                touched={formik.touched.passwordConfirmation}
-                isRequired
+                value={formik.values.email}
+                error={formik.errors.email}
+                touched={formik.touched.email}
               />
 
               <button
                 type="submit"
-                disabled={updating}
+                disabled={reseting}
                 className="button button--primary mt-4"
               >
-                {updating ? 'Loading...' : 'Update Password'}
+                {reseting ? 'Loading...' : 'Reset Password'}
               </button>
 
               <div className="pt-4 extra-info">
@@ -138,7 +117,7 @@ function ResetPassword() {
   );
 }
 
-export default isAuth(ResetPassword);
+export default isAuth(ForgotPassword);
 
 export async function getStaticProps() {
   return {

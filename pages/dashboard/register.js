@@ -1,43 +1,95 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
 import styles from '../../styles/dashboard/pages/register.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
 import { RegisterSchema } from '../../utility/validations';
 import isAuth from '../../services/is-auth';
+import { useDispatchCurrentUser } from '../../contexts/current-user';
+import axios from '../../services/axios';
+import { LOGIN_COMPLETED, LOGOUT_COMPLETED } from '../../utility/constants';
+import handleApiError from '../../services/handle-api-error';
+import { getFileName, notify } from '../../utility';
+import { REGISTER_FORM_MODEL } from '../../utility/models';
+import { FileInput } from '../../components/global/file-input';
 
 function Register() {
-  const router = useRouter();
-
-  const handleRegister = async (values) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
-    router.push('/dashboard');
-  };
+  const [registering, setRegistering] = useState(false);
+  const [file, setFile] = useState();
+  const dispatch = useDispatchCurrentUser();
 
   const formik = useFormik({
-    initialValues: {
-      address: '',
-      bio: '',
-      courtNumber: '',
-      email: '',
-      first_name: '',
-      last_name: '',
-      password: '',
-      passwordConfirm: '',
-      phoneNumber: ''
-    },
+    initialValues: REGISTER_FORM_MODEL,
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      // alert(JSON.stringify(values, null, 2));
-      handleRegister(values);
+    onSubmit: async (values) => {
+      setRegistering(true);
+
+      const userData = {
+        username: values.firstName,
+        email: values.email,
+        password: values.password
+      };
+
+      const profileData = {
+        address: values.address,
+        bio: values.bio,
+        court_number: values.courtNumber,
+        first_name: values.firstName,
+        last_name: values.lastName,
+        phone_number: values.phoneNumber,
+        social_media: {
+          linkedin: values.linkedin,
+          twitter: values.twitter
+        },
+        active: false
+      };
+
+      try {
+        await axios.post('/auth/local/register', userData);
+
+        const formData = new FormData();
+        formData.append('data', JSON.stringify(profileData));
+        formData.append('files.image', file);
+
+        await axios.post('/profiles/me', formData);
+
+        notify({
+          type: 'success',
+          message: 'Registration successful'
+        });
+
+        const { data } = await axios.get('/profiles/me');
+
+        setTimeout(() => {
+          dispatch({ type: LOGIN_COMPLETED, user: data });
+        }, 1200);
+      } catch (err) {
+        const errorObj = handleApiError(err);
+
+        notify({
+          type: 'error',
+          message: errorObj.message
+        });
+
+        await axios.post('/logout');
+        dispatch({ type: LOGOUT_COMPLETED });
+      } finally {
+        setRegistering(false);
+      }
     }
   });
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    formik.handleSubmit(e);
+  };
 
   return (
     <section className={styles.wrapper}>
@@ -48,7 +100,7 @@ function Register() {
       <div className="container">
         <div className={styles.container}>
           <div className={styles.form}>
-            <form className="form form--inline" onSubmit={formik.handleSubmit}>
+            <form className="form form--inline" onSubmit={handleRegister}>
               <div className="form__logo">
                 <Image
                   src={Logo}
@@ -67,25 +119,29 @@ function Register() {
 
                 <div className={styles.fullname__form}>
                   <FormField
-                    id="first_name"
+                    id="firstName"
                     type="text"
                     placeholder="First Name"
                     display="inline"
                     onChange={formik.handleChange}
-                    value={formik.values.first_name}
-                    error={formik.errors.first_name}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstName}
+                    error={formik.errors.firstName}
+                    touched={formik.touched.firstName}
                   />
 
                   <div className="w20" />
 
                   <FormField
-                    id="last_name"
+                    id="lastName"
                     type="text"
                     placeholder="Last Name"
                     display="inline"
                     onChange={formik.handleChange}
-                    value={formik.values.last_name}
-                    error={formik.errors.last_name}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastName}
+                    error={formik.errors.lastName}
+                    touched={formik.touched.lastName}
                   />
                 </div>
               </div>
@@ -96,8 +152,10 @@ function Register() {
                 label="Email address"
                 display="inline"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.email}
                 error={formik.errors.email}
+                touched={formik.touched.email}
                 isRequired
               />
 
@@ -107,8 +165,10 @@ function Register() {
                 label="Phone number"
                 display="inline"
                 onChange={formik.handleChange}
-                value={formik.values.phoneNumber}
-                error={formik.errors.phoneNumber}
+                onBlur={formik.handleBlur}
+                value={formik.values.phone_number}
+                error={formik.errors.phone_number}
+                touched={formik.touched.phoneNumber}
                 isRequired
               />
 
@@ -119,8 +179,10 @@ function Register() {
                 rows={10}
                 display="inline"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.address}
                 error={formik.errors.address}
+                touched={formik.touched.address}
               />
 
               <FormField
@@ -129,8 +191,10 @@ function Register() {
                 label="Supreme court number"
                 display="inline"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.courtNumber}
                 error={formik.errors.courtNumber}
+                touched={formik.touched.courtNumber}
                 isRequired
               />
 
@@ -141,8 +205,10 @@ function Register() {
                 rows={10}
                 display="inline"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.bio}
                 error={formik.errors.bio}
+                touched={formik.touched.bio}
               />
 
               <FormField
@@ -151,24 +217,65 @@ function Register() {
                 label="Password"
                 display="inline"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.password}
                 error={formik.errors.password}
+                touched={formik.touched.password}
                 isRequired
               />
 
               <FormField
-                id="passwordConfirm"
+                id="passwordConfirmation"
                 type="password"
                 label="Confirm Password"
                 display="inline"
                 onChange={formik.handleChange}
-                value={formik.values.passwordConfirm}
-                error={formik.errors.passwordConfirm}
+                onBlur={formik.handleBlur}
+                value={formik.values.passwordConfirmation}
+                error={formik.errors.passwordConfirmation}
+                touched={formik.touched.passwordConfirmation}
                 isRequired
               />
 
-              <button type="submit" className="button button--primary mt-4">
-                Register
+              <FileInput
+                id="image"
+                label="Profile Picture"
+                onChange={handleFileChange}
+                fileName={getFileName(file)}
+              />
+
+              <FormField
+                id="linkedin"
+                type="text"
+                label="Linkedin Profile"
+                placeholder="e.g https://linkedin.com/in/john-doe"
+                display="inline"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.linkedin}
+                error={formik.errors.linkedin}
+                touched={formik.touched.linkedin}
+              />
+
+              <FormField
+                id="twitter"
+                type="text"
+                label="Twitter Profile"
+                placeholder="e.g https://twitter.com/john-doe"
+                display="inline"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.twitter}
+                error={formik.errors.twitter}
+                touched={formik.touched.twitter}
+              />
+
+              <button
+                type="submit"
+                disabled={registering}
+                className="button button--primary mt-4"
+              >
+                {registering ? 'Loading...' : 'Register'}
               </button>
 
               <div className="pt-4 extra-info">

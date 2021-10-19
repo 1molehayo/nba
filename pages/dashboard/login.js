@@ -6,30 +6,25 @@ import { useFormik } from 'formik';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
 import { FormField } from '../../components/global/formfield';
-import { capitalizeFirstLetter, isObjectEmpty } from '../../utility';
+import { notify } from '../../utility';
 import { LoginSchema } from '../../utility/validations';
 import { useDispatchCurrentUser } from '../../contexts/current-user';
 import styles from '../../styles/dashboard/pages/login.module.scss';
 import BgImage from '../../assets/images/login-bg.png';
 import Logo from '../../assets/images/logo.png';
-import { LOGIN_START, LOGIN_COMPLETED } from '../../utility/constants';
+import { LOGIN_COMPLETED } from '../../utility/constants';
 import isAuth from '../../services/is-auth';
+import { LOGIN_FORM_MODEL } from '../../utility/models';
 
 function Login() {
-  const [error, setError] = useState();
   const [loggingIn, setLoggingIn] = useState(false);
   const dispatch = useDispatchCurrentUser();
 
   const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: ''
-    },
+    initialValues: LOGIN_FORM_MODEL,
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      dispatch({ type: LOGIN_START });
       setLoggingIn(true);
-      setError();
 
       const userData = {
         identifier: values.email,
@@ -39,7 +34,15 @@ function Login() {
       try {
         await axios.post('/auth/local', userData);
         const { data } = await axios.get('/profiles/me');
-        dispatch({ type: LOGIN_COMPLETED, user: data });
+
+        notify({
+          type: 'success',
+          message: 'Logged in successfully'
+        });
+
+        setTimeout(() => {
+          dispatch({ type: LOGIN_COMPLETED, user: data });
+        }, 1200);
       } catch (err) {
         const errorObj = handleApiError(err);
 
@@ -47,8 +50,12 @@ function Login() {
           errorObj.message = 'wrong email address and password combination!';
         }
 
+        notify({
+          type: 'error',
+          message: errorObj.message
+        });
+      } finally {
         setLoggingIn(false);
-        setError(errorObj);
       }
     }
   });
@@ -90,20 +97,16 @@ function Login() {
 
             <div className={styles.form}>
               <form className="form" onSubmit={handleLogin}>
-                {!isObjectEmpty(error) && (
-                  <p className="font-size-small color-red">
-                    {capitalizeFirstLetter(error.message)}
-                  </p>
-                )}
-
                 <FormField
                   id="email"
                   type="email"
                   placeholder="Email"
                   className="bg-white"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.email}
                   error={formik.errors.email}
+                  touched={formik.touched.email}
                 />
 
                 <FormField
@@ -112,8 +115,10 @@ function Login() {
                   placeholder="Password"
                   className="bg-white"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.password}
                   error={formik.errors.password}
+                  touched={formik.touched.password}
                 />
 
                 <button

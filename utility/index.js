@@ -1,5 +1,6 @@
 import Toastify from 'toastify-js';
 import getConfig from 'next/config';
+import moment from 'moment';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -92,6 +93,14 @@ export const ObjHasProp = (obj, prop) => {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 };
 
+export const getFileName = (file) => {
+  if (file) {
+    return file.name;
+  }
+
+  return 'No file Chosen...';
+};
+
 const getToasterStyles = (type) => {
   switch (type) {
     case 'error':
@@ -122,3 +131,64 @@ export const updateObject = (oldObject, updatedProperties) => ({
   ...oldObject,
   ...updatedProperties
 });
+
+export const getObjPropWithValues = (obj) => {
+  const renewedObj = {};
+
+  for (const key in obj) {
+    if (Object.hasOwnProperty.call(obj, key) && obj[key]) {
+      renewedObj[key] = obj[key];
+    }
+  }
+
+  return renewedObj;
+};
+
+export const toBase64 = (str) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str);
+
+export const shimmer = (w, h) => `
+<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="rgba(218, 218, 218, 0.34)" offset="20%" />
+      <stop stop-color="#fff" offset="50%" />
+      <stop stop-color="rgba(218, 218, 218, 0.34)" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="rgba(218, 218, 218, 0.34)" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+export const getUpcomingMeetings = (arr) => {
+  if (!arr) {
+    return [];
+  }
+
+  return arr.filter((item) => {
+    const date = moment(item.date).format('DD/MM/YYYY');
+    const datetime = moment(
+      `${date} ${item.time}`,
+      'DD/MM/YYYY HH:mm:ss',
+      true
+    );
+
+    return datetime.isSameOrAfter(new Date(), 'day');
+  });
+};
+
+export const getOldMeetings = (arr) => {
+  if (!arr) {
+    return [];
+  }
+
+  return arr.filter((item) => {
+    const date = moment(item.date).format('DD/MM/YYYY');
+    const datetime = moment(`${date} HH:mm:ss`, 'DD/MM/YYYY hh:mm:ss', true);
+
+    return datetime.isBefore(new Date(), 'day');
+  });
+};

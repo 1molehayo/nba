@@ -19,7 +19,9 @@ export const Empty = ({ icon, desc, imageSrc, className }) => (
         />
       )}
 
-      <p className="font-medium">{desc || 'No data was found!'}</p>
+      <p className="font-medium font-size-medium">
+        {desc || 'No data was found!'}
+      </p>
     </div>
   </div>
 );

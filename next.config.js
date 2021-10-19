@@ -17,7 +17,7 @@ module.exports = {
   publicRuntimeConfig: {
     // Will only be available on the server side
     baseUrl: process.env.API_BASE_URL || 'http://localhost:1337',
-    paymentUrl: process.env.PAYMENT_API || 'https://api.ravepay.co'
+    raveAPI: process.env.RAVE_API || 'https://api.ravepay.co'
   },
   images: {
     domains: ['localhost', removehttp(process.env.API_BASE_URL)]

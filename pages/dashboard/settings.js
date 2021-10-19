@@ -1,30 +1,104 @@
-import React from 'react';
+/* eslint-disable camelcase */
+import React, { useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useFormik } from 'formik';
+import axios from '../../services/axios';
 import styles from '../../styles/dashboard/pages/settings.module.scss';
 import { FormField } from '../../components/global';
 import { SettingsSchema } from '../../utility/validations';
+import {
+  getImagePath,
+  getObjPropWithValues,
+  isArrayEmpty,
+  notify,
+  shimmer,
+  toBase64
+} from '../../utility';
+import handleApiError from '../../services/handle-api-error';
+import withAuth from '../../services/with-auth';
+import {
+  useCurrentUser,
+  useDispatchCurrentUser
+} from '../../contexts/current-user';
+import { LOGIN_COMPLETED } from '../../utility/constants';
 
-export default function Settings() {
-  // eslint-disable-next-line no-unused-vars
-  const handleSubmit = async (values) => {};
+function Settings() {
+  const {
+    address,
+    bio,
+    court_number,
+    first_name,
+    last_name,
+    image,
+    phone_number,
+    social_media
+  } = useCurrentUser();
+  const dispatch = useDispatchCurrentUser();
+
+  const [updating, setUpdating] = useState(false);
+  const [file, setFile] = useState();
+  const [avatar, setAvatar] = useState(getImagePath(image.url));
 
   const formik = useFormik({
     initialValues: {
-      address: '',
-      bio: '',
-      courtNumber: '',
-      firstName: '',
-      lastName: '',
-      phoneNumber: ''
+      address: address || '',
+      bio: bio || '',
+      court_number: court_number || '',
+      first_name: first_name || '',
+      last_name: last_name || '',
+      phone_number: phone_number || '',
+      linkedin: social_media?.linkedin,
+      twitter: social_media?.twitter
     },
     validationSchema: SettingsSchema,
-    onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      // alert(JSON.stringify(values, null, 2));
-      handleSubmit(values);
+    onSubmit: async (values) => {
+      setUpdating(true);
+
+      try {
+        const formData = new FormData();
+        const obj = getObjPropWithValues(values);
+        if (file) {
+          formData.append('files.image', file);
+        }
+        formData.append('data', JSON.stringify(obj));
+
+        const { data } = await axios.put('/profiles/me', formData);
+
+        notify({
+          type: 'success',
+          message: 'Profile updated successfully'
+        });
+
+        dispatch({ type: LOGIN_COMPLETED, user: data });
+      } catch (err) {
+        const errorObj = handleApiError(err);
+
+        notify({
+          type: 'error',
+          message: errorObj.message
+        });
+      } finally {
+        setUpdating(false);
+      }
     }
   });
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+
+    if (isArrayEmpty(event.target.files)) {
+      return;
+    }
+
+    const url = URL.createObjectURL(event.target.files[0]);
+    setAvatar(url);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    formik.handleSubmit(e);
+  };
 
   return (
     <section className="section pt-0">
@@ -38,10 +112,7 @@ export default function Settings() {
 
           <div className={styles.wrapper}>
             <div className={styles.form}>
-              <form
-                className="form form--inline"
-                onSubmit={formik.handleSubmit}
-              >
+              <form className="form form--inline" onSubmit={handleSubmit}>
                 <div className={styles.fullname}>
                   <div className={styles.fullname__label}>
                     <p>
@@ -51,48 +122,56 @@ export default function Settings() {
 
                   <div className={styles.fullname__form}>
                     <FormField
-                      id="firstName"
+                      id="first_name"
                       type="text"
                       placeholder="First Name"
                       display="inline"
                       onChange={formik.handleChange}
-                      value={formik.values.firstName}
-                      error={formik.errors.firstName}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.first_name}
+                      error={formik.errors.first_name}
+                      touched={formik.touched.first_name}
                     />
 
                     <div className="w20" />
 
                     <FormField
-                      id="lastName"
+                      id="last_name"
                       type="text"
                       placeholder="Last Name"
                       display="inline"
                       onChange={formik.handleChange}
-                      value={formik.values.lastName}
-                      error={formik.errors.lastName}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.last_name}
+                      error={formik.errors.last_name}
+                      touched={formik.touched.last_name}
                     />
                   </div>
                 </div>
 
                 <FormField
-                  id="phoneNumber"
+                  id="phone_number"
                   type="text"
                   label="Phone number"
                   display="inline"
                   onChange={formik.handleChange}
-                  value={formik.values.phoneNumber}
-                  error={formik.errors.phoneNumber}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.phone_number}
+                  error={formik.errors.phone_number}
+                  touched={formik.touched.phone_number}
                   isRequired
                 />
 
                 <FormField
-                  id="courtNumber"
+                  id="court_number"
                   type="text"
                   label="Supreme court number"
                   display="inline"
                   onChange={formik.handleChange}
-                  value={formik.values.courtNumber}
-                  error={formik.errors.courtNumber}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.court_number}
+                  error={formik.errors.court_number}
+                  touched={formik.touched.court_number}
                   isRequired
                 />
 
@@ -103,8 +182,10 @@ export default function Settings() {
                   rows={10}
                   display="inline"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.address}
                   error={formik.errors.address}
+                  touched={formik.touched.address}
                 />
 
                 <FormField
@@ -114,20 +195,67 @@ export default function Settings() {
                   rows={10}
                   display="inline"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.bio}
                   error={formik.errors.bio}
+                  touched={formik.touched.bio}
                 />
 
-                <button type="submit" className="button button--primary mt-4">
-                  Save
+                <FormField
+                  id="linkedin"
+                  type="text"
+                  label="Linkedin Profile"
+                  placeholder="e.g https://linkedin.com/in/john-doe"
+                  display="inline"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.linkedin}
+                  error={formik.errors.linkedin}
+                  touched={formik.touched.linkedin}
+                />
+
+                <FormField
+                  id="twitter"
+                  type="text"
+                  label="Twitter Profile"
+                  placeholder="e.g https://twitter.com/john-doe"
+                  display="inline"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.twitter}
+                  error={formik.errors.twitter}
+                  touched={formik.touched.twitter}
+                />
+
+                <button
+                  type="submit"
+                  disabled={updating}
+                  className="button button--primary mt-4"
+                >
+                  {updating ? 'Loading...' : 'Save'}
                 </button>
               </form>
             </div>
 
             <div className={styles.image__wrapper}>
-              <p>Edit Image</p>
+              <p className="color-black font-size-small">Profile Picture</p>
 
-              <div className={styles.image}></div>
+              <div className={styles.image}>
+                {image && (
+                  <Image
+                    src={avatar}
+                    placeholder="blur"
+                    blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                      shimmer(700, 475)
+                    )}`}
+                    alt=""
+                    objectFit="cover"
+                    layout="fill"
+                  />
+                )}
+
+                <input type="file" onChange={handleFileChange} id="file" />
+              </div>
             </div>
           </div>
         </div>
@@ -135,3 +263,5 @@ export default function Settings() {
     </section>
   );
 }
+
+export default withAuth(Settings);

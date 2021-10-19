@@ -3,7 +3,12 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import styles from '../../styles/dashboard/components/book.module.scss';
-import { formatCharLength } from '../../utility';
+import {
+  formatCharLength,
+  getImagePath,
+  shimmer,
+  toBase64
+} from '../../utility';
 import { Modal } from '../app';
 
 export const Book = ({ item }) => {
@@ -17,7 +22,11 @@ export const Book = ({ item }) => {
       <div className={styles.wrapper}>
         <div className={styles.image}>
           <Image
-            src={item.image}
+            src={getImagePath(item.image.url)}
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+              shimmer(108, 150)
+            )}`}
             alt={item.title}
             width={108}
             height={150}
@@ -48,7 +57,7 @@ export const Book = ({ item }) => {
         className={styles.modal__wrapper}
       >
         <div className={styles.modal}>
-          <PdfViewer />
+          <PdfViewer url={item.url} />
         </div>
       </Modal>
     </>
@@ -60,8 +69,8 @@ Book.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     author: PropTypes.string,
-    publisher: PropTypes.string,
     image: PropTypes.string,
-    description: PropTypes.string
+    description: PropTypes.string,
+    url: PropTypes.string
   })
 };

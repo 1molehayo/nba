@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { capitalizeFirstLetter, notify } from '../utility';
+import { capitalizeFirstLetter, isObjectEmpty, notify } from '../utility';
 
 const useOnError = (errorObject) => {
   useEffect(() => {
-    if (errorObject) {
+    if (!isObjectEmpty(errorObject)) {
       notify({
         type: 'error',
         message: capitalizeFirstLetter(errorObject.message)

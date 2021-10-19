@@ -4,13 +4,20 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../../styles/app/components/news-card.module.scss';
-import { formatCharLength, getImagePath } from '../../utility';
+import {
+  formatCharLength,
+  getImagePath,
+  shimmer,
+  toBase64
+} from '../../utility';
 
 export const NewsCard = ({ item }) => (
   <div className={styles.wrapper}>
     <div className={styles.image}>
       <Image
         src={getImagePath(item.image.url)}
+        placeholder="blur"
+        blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 500))}`}
         alt={item.title}
         layout="fill"
         objectFit="cover"

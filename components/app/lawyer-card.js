@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styles from '../../styles/app/components/lawyer-card.module.scss';
-import { formatCharLength } from '../../utility';
+import { formatCharLength, shimmer, toBase64 } from '../../utility';
 
 export const LawyerCard = ({ item }) => {
   return (
@@ -10,6 +10,10 @@ export const LawyerCard = ({ item }) => {
       <div className="text-center">
         <Image
           className={styles.image}
+          placeholder="blur"
+          blurDataURL={`data:image/svg+xml;base64,${toBase64(
+            shimmer(128, 128)
+          )}`}
           alt={item.name}
           width={128}
           height={128}

@@ -3,7 +3,12 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../../styles/app/components/events-card.module.scss';
-import { formatCharLength, getImagePath } from '../../utility';
+import {
+  formatCharLength,
+  getImagePath,
+  shimmer,
+  toBase64
+} from '../../utility';
 
 export const EventsCard = ({ item }) => {
   // eslint-disable-next-line no-unused-vars
@@ -16,6 +21,10 @@ export const EventsCard = ({ item }) => {
         <Image
           src={getImagePath(item.image.url)}
           alt={item.title}
+          placeholder="blur"
+          blurDataURL={`data:image/svg+xml;base64,${toBase64(
+            shimmer(700, 500)
+          )}`}
           layout="fill"
           objectFit="cover"
         />

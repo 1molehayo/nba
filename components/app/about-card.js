@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from '../../styles/app/components/about-card.module.scss';
 import { Modal } from './modal';
 import { PROFILES } from '../../utility/profiles';
-import { isArrayEmpty } from '../../utility';
+import { isArrayEmpty, shimmer, toBase64 } from '../../utility';
 
 export const AboutCard = ({ item }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -42,6 +42,10 @@ export const AboutCard = ({ item }) => {
           <Image
             src={item.image}
             alt={item.name}
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+              shimmer(700, 500)
+            )}`}
             layout="fill"
             objectFit="cover"
             objectPosition="top"

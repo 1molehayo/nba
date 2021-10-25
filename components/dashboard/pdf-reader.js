@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export const PdfReader = ({ url }) => {
-  const [numPages, setNumPages] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const onDocumentLoadSuccess = ({ val }) => {
-    setNumPages(val);
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setTotalPages(numPages);
   };
 
   const goToPage = (dir) => {
@@ -21,15 +21,25 @@ export const PdfReader = ({ url }) => {
     return setPageNumber(pageNumber - 1);
   };
 
+  const Loading = (
+    <div className="pt-8 pb-8 w-100">
+      <p className="text-center mb-0">Loading Book!!</p>
+    </div>
+  );
+
   return (
     <div className="w-100">
-      <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
+      <Document
+        file={url}
+        onLoadSuccess={onDocumentLoadSuccess}
+        loading={Loading}
+      >
+        <Page pageNumber={pageNumber} className="react-pdf" />
       </Document>
 
       <div className="d-flex align-items-center justify-content-between">
         <p>
-          Page {pageNumber} of {numPages}
+          Page {pageNumber} of {totalPages}
         </p>
 
         <div>
@@ -41,7 +51,7 @@ export const PdfReader = ({ url }) => {
             Prev
           </button>
           <button
-            disabled={pageNumber === numPages}
+            disabled={pageNumber === totalPages}
             className="button button--primary"
             onClick={() => goToPage('next')}
           >

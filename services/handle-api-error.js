@@ -34,6 +34,14 @@ const handleApiError = (e) => {
     return ERROR_STATUS.filter((err) => err.statusCode === 500)[0];
   }
 
+  if (e.message) {
+    return {
+      statusCode: 400,
+      error: 'Bad Request',
+      message: e.message
+    };
+  }
+
   return {
     statusCode: 500,
     error: 'No Internet Connection',

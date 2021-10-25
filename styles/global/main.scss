@@ -8,9 +8,15 @@
 @import 'global/mixins';
 
 // vendors
+@import 'vendors/calendar';
+@import 'vendors/clock';
 @import 'vendors/icomoon';
 @import 'vendors/nprogress';
+@import 'vendors/react-date-picker';
+@import 'vendors/react-pdf';
 @import 'vendors/react-player';
+@import 'vendors/react-time-picker';
+@import 'vendors/rich-text';
 @import 'vendors/slick';
 @import 'vendors/toastify-js';
 
@@ -28,10 +34,13 @@
 @import 'components/context';
 @import 'components/dropdown';
 @import 'components/empty';
+@import 'components/event-card';
 @import 'components/form';
 @import 'components/loader';
 @import 'components/modal';
+@import 'components/news-card';
 @import 'components/pagination';
+@import 'components/scrollbar';
 @import 'components/searchbar';
 
 // layouts

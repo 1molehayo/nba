@@ -36,6 +36,15 @@
       }
     }
 
+    &--error {
+      border-width: 1px;
+      border-color: color(red);
+    }
+
+    &-group {
+      flex-wrap: wrap;
+    }
+
     input[type='file'] {
       position: absolute;
       z-index: 100;
@@ -50,8 +59,9 @@
 
     label {
       display: inline-block;
+      width: auto !important;
       height: 5rem;
-      padding: 0 10px !important;
+      padding: 0 15px !important;
       background: color(light-grey);
       color: color(dark) !important;
       line-height: 5rem;
@@ -72,6 +82,8 @@
 
     label {
       @include font-size(small);
+      display: inline-block;
+      margin-bottom: 1rem;
       color: color(black);
     }
 
@@ -159,6 +171,7 @@
   &__textarea {
     @extend .form__input;
     height: auto;
+    line-height: 1.5;
 
     &:focus-visible {
       outline: color(green) auto 1px;

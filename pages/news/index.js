@@ -1,13 +1,15 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { Banner } from '../../components/app';
-import { NewsCard } from '../../components/app/news-card';
-import { Empty } from '../../components/global/empty';
+import { Empty, NewsCard } from '../../components/global';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
+import useOnError from '../../services/use-on-error';
 import { isArrayEmpty } from '../../utility';
 
-export default function News({ articles }) {
+export default function News({ articles, error }) {
+  useOnError(error);
+
   return (
     <section className="news">
       <Head>
@@ -38,12 +40,13 @@ export default function News({ articles }) {
 }
 
 News.propTypes = {
-  articles: PropTypes.array
+  articles: PropTypes.array,
+  error: PropTypes.object
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let articles = null;
-  let error = null;
+  let error = {};
 
   try {
     const articleResponse = await axios.get('/articles');
@@ -51,7 +54,6 @@ export async function getStaticProps() {
   } catch (err) {
     error = handleApiError(err);
   } finally {
-    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         articles,

@@ -24,7 +24,7 @@ export default function AppLayout({ children, hasOval }) {
       <AppHeader toggleModal={toggleModal} />
 
       <main
-        className={classnames('page__body', styles.body, {
+        className={classnames('page__body scrollbar', styles.body, {
           [styles.mobile__body]: isLargeTab
         })}
       >

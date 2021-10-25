@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useFormik } from 'formik';
 import axios from '../../services/axios';
 import styles from '../../styles/dashboard/pages/settings.module.scss';
-import { FormField } from '../../components/global';
+import { FormField, Select } from '../../components/global';
 import { SettingsSchema } from '../../utility/validations';
 import {
   getImagePath,
@@ -22,6 +22,7 @@ import {
   useDispatchCurrentUser
 } from '../../contexts/current-user';
 import { LOGIN_COMPLETED } from '../../utility/constants';
+import { JOB_TITLES, JOB_TYPES } from '../../utility/constants/job';
 
 function Settings() {
   const {
@@ -32,7 +33,9 @@ function Settings() {
     last_name,
     image,
     phone_number,
-    social_media
+    social_media,
+    job_type,
+    job_title
   } = useCurrentUser();
   const dispatch = useDispatchCurrentUser();
 
@@ -48,8 +51,10 @@ function Settings() {
       first_name: first_name || '',
       last_name: last_name || '',
       phone_number: phone_number || '',
-      linkedin: social_media?.linkedin,
-      twitter: social_media?.twitter
+      linkedin: social_media?.linkedin || '',
+      twitter: social_media?.twitter || '',
+      job_title: job_title || '',
+      job_type: job_type || ''
     },
     validationSchema: SettingsSchema,
     onSubmit: async (values) => {
@@ -58,6 +63,16 @@ function Settings() {
       try {
         const formData = new FormData();
         const obj = getObjPropWithValues(values);
+        delete obj.twitter;
+        delete obj.linkedin;
+
+        if (values.twitter || values.linkedin) {
+          obj.social_media = {
+            twitter: values.twitter,
+            linkedin: values.linkedin
+          };
+        }
+
         if (file) {
           formData.append('files.image', file);
         }
@@ -95,7 +110,7 @@ function Settings() {
     setAvatar(url);
   };
 
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     formik.handleSubmit(e);
   };
@@ -112,7 +127,7 @@ function Settings() {
 
           <div className={styles.wrapper}>
             <div className={styles.form}>
-              <form className="form form--inline" onSubmit={handleSubmit}>
+              <form className="form form--inline" onSubmit={onSubmit}>
                 <div className={styles.fullname}>
                   <div className={styles.fullname__label}>
                     <p>
@@ -200,6 +215,42 @@ function Settings() {
                   error={formik.errors.bio}
                   touched={formik.touched.bio}
                 />
+
+                <Select
+                  id="jobType"
+                  label="Job Type"
+                  display="inline"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.job_type}
+                  error={formik.errors.job_type}
+                  touched={formik.touched.job_type}
+                  isRequired
+                >
+                  {JOB_TYPES.map((typeItem, i) => (
+                    <option key={i} value={typeItem}>
+                      {typeItem}
+                    </option>
+                  ))}
+                </Select>
+
+                <Select
+                  id="jobTitle"
+                  label="Job Title"
+                  display="inline"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.job_title}
+                  error={formik.errors.job_title}
+                  touched={formik.touched.job_title}
+                  isRequired
+                >
+                  {JOB_TITLES.map((titleItem, i) => (
+                    <option key={i} value={titleItem}>
+                      {titleItem}
+                    </option>
+                  ))}
+                </Select>
 
                 <FormField
                   id="linkedin"

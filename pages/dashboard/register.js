@@ -15,6 +15,8 @@ import handleApiError from '../../services/handle-api-error';
 import { getFileName, notify } from '../../utility';
 import { REGISTER_FORM_MODEL } from '../../utility/models';
 import { FileInput } from '../../components/global/file-input';
+import { Select } from '../../components/global';
+import { JOB_TITLES, JOB_TYPES } from '../../utility/constants/job';
 
 function Register() {
   const [registering, setRegistering] = useState(false);
@@ -40,6 +42,9 @@ function Register() {
         first_name: values.firstName,
         last_name: values.lastName,
         phone_number: values.phoneNumber,
+        email: values.email,
+        job_title: values.jobTitle,
+        job_type: values.jobType,
         social_media: {
           linkedin: values.linkedin,
           twitter: values.twitter
@@ -243,6 +248,42 @@ function Register() {
                 onChange={handleFileChange}
                 fileName={getFileName(file)}
               />
+
+              <Select
+                id="jobType"
+                label="Job Type"
+                display="inline"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.jobType}
+                error={formik.errors.jobType}
+                touched={formik.touched.jobType}
+                isRequired
+              >
+                {JOB_TYPES.map((typeItem, i) => (
+                  <option key={i} value={typeItem}>
+                    {typeItem}
+                  </option>
+                ))}
+              </Select>
+
+              <Select
+                id="jobTitle"
+                label="Job Title"
+                display="inline"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.jobTitle}
+                error={formik.errors.jobTitle}
+                touched={formik.touched.jobTitle}
+                isRequired
+              >
+                {JOB_TITLES.map((titleItem, i) => (
+                  <option key={i} value={titleItem}>
+                    {titleItem}
+                  </option>
+                ))}
+              </Select>
 
               <FormField
                 id="linkedin"

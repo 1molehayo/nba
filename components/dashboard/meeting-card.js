@@ -3,14 +3,21 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from '../../styles/dashboard/components/meeting-card.module.scss';
-import {
-  formatCharLength,
-  getImagePath,
-  shimmer,
-  toBase64
-} from '../../utility';
+import { formatCharLength, getImagePath } from '../../utility';
+import { useCurrentPlatform } from '../../contexts/platform-context';
 
 export const MeetingCard = ({ item }) => {
+  const { platforms } = useCurrentPlatform();
+
+  const getPlatform = () => {
+    if (!platforms) {
+      return;
+    }
+
+    const result = platforms.filter((pitem) => pitem.id === item.id)[0];
+    return result;
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
@@ -25,16 +32,14 @@ export const MeetingCard = ({ item }) => {
 
       <div className={styles.time}>
         <div className={styles.image}>
-          <Image
-            src={getImagePath(item.platform_image.url)}
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-              shimmer(65, 24)
-            )}`}
-            alt={item.platform_name}
-            placeholder="blur"
-            width={65}
-            height={24}
-          />
+          {getPlatform() && (
+            <Image
+              src={getImagePath(getPlatform().image.url)}
+              alt={getPlatform().name}
+              width={65}
+              height={24}
+            />
+          )}
         </div>
 
         <p className="mb-0">{moment(item.date).format('Do MMM YYYY')}</p>

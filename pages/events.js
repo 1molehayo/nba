@@ -1,12 +1,15 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import { Banner, EventsCard } from '../components/app';
+import { Banner } from '../components/app';
 import axios from '../services/axios';
 import handleApiError from '../services/handle-api-error';
-import { Empty } from '../components/global/empty';
+import { Empty, EventsCard } from '../components/global';
 import { isArrayEmpty } from '../utility';
+import useOnError from '../services/use-on-error';
 
-export default function Events({ events }) {
+export default function Events({ events, error }) {
+  useOnError(error);
+
   return (
     <section className="events">
       <Head>
@@ -37,20 +40,20 @@ export default function Events({ events }) {
 }
 
 Events.propTypes = {
+  error: PropTypes.object,
   events: PropTypes.object
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let events = null;
   let error = null;
 
   try {
-    const eventResponse = await axios.get('/events');
-    events = eventResponse.data;
+    const { data } = await axios.get('/events');
+    events = data;
   } catch (err) {
     error = handleApiError(err);
   } finally {
-    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         events,

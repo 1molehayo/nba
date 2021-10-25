@@ -38,7 +38,7 @@ Home.propTypes = {
   dues: PropTypes.array
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let events = null;
   let articles = null;
   // let slides = null;
@@ -53,7 +53,6 @@ export async function getStaticProps() {
   } catch (err) {
     error = handleApiError(err);
   } finally {
-    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         articles,

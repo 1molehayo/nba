@@ -9,9 +9,9 @@ import {
   shimmer,
   toBase64
 } from '../../utility';
-import { Modal } from '../app';
+import { Modal } from '../global';
 
-export const Book = ({ item }) => {
+export const Book = ({ item, onDelete }) => {
   const [openModal, setOpenModal] = useState(false);
   const toggleModal = () => setOpenModal((prevState) => !prevState);
 
@@ -21,17 +21,31 @@ export const Book = ({ item }) => {
     <>
       <div className={styles.wrapper}>
         <div className={styles.image}>
-          <Image
-            src={getImagePath(item.image.url)}
-            placeholder="blur"
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-              shimmer(108, 150)
-            )}`}
-            alt={item.title}
-            width={108}
-            height={150}
-            objectFit="cover"
-          />
+          {item.image && (
+            <Image
+              src={getImagePath(item.image.url)}
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                shimmer(108, 150)
+              )}`}
+              alt={item.title}
+              width={108}
+              height={150}
+              objectFit="cover"
+            />
+          )}
+
+          {!item.image && (
+            <div className="empty-card h-100 justify-content-center">
+              <span className="font-size-m-large icon-book" />
+            </div>
+          )}
+
+          {onDelete && (
+            <button className="button button--red" onClick={onDelete}>
+              delete <span className="icon-delete" />
+            </button>
+          )}
         </div>
 
         <div className={styles.content}>
@@ -51,26 +65,29 @@ export const Book = ({ item }) => {
         </div>
       </div>
 
-      <Modal
-        show={openModal}
-        onClose={toggleModal}
-        className={styles.modal__wrapper}
-      >
-        <div className={styles.modal}>
-          <PdfViewer url={item.url} />
-        </div>
-      </Modal>
+      {item.file && (
+        <Modal
+          show={openModal}
+          onClose={toggleModal}
+          className={styles.modal__wrapper}
+        >
+          <div className={styles.modal}>
+            <PdfViewer url={getImagePath(item.file.url)} />
+          </div>
+        </Modal>
+      )}
     </>
   );
 };
 
 Book.propTypes = {
   item: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string,
     author: PropTypes.string,
-    image: PropTypes.string,
     description: PropTypes.string,
-    url: PropTypes.string
-  })
+    file: PropTypes.object,
+    id: PropTypes.number,
+    image: PropTypes.object,
+    title: PropTypes.string
+  }),
+  onDelete: PropTypes.func
 };

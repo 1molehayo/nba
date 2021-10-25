@@ -99,7 +99,6 @@ export async function getServerSideProps(ctx) {
   } catch (err) {
     error = handleApiError(err);
   } finally {
-    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         dues,

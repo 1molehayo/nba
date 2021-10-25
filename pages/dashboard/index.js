@@ -15,8 +15,9 @@ import { getStatus, getUpcomingMeetings, isArrayEmpty } from '../../utility';
 import withAuth from '../../services/with-auth';
 import { parseCookies } from 'nookies';
 import { Empty } from '../../components/global';
+import useOnError from '../../services/use-on-error';
 
-function Dashboard({ books, meetings, payments }) {
+function Dashboard({ books, meetings, payments, error }) {
   const DASHBOARD_CARDS = [
     {
       title: '1,589',
@@ -34,6 +35,8 @@ function Dashboard({ books, meetings, payments }) {
       icon: 'icon-timer'
     }
   ];
+
+  useOnError(error);
 
   return (
     <section className={styles.wrapper}>
@@ -165,7 +168,6 @@ export async function getServerSideProps(ctx) {
   } catch (err) {
     error = handleApiError(err);
   } finally {
-    // eslint-disable-next-line no-unsafe-finally
     return {
       props: {
         books,

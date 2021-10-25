@@ -1,6 +1,7 @@
 import Toastify from 'toastify-js';
 import getConfig from 'next/config';
 import moment from 'moment';
+import { PERMISSIONS } from './constants';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -12,12 +13,16 @@ export const capitalizeFirstLetter = (str) => {
   return `${str.substr(0, 1).toUpperCase()}${str.substr(1)}`;
 };
 
-export const formatCharLength = (str, len) => {
+export const formatCharLength = (str, len, noElipsis = false) => {
   if (!str) {
     return '';
   }
 
   if (str.length > len) {
+    if (noElipsis) {
+      return str.substring(0, len - 1);
+    }
+
     return `${str.substring(0, len - 1)}...`;
   }
 
@@ -99,6 +104,14 @@ export const getFileName = (file) => {
   }
 
   return 'No file Chosen...';
+};
+
+export const getPermissions = (role) => {
+  if (!role) {
+    return [];
+  }
+
+  return PERMISSIONS[role.name.toLowerCase()];
 };
 
 const getToasterStyles = (type) => {

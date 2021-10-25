@@ -20,12 +20,24 @@
     opacity: 0.4;
   }
 
+  @include respond(large) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
+
   &--link {
     transition: color 0.3s ease;
+    border: 0;
+    outline: none;
+    background: transparent;
     color: color(green);
 
     @include respond(large) {
       &:hover {
+        transform: none !important;
+        box-shadow: none !important;
         color: color(black);
       }
     }
@@ -39,18 +51,18 @@
   &--primary {
     background: $button-gradient;
     color: color(white);
-
-    @include respond(large) {
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-      }
-    }
   }
 
   &--outline {
     border: 1px solid color(primary);
     background: transparent;
     color: color(primary);
+  }
+}
+
+@each $name, $color in $colors {
+  .button--#{'' + $name} {
+    background: $color;
+    color: color(white);
   }
 }

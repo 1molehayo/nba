@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
 import styles from '../../styles/app/components/about-card.module.scss';
-import { Modal } from './modal';
+import { Modal } from '../global';
 import { PROFILES } from '../../utility/profiles';
 import { isArrayEmpty, shimmer, toBase64 } from '../../utility';
 

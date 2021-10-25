@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { EventsCard } from '../events-card';
-import { Empty } from '../../global/empty';
+import { Empty, EventsCard } from '../../global';
 import { isArrayEmpty } from '../../../utility';
 
 export default function Events({ data }) {

@@ -1,13 +1,16 @@
 import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useCurrentUser } from '../../contexts/current-user';
 import styles from '../../styles/dashboard/layouts/sidebar.module.scss';
+import { getPermissions } from '../../utility';
 
 const DashboardSidebar = () => {
   const router = useRouter();
+  const { role } = useCurrentUser();
 
   return (
-    <aside className={styles.wrapper}>
+    <aside className={classnames(styles.wrapper, 'scrollbar')}>
       <div className={styles.inner}>
         <ul>
           <li>
@@ -51,6 +54,36 @@ const DashboardSidebar = () => {
             </Link>
           </li>
 
+          {getPermissions(role).includes('find.events') && (
+            <li>
+              <Link href="/dashboard/events">
+                <a
+                  className={classnames({
+                    [styles.isActive]: router.pathname === '/dashboard/events'
+                  })}
+                >
+                  <span className="icon-calendar" />
+                  Events
+                </a>
+              </Link>
+            </li>
+          )}
+
+          {getPermissions(role).includes('find.articles') && (
+            <li>
+              <Link href="/dashboard/news">
+                <a
+                  className={classnames({
+                    [styles.isActive]: router.pathname === '/dashboard/news'
+                  })}
+                >
+                  <span className="icon-news" />
+                  News
+                </a>
+              </Link>
+            </li>
+          )}
+
           <li>
             <a href="#">
               <span className="icon-shop" />
@@ -70,6 +103,21 @@ const DashboardSidebar = () => {
               </a>
             </Link>
           </li>
+
+          {getPermissions(role).includes('find.profiles') && (
+            <li>
+              <Link href="/dashboard/members">
+                <a
+                  className={classnames({
+                    [styles.isActive]: router.pathname === '/dashboard/members'
+                  })}
+                >
+                  <span className="icon-profile" />
+                  Members
+                </a>
+              </Link>
+            </li>
+          )}
 
           <li>
             <Link href="/dashboard/settings">

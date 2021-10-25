@@ -11,7 +11,7 @@ export const FileInput = forwardRef((props, ref) => {
   delete formProps.fileName;
 
   return (
-    <div className="form__group">
+    <div className="form__group form__file-group">
       {props.label && (
         <label>
           {props.label}{' '}
@@ -20,9 +20,9 @@ export const FileInput = forwardRef((props, ref) => {
       )}
 
       <div
-        className={classnames('form__file', props.className, {
+        className={classnames('form__file mr-2', props.className, {
           'form__file--error': props.error,
-          'form__file--active': !props.fileName
+          'form__file--active': props.fileName
         })}
       >
         <label>Choose file</label>
@@ -38,6 +38,8 @@ export const FileInput = forwardRef((props, ref) => {
           accept={props.allowedFiles}
         />
       </div>
+
+      {props.error && <p className="form__error">{props.error}</p>}
     </div>
   );
 });

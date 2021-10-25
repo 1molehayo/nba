@@ -9,4 +9,32 @@
   position: relative;
   width: 100%;
   height: 400px;
+  background-color: color(light-grey);
+
+  input[type='file'] {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &__label {
+    @include font-size(regular);
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    background-color: color(white);
+  }
+}
+
+.title {
+  @include font-family(montserrat);
+  @include font-weight(bold);
+  @include font-size(large);
 }

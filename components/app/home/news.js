@@ -3,8 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styles from '../../../styles/app/pages/home.module.scss';
-import { NewsCard } from '../news-card';
-import { Empty } from '../../global/empty';
+import { Empty, NewsCard } from '../../global';
 import { isArrayEmpty } from '../../../utility';
 
 export default function News({ data }) {
@@ -23,7 +22,7 @@ export default function News({ data }) {
         )}
 
         {isArrayEmpty(data) && (
-          <Empty icon="icon-calendar" className="color-primary" />
+          <Empty icon="icon-news" className="color-primary" />
         )}
 
         {!isArrayEmpty(data) && (

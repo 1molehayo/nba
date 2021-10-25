@@ -2,7 +2,11 @@
 @import '../helpers/index';
 
 .form {
+  @include respond(largest) {
+    order: 1;
+  }
   flex: 0 0 calc(100% - 300px);
+  order: 2;
   width: 100%;
 }
 
@@ -11,8 +15,14 @@
 }
 
 .image {
+  @include respond(largest) {
+    width: 100%;
+    max-width: 100%;
+  }
+
   position: relative;
-  width: 100%;
+  width: calc(100% - 20rem);
+  max-width: 300px;
   height: 300px;
   border-radius: 5px;
   background: rgba(218, 218, 218, 0.34);
@@ -33,12 +43,32 @@
   }
 
   &__wrapper {
+    @include respond(largest) {
+      display: block;
+      order: 2;
+      padding-left: 3rem;
+    }
+
+    display: flex;
     flex: 0 0 330px;
-    padding-left: 3rem;
+    order: 1;
+    padding-left: 0;
+
+    p {
+      @include respond(largest) {
+        width: auto;
+      }
+
+      width: 20rem;
+    }
   }
 }
 
 .wrapper {
+  @include respond(largest) {
+    flex-direction: row;
+  }
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }

@@ -1,0 +1,79 @@
+.event-card {
+  &-body {
+    padding: 2rem;
+  }
+
+  &__image {
+    @include delete-button;
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: color(light-grey);
+
+    &:hover {
+      button {
+        display: inline-block;
+      }
+    }
+
+    @include respond(small) {
+      height: 180px;
+    }
+
+    img {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+  }
+
+  &__info {
+    display: flex;
+    margin-bottom: 2rem;
+  }
+
+  &-modal {
+    padding: 5rem;
+    background-color: color(white);
+
+    &__image {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      background-color: color(light-grey);
+    }
+
+    &__title {
+      @include respond(large) {
+        font-size: 2.4rem !important;
+      }
+      text-decoration: none !important;
+    }
+
+    &-wrapper {
+      @include modal-wrapper;
+    }
+  }
+
+  &__title {
+    @include font-family(montserrat);
+    @include font-weight(semi-bold);
+    @include font-size(medium);
+    color: color(primary);
+    cursor: pointer;
+
+    @include respond(large) {
+      text-decoration: underline;
+    }
+  }
+
+  &-wrapper {
+    @include card-shadow;
+    background-color: color(white);
+
+    @include respond(largest) {
+      width: 90%;
+    }
+  }
+}

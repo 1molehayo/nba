@@ -8,7 +8,7 @@ export const Modal = ({ children, className, show, onClose }) => {
     <ReactModal
       isOpen={show}
       onRequestClose={onClose}
-      className={classnames('modal-content', className)}
+      className={classnames('modal-content scrollbar', className)}
       role="dialog"
       ariaHideApp={false}
     >

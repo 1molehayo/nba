@@ -12,12 +12,17 @@ import {
 } from '../../utility/constants';
 import styles from '../../styles/dashboard/layouts/header.module.scss';
 import Logo from '../../assets/images/logo.png';
-import Avatar from '../../assets/images/avatar.png';
 import handleApiError from '../../services/handle-api-error';
-import { useDispatchCurrentUser } from '../../contexts/current-user';
+import {
+  useCurrentUser,
+  useDispatchCurrentUser
+} from '../../contexts/current-user';
+import { getImagePath, shimmer, toBase64 } from '../../utility';
 
 const DashboardHeader = () => {
   const [searchValue, setSearchValue] = useState();
+  const user = useCurrentUser();
+  const { image, loading, isAuthenticated } = user;
   const dispatch = useDispatchCurrentUser();
 
   const handleLogout = async () => {
@@ -42,7 +47,9 @@ const DashboardHeader = () => {
 
   const ProfileImage = (
     <Image
-      src={Avatar}
+      src={getImagePath(image?.url)}
+      placeholder="blur"
+      blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(60, 60))}`}
       alt="user avatar"
       width={60}
       height={60}
@@ -71,7 +78,7 @@ const DashboardHeader = () => {
 
           <div className={styles.profile}>
             <Dropdown
-              titleNode={ProfileImage}
+              titleNode={isAuthenticated && !loading ? ProfileImage : null}
               items={PROFILE_MENU}
               buttonlinks={{ logout: () => handleLogout() }}
             />

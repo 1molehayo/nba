@@ -1,0 +1,44 @@
+.news-card {
+  &-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+  }
+
+  &__image {
+    position: relative;
+    width: 100%;
+    height: 150px;
+
+    @include respond(small) {
+      height: 180px;
+    }
+
+    img {
+      border-bottom-right-radius: 15px;
+      border-bottom-left-radius: 15px;
+    }
+  }
+
+  &__title {
+    @include font-family(montserrat);
+    @include font-weight(semi-bold);
+    @include font-size(medium);
+    color: color(primary);
+  }
+
+  &-wrapper {
+    @include card-shadow;
+    background-color: color(light-blue);
+
+    @include respond(large) {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      height: 100%;
+      margin: 0 auto;
+    }
+  }
+}

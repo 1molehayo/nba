@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player/youtube';
 import { VIDEO_PLAYER_SETTINGS } from '../../utility/constants';
-import { Modal } from './modal';
+import { Modal } from '../global/modal';
 
 export const VideoModal = ({ link, show, onClose }) => {
   return (

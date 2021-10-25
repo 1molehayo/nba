@@ -9,7 +9,9 @@ export const REGISTER_FORM_MODEL = {
   passwordConfirmation: '',
   phoneNumber: '',
   linkedin: '',
-  twitter: ''
+  twitter: '',
+  jobType: '',
+  jobTitle: ''
 };
 
 export const LOGIN_FORM_MODEL = {
@@ -31,5 +33,34 @@ export const SETTINGS_FORM_MODEL = {
   lastName: '',
   phoneNumber: '',
   linkedin: '',
-  twitter: ''
+  twitter: '',
+  jobType: '',
+  jobTitle: ''
+};
+
+export const ARTICLE_FORM_MODEL = {
+  title: '',
+  description: ''
+};
+
+export const BOOK_FORM_MODEL = {
+  author: '',
+  title: '',
+  description: ''
+};
+
+export const EVENT_FORM_MODEL = {
+  title: '',
+  description: '',
+  venue: '',
+  time: ''
+};
+
+export const MEETING_FORM_MODEL = {
+  title: '',
+  description: '',
+  platform_name: '',
+  url: '',
+  date: '',
+  time: ''
 };

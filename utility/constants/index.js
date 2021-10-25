@@ -4,3 +4,4 @@ export * from './home';
 export * from './menu';
 export * from './others';
 export * from './people';
+export * from './permissions';

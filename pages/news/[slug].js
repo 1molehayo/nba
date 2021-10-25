@@ -6,8 +6,12 @@ import axios from '../../services/axios';
 import { Banner } from '../../components/app';
 import { getImagePath } from '../../utility';
 import styles from '../../styles/app/pages/news.module.scss';
+import handleApiError from '../../services/handle-api-error';
+import useOnError from '../../services/use-on-error';
 
-export default function Article({ article }) {
+export default function Article({ article, error }) {
+  useOnError(error);
+
   return (
     <section className="news">
       <Head>
@@ -17,7 +21,7 @@ export default function Article({ article }) {
       <Banner title="News" hasBackButton />
 
       <div className="section container pb-0">
-        <h2 className="text-center pb-8">{article.title}</h2>
+        <h2 className="text-center pb-8">{article?.title}</h2>
 
         <div className={styles.image}>
           {article && article.image && (
@@ -35,7 +39,7 @@ export default function Article({ article }) {
       <div className="section container">
         <div
           className={styles.content}
-          dangerouslySetInnerHTML={{ __html: article.content }}
+          dangerouslySetInnerHTML={{ __html: article?.content }}
         ></div>
       </div>
     </section>
@@ -43,35 +47,26 @@ export default function Article({ article }) {
 }
 
 Article.propTypes = {
-  article: PropTypes.object
+  article: PropTypes.object,
+  error: PropTypes.object
 };
 
-// tell next.js how many pages there are
-export async function getStaticPaths() {
-  const { data } = await axios.get('/articles');
+export async function getServerSideProps({ params }) {
+  let article = null;
+  let error = {};
 
-  const paths = data.map((item) => ({
-    params: { slug: item.slug }
-  }));
-
-  return {
-    paths,
-    fallback: true
-  };
+  try {
+    const { slug } = params;
+    const { data } = await axios.get(`/articles?slug=${slug}`);
+    article = { ...data[0] };
+  } catch (err) {
+    error = handleApiError(err);
+  } finally {
+    return {
+      props: {
+        article,
+        error
+      }
+    };
+  }
 }
-
-// for each individual page: get the data for that page
-export async function getStaticProps({ params }) {
-  const { slug } = params;
-
-  const { data } = await axios.get(`articles?slug=${slug}`);
-  const article = data[0];
-
-  return {
-    props: {
-      article
-    }
-  };
-}
-
-// membersstack.com

@@ -5,13 +5,19 @@ import styles from '../../styles/dashboard/layouts/dashboard.module.scss';
 import DashboardFooter from './footer';
 import DashboardHeader from './header';
 import DashboardSidebar from './sidebar';
+import { Loader } from '../../components/global';
+import { useDispatchPlatform } from '../../contexts/platform-context';
 
 export default function DashboardLayout({ children, hasSidebar, hasNav }) {
+  const { loading } = useDispatchPlatform();
+
   return (
     <>
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      {loading && <Loader />}
 
       {hasNav && <DashboardHeader />}
 
@@ -20,7 +26,7 @@ export default function DashboardLayout({ children, hasSidebar, hasNav }) {
       >
         {hasSidebar && <DashboardSidebar />}
 
-        <main className={styles.body}>{children}</main>
+        <main className={classnames(styles.body, 'scrollbar')}>{children}</main>
       </div>
 
       <DashboardFooter isFixed={hasSidebar} />

@@ -29,9 +29,9 @@
   @include font-family(montserrat);
   @include font-weight(bold);
   margin-bottom: 1rem;
+  color: color(black);
   line-height: 1.2;
   text-transform: capitalize;
-  color: color(black);
 }
 
 @mixin link {
@@ -43,15 +43,15 @@
 
   @include respond(large) {
     &::before {
+      content: '';
       position: absolute;
       bottom: 0;
-      opacity: 0;
       left: 0;
-      content: "";
       width: 100%;
       height: 2px;
-      background-color: color(orange);
       transition: 0.3s opacity;
+      opacity: 0;
+      background-color: color(orange);
     }
 
     &:hover {
@@ -65,8 +65,8 @@
 @mixin nav-link {
   @include link;
   padding: 1rem 1.6rem;
-  text-transform: uppercase;
   letter-spacing: 0.03em;
+  text-transform: uppercase;
 
   @include respond(large) {
     &::before {
@@ -85,6 +85,38 @@
 
     &:hover {
       box-shadow: 12px 12px 24px -1px rgba(3, 3, 3, 0.3);
+    }
+  }
+}
+
+@mixin modal-wrapper {
+  max-width: 700px;
+  padding: 3rem;
+  border: 1px solid color(light-grey) !important;
+  background-color: color(white) !important;
+}
+
+@mixin delete-button {
+  button {
+    @include font-size(x-small);
+    display: none;
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    padding: 0.5rem;
+    transform: translate(-50%, -50%);
+    transition: none !important;
+    vertical-align: middle;
+    white-space: nowrap;
+
+    &:hover {
+      transform: translate(-50%, -50%);
+    }
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
     }
   }
 }

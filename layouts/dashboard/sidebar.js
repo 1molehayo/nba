@@ -10,9 +10,9 @@ const DashboardSidebar = () => {
   const { role } = useCurrentUser();
 
   return (
-    <aside className={classnames(styles.wrapper, 'scrollbar')}>
+    <aside className={classnames(styles.wrapper)}>
       <div className={styles.inner}>
-        <ul>
+        <ul className="scrollbar">
           <li>
             <Link href="/dashboard">
               <a
@@ -30,7 +30,9 @@ const DashboardSidebar = () => {
             <Link href="/dashboard/meetings">
               <a
                 className={classnames({
-                  [styles.isActive]: router.pathname === '/dashboard/meetings'
+                  [styles.isActive]: router.pathname.includes(
+                    '/dashboard/meetings'
+                  )
                 })}
               >
                 <span
@@ -45,7 +47,8 @@ const DashboardSidebar = () => {
             <Link href="/dashboard/library">
               <a
                 className={classnames({
-                  [styles.isActive]: router.pathname === '/dashboard/library'
+                  [styles.isActive]:
+                    router.pathname.includes('/dashboard/library')
                 })}
               >
                 <span className="icon-book" />
@@ -59,7 +62,8 @@ const DashboardSidebar = () => {
               <Link href="/dashboard/events">
                 <a
                   className={classnames({
-                    [styles.isActive]: router.pathname === '/dashboard/events'
+                    [styles.isActive]:
+                      router.pathname.includes('/dashboard/events')
                   })}
                 >
                   <span className="icon-calendar" />
@@ -74,7 +78,8 @@ const DashboardSidebar = () => {
               <Link href="/dashboard/news">
                 <a
                   className={classnames({
-                    [styles.isActive]: router.pathname === '/dashboard/news'
+                    [styles.isActive]:
+                      router.pathname.includes('/dashboard/news')
                   })}
                 >
                   <span className="icon-news" />
@@ -109,7 +114,8 @@ const DashboardSidebar = () => {
               <Link href="/dashboard/members">
                 <a
                   className={classnames({
-                    [styles.isActive]: router.pathname === '/dashboard/members'
+                    [styles.isActive]:
+                      router.pathname.includes('/dashboard/members')
                   })}
                 >
                   <span className="icon-profile" />

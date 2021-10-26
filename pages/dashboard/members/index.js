@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
 import withAuth from '../../../services/with-auth';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
-import { parseCookies } from 'nookies';
 
 function Members({ members, error }) {
+  // eslint-disable-next-line no-unused-vars
   const [membersData, setMembers] = useState(members);
 
   useOnError(error);

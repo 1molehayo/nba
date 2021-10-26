@@ -13,7 +13,7 @@ import {
   formatCharLength,
   getImagePath,
   isArrayEmpty,
-  isObjectEmpty,
+  isDraftJsEmpty,
   notify,
   shimmer,
   toBase64
@@ -22,6 +22,7 @@ import { FormField } from '../../global';
 import handleApiError from '../../../services/handle-api-error';
 import { ARTICLE_FORM_MODEL } from '../../../utility/models';
 import { ArticleSchema } from '../../../utility/validations';
+import { TEXT_RESTRICTIONS } from '../../../utility/constants';
 
 const ArticleForm = ({ data, onDelete }) => {
   const [file, setFile] = useState();
@@ -32,8 +33,12 @@ const ArticleForm = ({ data, onDelete }) => {
   const [editorState, setEditorState] = useState();
 
   const initialData = {
-    title: formatCharLength(data?.title, 70, true),
-    description: formatCharLength(data?.description, 250, true)
+    title: formatCharLength(data?.title, TEXT_RESTRICTIONS.medium_text, true),
+    description: formatCharLength(
+      data?.short_description,
+      TEXT_RESTRICTIONS.long_text,
+      true
+    )
   };
 
   const formik = useFormik({
@@ -48,7 +53,7 @@ const ArticleForm = ({ data, onDelete }) => {
           formData.append('files.image', file);
         }
 
-        if (isObjectEmpty(editorState)) {
+        if (isDraftJsEmpty(editorState.getCurrentContent())) {
           throw new Error(`Article content can't be empty`);
         }
 
@@ -79,11 +84,12 @@ const ArticleForm = ({ data, onDelete }) => {
             type: 'success',
             message: 'Article was created successfully'
           });
-        }
 
-        formik.resetForm();
-        setImage();
-        setEditorState();
+          formik.resetForm();
+          setImage();
+          setFile();
+          setEditorState();
+        }
       } catch (err) {
         const errorObj = handleApiError(err);
 
@@ -138,12 +144,13 @@ const ArticleForm = ({ data, onDelete }) => {
               type="textarea"
               id="title"
               className={styles.title}
-              label="Title max(70 characters)"
+              label={`Title max(${TEXT_RESTRICTIONS.medium_text} characters)`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.title}
               error={formik.errors.title}
               touched={formik.touched.title}
+              maxLength={TEXT_RESTRICTIONS.medium_text}
               isRequired
             />
           </div>
@@ -176,13 +183,13 @@ const ArticleForm = ({ data, onDelete }) => {
             rows={6}
             id="description"
             className="font-size-regular"
-            label="Short description max(250 characters)"
+            label={`Short description max(${TEXT_RESTRICTIONS.long_text} characters)`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.description}
             error={formik.errors.description}
             touched={formik.touched.description}
-            maxLength={250}
+            maxLength={TEXT_RESTRICTIONS.long_text}
             isRequired
           />
         </div>
@@ -194,6 +201,7 @@ const ArticleForm = ({ data, onDelete }) => {
           <RichTextEditor
             editorState={editorState}
             setEditorState={setEditorState}
+            content={data?.content ? data?.content : null}
           />
 
           <div className="mt-4">

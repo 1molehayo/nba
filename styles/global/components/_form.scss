@@ -74,6 +74,10 @@
       color: color(dark);
       line-height: 40px;
     }
+
+    &-wrapper {
+      flex: 1 1;
+    }
   }
 
   &__group {

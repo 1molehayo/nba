@@ -32,7 +32,7 @@ export const Select = forwardRef((props, ref) => {
           className={classnames('form__input', props.className)}
           {...formProps}
         >
-          <option defaultValue disabled>
+          <option value="" disabled>
             -select-
           </option>
           {props.children}

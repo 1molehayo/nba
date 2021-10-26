@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
+import { useRouter } from 'next/router';
 import axios from '../../../services/axios';
 import handleApiError from '../../../services/handle-api-error';
 import useOnError from '../../../services/use-on-error';
-import { parseCookies } from 'nookies';
 import ArticleForm from '../../../components/dashboard/forms/news';
-import { useRouter } from 'next/router';
 import withAuth from '../../../services/with-auth';
 import { Loader } from '../../../components/global';
+import { getPermissions, notify } from '../../../utility';
+import { useCurrentUser } from '../../../contexts/current-user';
 
 function Article({ article, error }) {
   const [deleting, setDeleting] = useState(false);
+  const router = useRouter();
+  const { role } = useCurrentUser();
 
   useOnError(error);
 
-  const router = useRouter();
+  useEffect(() => {
+    if (!getPermissions(role).includes('update.articles')) {
+      router.replace('/dashboard/news');
+    }
+  }, [role, router]);
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -43,7 +51,12 @@ function Article({ article, error }) {
     <>
       {deleting && <Loader />}
 
-      <ArticleForm data={article} onDelete={handleDelete} />
+      <ArticleForm
+        data={article}
+        onDelete={
+          getPermissions(role).includes('delete.articles') ? handleDelete : null
+        }
+      />
     </>
   );
 }

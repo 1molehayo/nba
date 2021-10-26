@@ -8,10 +8,12 @@ import handleApiError from '../../../services/handle-api-error';
 import { notify } from '../../../utility';
 
 function MemberDetails({ member, error }) {
+  // eslint-disable-next-line no-unused-vars
   const [reviewing, setReviewing] = useState(false);
 
   useOnError(error);
 
+  // eslint-disable-next-line no-unused-vars
   const handleReview = async () => {
     setReviewing(true);
 

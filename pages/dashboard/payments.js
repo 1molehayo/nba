@@ -1,11 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
 import withAuth from '../../services/with-auth';
 import useOnError from '../../services/use-on-error';
-import { parseCookies } from 'nookies';
 import { PaymentCard, Table } from '../../components/dashboard';
 import { PAYMENT_HEADERS } from '../../utility/constants';
 import { getStatus, isArrayEmpty } from '../../utility';

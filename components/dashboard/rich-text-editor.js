@@ -11,10 +11,18 @@ const Editor = dynamic(
 );
 
 class RichTextEditor extends React.Component {
+  isMounted = false;
+
   constructor(props) {
     super(props);
 
-    if (this.props.content) {
+    this.content = this.props.content;
+  }
+
+  componentDidMount() {
+    this.isMounted = true;
+
+    if (this.content) {
       const contentBlock = htmlToDraft(this.props.content);
       if (contentBlock) {
         const contentState = ContentState.createFromBlockArray(
@@ -27,8 +35,14 @@ class RichTextEditor extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.isMounted = false;
+  }
+
   onEditorStateChange = (editorState) => {
-    this.props.setEditorState(editorState);
+    if (this.isMounted) {
+      this.props.setEditorState(editorState);
+    }
   };
 
   render() {

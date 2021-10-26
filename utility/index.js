@@ -1,6 +1,7 @@
 import Toastify from 'toastify-js';
 import getConfig from 'next/config';
 import moment from 'moment';
+import { convertFromRaw, convertToRaw } from 'draft-js';
 import { PERMISSIONS } from './constants';
 
 const { publicRuntimeConfig } = getConfig();
@@ -204,4 +205,14 @@ export const getOldMeetings = (arr) => {
 
     return datetime.isBefore(new Date(), 'day');
   });
+};
+
+export const isDraftJsEmpty = (state) => {
+  const rawState = convertToRaw(state);
+  if (!rawState || isObjectEmpty(rawState)) {
+    // filter undefined and {}
+    return true;
+  }
+  const contentState = convertFromRaw(rawState);
+  return !(contentState.hasText() && contentState.getPlainText() !== '');
 };

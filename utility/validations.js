@@ -98,8 +98,7 @@ export const EventSchema = Yup.object().shape({
 export const MeetingSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   description: Yup.string(),
-  url: Yup.string().required('Url is required'),
-  date: Yup.string().required('Date is required'),
-  time: Yup.string().required('Time is required'),
-  platform: Yup.string().required('Platform is required')
+  url: Yup.string().required('Meeting URL is required'),
+  time: Yup.string().nullable(),
+  platform: Yup.number().required('Platform is required')
 });

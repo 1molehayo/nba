@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import BookForm from '../../../components/dashboard/forms/book';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
 import withAuth from '../../../services/with-auth';
-import { useRouter } from 'next/router';
 import { Loader } from '../../../components/global';
+import { useCurrentUser } from '../../../contexts/current-user';
+import { getPermissions, notify } from '../../../utility';
 
 function BookDetails({ book, error }) {
   const [deleting, setDeleting] = useState(false);
@@ -14,6 +17,14 @@ function BookDetails({ book, error }) {
   useOnError(error);
 
   const router = useRouter();
+
+  const { role } = useCurrentUser();
+
+  useEffect(() => {
+    if (!getPermissions(role).includes('update.books')) {
+      router.replace('/dashboard/library');
+    }
+  }, [role, router]);
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -42,7 +53,12 @@ function BookDetails({ book, error }) {
     <>
       {deleting && <Loader />}
 
-      <BookForm data={book} onDelete={handleDelete} />
+      <BookForm
+        data={book}
+        onDelete={
+          getPermissions(role).includes('delete.books') ? handleDelete : null
+        }
+      />
     </>
   );
 }

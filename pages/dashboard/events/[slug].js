@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
 import withAuth from '../../../services/with-auth';
 import EventForm from '../../../components/dashboard/forms/event';
-import { useRouter } from 'next/router';
 import { Loader } from '../../../components/global';
-import { parseCookies } from 'nookies';
+import { useCurrentUser } from '../../../contexts/current-user';
+import { getPermissions, notify } from '../../../utility';
 
 function EventDetails({ event, error }) {
   const [deleting, setDeleting] = useState(false);
+  const router = useRouter();
+  const { role } = useCurrentUser();
 
   useOnError(error);
 
-  const router = useRouter();
+  useEffect(() => {
+    if (!getPermissions(role).includes('update.events')) {
+      router.replace('/dashboard/events');
+    }
+  }, [role, router]);
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -44,7 +52,12 @@ function EventDetails({ event, error }) {
     <>
       {deleting && <Loader />}
 
-      <EventForm data={event} onDelete={handleDelete} />
+      <EventForm
+        data={event}
+        onDelete={
+          getPermissions(role).includes('delete.events') ? handleDelete : null
+        }
+      />
     </>
   );
 }

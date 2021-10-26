@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
 import { Book } from '../../../components/dashboard';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import withAuth from '../../../services/with-auth';
-import { parseCookies } from 'nookies';
 import { Empty, Loader } from '../../../components/global';
-import { isArrayEmpty, notify } from '../../../utility';
+import { getPermissions, isArrayEmpty, notify } from '../../../utility';
 import handleApiError from '../../../services/handle-api-error';
+import { useCurrentUser } from '../../../contexts/current-user';
 
 function Library({ books, error }) {
   const [bookData, setBooks] = useState(books);
   const [deleting, setDeleting] = useState(false);
+  const { role } = useCurrentUser();
 
   useOnError(error);
 
@@ -71,10 +73,16 @@ function Library({ books, error }) {
               <div className="col-md-4 mb-10" key={i}>
                 <Book
                   item={item}
-                  onDelete={() => {
-                    onDelete(item.id);
-                    console.log(item.id);
-                  }}
+                  link={
+                    getPermissions(role).includes('update.books')
+                      ? `/dashboard/library/${item.slug}`
+                      : null
+                  }
+                  onDelete={
+                    getPermissions(role).includes('delete.books')
+                      ? () => onDelete(item.id)
+                      : null
+                  }
                 />
               </div>
             ))}

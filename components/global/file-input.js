@@ -19,27 +19,30 @@ export const FileInput = forwardRef((props, ref) => {
         </label>
       )}
 
-      <div
-        className={classnames('form__file mr-2', props.className, {
-          'form__file--error': props.error,
-          'form__file--active': props.fileName
-        })}
-      >
-        <label>Choose file</label>
+      <div className="form__file-wrapper">
+        <div
+          className={classnames('form__file', props.className, {
+            'form__file--error': props.error,
+            'form__file--active':
+              props.fileName && props.fileName !== 'No file Chosen...'
+          })}
+        >
+          <label>Choose file</label>
 
-        <span className="form__file-name">{props.fileName}</span>
+          <span className="form__file-name">{props.fileName}</span>
 
-        <input
-          {...formProps}
-          type="file"
-          ref={ref}
-          id={props.id}
-          name={props.id}
-          accept={props.allowedFiles}
-        />
+          <input
+            {...formProps}
+            type="file"
+            ref={ref}
+            id={props.id}
+            name={props.id}
+            accept={props.allowedFiles}
+          />
+        </div>
+
+        {props.error && <p className="form__error">{props.error}</p>}
       </div>
-
-      {props.error && <p className="form__error">{props.error}</p>}
     </div>
   );
 });

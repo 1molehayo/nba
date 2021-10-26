@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
-import { parseCookies } from 'nookies';
 import { Empty, EventsCard, Loader } from '../../../components/global';
-import { isArrayEmpty, notify } from '../../../utility';
+import { getPermissions, isArrayEmpty, notify } from '../../../utility';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
+import { useCurrentUser } from '../../../contexts/current-user';
 
 function Events({ events, error }) {
   const [eventData, setEvents] = useState(events);
   const [deleting, setDeleting] = useState(false);
+  const { role } = useCurrentUser();
 
   useOnError(error);
 
@@ -71,8 +73,16 @@ function Events({ events, error }) {
                 <div className="col-md-6 col-xl-4 mb-5" key={i}>
                   <EventsCard
                     item={item}
-                    link={`/dashboard/events/${item.slug}`}
-                    onDelete={() => handleDelete(item.id)}
+                    link={
+                      getPermissions(role).includes('update.events')
+                        ? `/dashboard/events/${item.slug}`
+                        : null
+                    }
+                    onDelete={
+                      getPermissions(role).includes('delete.events')
+                        ? () => handleDelete(item.id)
+                        : null
+                    }
                   />
                 </div>
               ))}

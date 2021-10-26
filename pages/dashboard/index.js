@@ -1,6 +1,8 @@
 import classnames from 'classnames';
 import React from 'react';
 import Head from 'next/head';
+import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
 import {
   Book,
   DashboardCard,
@@ -13,9 +15,9 @@ import styles from '../../styles/dashboard/pages/home.module.scss';
 import { PAYMENT_HEADERS } from '../../utility/constants';
 import { getStatus, getUpcomingMeetings, isArrayEmpty } from '../../utility';
 import withAuth from '../../services/with-auth';
-import { parseCookies } from 'nookies';
 import { Empty } from '../../components/global';
 import useOnError from '../../services/use-on-error';
+import handleApiError from '../../services/handle-api-error';
 
 function Dashboard({ books, meetings, payments, error }) {
   const DASHBOARD_CARDS = [
@@ -142,6 +144,13 @@ function Dashboard({ books, meetings, payments, error }) {
   );
 }
 
+Dashboard.propTypes = {
+  books: PropTypes.array,
+  error: PropTypes.object,
+  meetings: PropTypes.array,
+  payments: PropTypes.array
+};
+
 export default withAuth(Dashboard);
 
 export async function getServerSideProps(ctx) {
@@ -160,7 +169,6 @@ export async function getServerSideProps(ctx) {
   try {
     const meetingResponse = await axios.get('/meetings', config);
     meetings = meetingResponse.data;
-    console.log(meetings);
     const bookResponse = await axios.get('/books', config);
     books = bookResponse.data;
     const paymentsResponse = await axios.get('/payments', config);

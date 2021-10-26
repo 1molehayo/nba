@@ -3,22 +3,32 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useFormik } from 'formik';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 import moment from 'moment';
-import { formatCharLength, getFileName, notify } from '../../../utility';
+import {
+  capitalizeFirstLetter,
+  formatCharLength,
+  isArrayEmpty,
+  notify
+} from '../../../utility';
 import axios from '../../../services/axios';
+import RichTextEditor from '../rich-text-editor';
 import handleApiError from '../../../services/handle-api-error';
-import { EVENT_FORM_MODEL } from '../../../utility/models';
-import { EventSchema } from '../../../utility/validations';
-import { FormField, DatePicker, TimePicker } from '../../global';
-import { FileInput } from '../../global/file-input';
+import { MEETING_FORM_MODEL } from '../../../utility/models';
+import { MeetingSchema } from '../../../utility/validations';
+import { DatePicker, FormField, Select, TimePicker } from '../../global';
+import { useCurrentPlatform } from '../../../contexts/platform-context';
 import { TEXT_RESTRICTIONS } from '../../../utility/constants';
 
-const EventForm = ({ data, onDelete }) => {
-  const [image, setImage] = useState();
+const MeetingForm = ({ data, onDelete }) => {
+  const { platforms } = useCurrentPlatform();
+
   const [date, setDate] = useState(
     data?.date ? moment(data?.date, 'YYYY-MM-DD').toDate() : null
   );
   const [dateError, setDateError] = useState();
+  const [editorState, setEditorState] = useState();
   const [loading, setLoading] = useState(false);
 
   const initialData = {
@@ -29,24 +39,26 @@ const EventForm = ({ data, onDelete }) => {
       true
     ),
     time: data?.time,
-    venue: formatCharLength(data?.venue, TEXT_RESTRICTIONS.long_text, true)
+    platform: data?.platform,
+    url: data?.url
   };
 
   const formik = useFormik({
-    initialValues: data ? initialData : EVENT_FORM_MODEL,
-    validationSchema: EventSchema,
+    initialValues: data ? initialData : MEETING_FORM_MODEL,
+    validationSchema: MeetingSchema,
     onSubmit: async (values) => {
       setLoading(true);
 
       try {
         const formData = new FormData();
 
-        if (image) {
-          formData.append('files.image', image, getFileName(image));
-        }
+        const content = draftToHtml(
+          convertToRaw(editorState.getCurrentContent())
+        );
 
         const obj = {
           ...values,
+          extra_info: content,
           date: moment(date).format(),
           time: `${values.time}:00`
         };
@@ -54,23 +66,23 @@ const EventForm = ({ data, onDelete }) => {
         formData.append('data', JSON.stringify(obj));
 
         if (data) {
-          await axios.put(`/events/${data.id}`, formData);
+          await axios.put(`/meetings/${data.id}`, formData);
 
           notify({
             type: 'success',
-            message: 'Event was updated successfully'
+            message: 'Meeting was updated successfully'
           });
         } else {
-          await axios.post('/events', formData);
+          await axios.post('/meetings', formData);
 
           notify({
             type: 'success',
-            message: 'Event was created successfully'
+            message: 'Meeting was created successfully'
           });
 
           formik.resetForm();
+          setEditorState();
           setDate();
-          setImage();
         }
       } catch (err) {
         const errorObj = handleApiError(err);
@@ -85,12 +97,9 @@ const EventForm = ({ data, onDelete }) => {
     }
   });
 
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
+
     setDateError();
     formik.setFieldError('time', '');
 
@@ -109,15 +118,15 @@ const EventForm = ({ data, onDelete }) => {
   return (
     <section>
       <Head>
-        <title>Event | NBA-Ikeja</title>
+        <title>Meetings | NBA-Ikeja</title>
       </Head>
 
       <div className="section container pt-0 pb-0">
         <div className="d-flex justify-content-between pb-5">
-          <h4>Event</h4>
+          <h4>Meetings</h4>
 
-          <Link href="/dashboard/events" passHref>
-            <button className="button button--primary">Back to Events</button>
+          <Link href="/dashboard/meetings" passHref>
+            <button className="button button--primary">Back to Meetings</button>
           </Link>
         </div>
 
@@ -139,9 +148,9 @@ const EventForm = ({ data, onDelete }) => {
           />
 
           <FormField
-            id="description"
             type="textarea"
             rows={6}
+            id="description"
             className="font-size-regular"
             label={`Short description max (${TEXT_RESTRICTIONS.long_text} characters)`}
             onChange={formik.handleChange}
@@ -152,24 +161,33 @@ const EventForm = ({ data, onDelete }) => {
             maxLength={TEXT_RESTRICTIONS.long_text}
           />
 
-          <FileInput
-            id="image"
-            label="Select Image"
-            onChange={handleImageChange}
-            fileName={data ? data.image.name : getFileName(image)}
-          />
-
-          <FormField
-            id="venue"
-            type="textarea"
-            rows={6}
-            label={`Venue max (${TEXT_RESTRICTIONS.long_text} characters)`}
+          <Select
+            id="platform"
+            label="Platform"
+            display="inline"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.venue}
-            error={formik.errors.venue}
-            touched={formik.touched.venue}
-            maxLength={TEXT_RESTRICTIONS.long_text}
+            value={formik.values.platform}
+            error={formik.errors.platform}
+            touched={formik.touched.platform}
+            isRequired
+          >
+            {!isArrayEmpty(platforms) &&
+              platforms.map((pItem, i) => (
+                <option key={i} value={pItem.id}>
+                  {capitalizeFirstLetter(pItem.name)}
+                </option>
+              ))}
+          </Select>
+
+          <FormField
+            id="url"
+            label="Meeting URL"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.url}
+            error={formik.errors.url}
+            touched={formik.touched.url}
             isRequired
           />
 
@@ -192,6 +210,20 @@ const EventForm = ({ data, onDelete }) => {
             touched={formik.touched.time}
             isRequired
           />
+
+          <div className="form__group align-items-start">
+            <label className="font-size-small color-black pt-2">
+              Extra Information
+            </label>
+
+            <div className="form__input__wrapper">
+              <RichTextEditor
+                editorState={editorState}
+                setEditorState={setEditorState}
+                content={data?.extra_info ? data?.extra_info : null}
+              />
+            </div>
+          </div>
 
           <div className="mt-4">
             <button
@@ -219,9 +251,10 @@ const EventForm = ({ data, onDelete }) => {
   );
 };
 
-EventForm.propTypes = {
+MeetingForm.propTypes = {
   data: PropTypes.object,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  platforms: PropTypes.array
 };
 
-export default EventForm;
+export default MeetingForm;

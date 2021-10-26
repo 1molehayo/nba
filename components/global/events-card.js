@@ -10,6 +10,7 @@ import {
   toBase64
 } from '../../utility';
 import { Modal } from './modal';
+import { TEXT_RESTRICTIONS } from '../../utility/constants';
 
 export const EventsCard = ({ item, onDelete, link }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -69,7 +70,7 @@ export const EventsCard = ({ item, onDelete, link }) => {
           )}
 
           <p className="font-size-small mb-4">
-            {formatCharLength(item.description, 100)}
+            {formatCharLength(item.description, TEXT_RESTRICTIONS.medium_text)}
           </p>
 
           <hr className="divider" />
@@ -154,9 +155,7 @@ export const EventsCard = ({ item, onDelete, link }) => {
               <strong>Venue</strong>
             </p>
 
-            <p className="font-size-small">
-              {formatCharLength(item.venue, 35)}
-            </p>
+            <p className="font-size-small">{item.venue}</p>
           </div>
         </div>
       </Modal>

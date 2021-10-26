@@ -6,8 +6,6 @@ import Adesola from '../../assets/images/about/adesola-adekunbi.jpeg';
 import Bartholomew from '../../assets/images/about/bartholomew-aguegbodo.jpeg';
 import Ezekiel from '../../assets/images/about/ezekiel-olugbenga.jpeg';
 
-import BookAvatar from '../../assets/images/book-avatar.png';
-
 export const VIDEO_PLAYER_SETTINGS = {
   width: '100%',
   height: '100%',
@@ -135,127 +133,8 @@ export const LAWYERS = [
   }
 ];
 
-export const BOOKS = [
-  {
-    id: 'book-01',
-    title: 'The Night Profecy',
-    author: 'John Doe',
-    publisher: 'lawyer-1',
-    image: BookAvatar.src,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non sapien at arcu sodales pellentesque. Etiam semper velit ant e'
-  },
-  {
-    id: 'book-01',
-    title: 'The Night Profecy',
-    author: 'John Doe',
-    publisher: 'lawyer-1',
-    image: BookAvatar.src,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non sapien at arcu sodales pellentesque. Etiam semper velit ant e'
-  },
-  {
-    id: 'book-02',
-    title: 'The Night Profecy',
-    author: 'John Doe',
-    publisher: 'lawyer-1',
-    image: BookAvatar.src,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non sapien at arcu sodales pellentesque. Etiam semper velit ant e'
-  },
-  {
-    id: 'book-03',
-    title: 'The Night Profecy',
-    author: 'John Doe',
-    publisher: 'lawyer-1',
-    image: BookAvatar.src,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non sapien at arcu sodales pellentesque. Etiam semper velit ant e'
-  },
-  {
-    id: 'book-04',
-    title: 'The Night Profecy',
-    author: 'John Doe',
-    publisher: 'lawyer-1',
-    image: BookAvatar.src,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non sapien at arcu sodales pellentesque. Etiam semper velit ant e'
-  },
-  {
-    id: 'book-05',
-    title: 'The Night Profecy',
-    author: 'John Doe',
-    publisher: 'lawyer-1',
-    image: BookAvatar.src,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non sapien at arcu sodales pellentesque. Etiam semper velit ant e'
-  }
-];
-
-export const MEETINGS = [
-  {
-    id: 'meeting-01',
-    title: 'Meeting with the president ',
-    description: 'This is a description',
-    date: '02/05/2022',
-    time: '10:00am',
-    url: ''
-  },
-  {
-    id: 'meeting-02',
-    title: 'Meeting with the president ',
-    description: 'This is a description',
-    date: '02/05/2022',
-    time: '10:00am',
-    url: ''
-  },
-  {
-    id: 'meeting-03',
-    title: 'Meeting with the president ',
-    description: 'This is a description',
-    date: '02/05/2022',
-    time: '10:00am',
-    url: ''
-  },
-  {
-    id: 'meeting-04',
-    title: 'Meeting with the president ',
-    description: 'This is a description',
-    date: '02/05/2022',
-    time: '10:00am',
-    url: ''
-  }
-];
-
-export const PAYMENT_DETAILS = [
-  {
-    id: 'payment-01',
-    status: 'success',
-    date: '10/08/2019',
-    title: 'Annual dues'
-  },
-  {
-    id: 'payment-02',
-    status: 'fail',
-    date: '10/08/2020',
-    title: 'Annual dues'
-  },
-  {
-    id: 'payment-03',
-    status: 'success',
-    date: '10/08/2020',
-    title: 'Annual dues'
-  },
-  {
-    id: 'payment-04',
-    status: 'fail',
-    date: '10/08/2021',
-    title: 'Annual dues'
-  },
-  {
-    id: 'payment-05',
-    status: 'success',
-    date: '10/08/2021',
-    title: 'Annual dues'
-  }
-];
+export const TEXT_RESTRICTIONS = {
+  short_text: 80,
+  medium_text: 100,
+  long_text: 250
+};

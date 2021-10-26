@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
+import classnames from 'classnames';
 import styles from '../../styles/dashboard/components/book.module.scss';
 import {
   formatCharLength,
@@ -10,8 +12,9 @@ import {
   toBase64
 } from '../../utility';
 import { Modal } from '../global';
+import { TEXT_RESTRICTIONS } from '../../utility/constants';
 
-export const Book = ({ item, onDelete }) => {
+export const Book = ({ item, link, onDelete }) => {
   const [openModal, setOpenModal] = useState(false);
   const toggleModal = () => setOpenModal((prevState) => !prevState);
 
@@ -50,12 +53,24 @@ export const Book = ({ item, onDelete }) => {
 
         <div className={styles.content}>
           <div>
-            <p className={styles.title}>{item.title}</p>
+            {link && (
+              <Link href={link} passHref>
+                <p
+                  role="link"
+                  className={classnames(styles.title, styles.title__link)}
+                >
+                  {item.title}
+                </p>
+              </Link>
+            )}
+
+            {!link && <p className={styles.title}>{item.title}</p>}
+
             <p className={styles.author}>
               <em>{item.author}</em>
             </p>
             <p className={styles.desc}>
-              {formatCharLength(item.description, 80)}
+              {formatCharLength(item.description, TEXT_RESTRICTIONS.short_text)}
             </p>
           </div>
 
@@ -87,7 +102,9 @@ Book.propTypes = {
     file: PropTypes.object,
     id: PropTypes.number,
     image: PropTypes.object,
+    slug: PropTypes.string,
     title: PropTypes.string
   }),
+  link: PropTypes.string,
   onDelete: PropTypes.func
 };

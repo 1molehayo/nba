@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
-import { parseCookies } from 'nookies';
 import { Empty, Loader, NewsCard } from '../../../components/global';
-import { isArrayEmpty, notify } from '../../../utility';
+import { getPermissions, isArrayEmpty, notify } from '../../../utility';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
+import { useCurrentUser } from '../../../contexts/current-user';
 
 function News({ articles, error }) {
   const [articleData, setArticles] = useState(articles);
   const [deleting, setDeleting] = useState(false);
+  const { role } = useCurrentUser();
 
   useOnError(error);
 
@@ -62,8 +64,16 @@ function News({ articles, error }) {
               <div className="col-md-6 col-xl-4 mb-5" key={i}>
                 <NewsCard
                   item={item}
-                  link={`/dashboard/news/${item.slug}`}
-                  onDelete={() => handleDelete(item.id)}
+                  link={
+                    getPermissions(role).includes('update.articles')
+                      ? `/dashboard/news/${item.slug}`
+                      : null
+                  }
+                  onDelete={
+                    getPermissions(role).includes('delete.articles')
+                      ? () => handleDelete(item.id)
+                      : null
+                  }
                 />
               </div>
             ))}

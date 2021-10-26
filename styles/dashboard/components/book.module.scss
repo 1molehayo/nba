@@ -58,6 +58,11 @@
   @include font-weight(semi-bold);
   margin-bottom: 0;
   color: color(black);
+
+  &__link {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 .wrapper {

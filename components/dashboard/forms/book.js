@@ -7,6 +7,7 @@ import { formatCharLength, getFileName, notify } from '../../../utility';
 import axios from '../../../services/axios';
 import handleApiError from '../../../services/handle-api-error';
 import { BOOK_FORM_MODEL } from '../../../utility/models';
+import { TEXT_RESTRICTIONS } from '../../../utility/constants';
 import { BookSchema } from '../../../utility/validations';
 import { FormField } from '../../global';
 import { FileInput } from '../../global/file-input';
@@ -18,9 +19,13 @@ const BookForm = ({ data, onDelete }) => {
   const [loading, setLoading] = useState(false);
 
   const initialData = {
-    author: formatCharLength(data?.author, 70, true),
-    title: formatCharLength(data?.title, 70, true),
-    description: formatCharLength(data?.description, 250, true)
+    author: formatCharLength(data?.author, TEXT_RESTRICTIONS.medium_text, true),
+    title: formatCharLength(data?.title, TEXT_RESTRICTIONS.medium_text, true),
+    description: formatCharLength(
+      data?.description,
+      TEXT_RESTRICTIONS.long_text,
+      true
+    )
   };
 
   const formik = useFormik({
@@ -31,10 +36,6 @@ const BookForm = ({ data, onDelete }) => {
 
       try {
         const formData = new FormData();
-        if (!pdf) {
-          setPdfError(`File can't be empty`);
-          throw new Error(`File can't be empty`);
-        }
 
         if (image) {
           formData.append('files.image', image, getFileName(image));
@@ -60,12 +61,11 @@ const BookForm = ({ data, onDelete }) => {
             type: 'success',
             message: 'Book was created successfully'
           });
-        }
 
-        formik.resetForm();
-        setPdf();
-        setImage();
-        setPdfError();
+          formik.resetForm();
+          setPdf();
+          setImage();
+        }
       } catch (err) {
         const errorObj = handleApiError(err);
 
@@ -89,6 +89,12 @@ const BookForm = ({ data, onDelete }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setPdfError();
+
+    if (!(data && data.file.name) && !pdf) {
+      setPdfError(`File can't be empty`);
+      return;
+    }
     formik.handleSubmit(e);
   };
 
@@ -114,12 +120,13 @@ const BookForm = ({ data, onDelete }) => {
         <form className="form form--inline mw-700" onSubmit={onSubmit}>
           <FormField
             id="title"
-            label="Title max (70 characters)"
+            label={`Title max (${TEXT_RESTRICTIONS.medium_text} characters)`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.title}
             error={formik.errors.title}
             touched={formik.touched.title}
+            maxLength={TEXT_RESTRICTIONS.medium_text}
             isRequired
           />
 
@@ -128,13 +135,13 @@ const BookForm = ({ data, onDelete }) => {
             rows={6}
             id="description"
             className="font-size-regular"
-            label="Short description max (250 characters)"
+            label={`Short description max (${TEXT_RESTRICTIONS.long_text} characters)`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.description}
             error={formik.errors.description}
             touched={formik.touched.description}
-            maxLength={250}
+            maxLength={TEXT_RESTRICTIONS.long_text}
           />
 
           <FileInput
@@ -151,17 +158,18 @@ const BookForm = ({ data, onDelete }) => {
             id="image"
             label="Select Image"
             onChange={handleImageChange}
-            fileName={data ? data.image : getFileName(image)}
+            fileName={data ? data.image.name : getFileName(image)}
           />
 
           <FormField
             id="author"
-            label="Author max (70 characters)"
+            label={`Author max (${TEXT_RESTRICTIONS.medium_text} characters)`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.author}
             error={formik.errors.author}
             touched={formik.touched.author}
+            maxLength={TEXT_RESTRICTIONS.medium_text}
             isRequired
           />
 

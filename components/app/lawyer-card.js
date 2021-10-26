@@ -8,6 +8,7 @@ import {
   shimmer,
   toBase64
 } from '../../utility';
+import { TEXT_RESTRICTIONS } from '../../utility/constants';
 
 export const LawyerCard = ({ item }) => {
   return (
@@ -37,7 +38,9 @@ export const LawyerCard = ({ item }) => {
 
       <hr className="divider" />
 
-      <p className={styles.bio}>{formatCharLength(item.bio, 80)}</p>
+      <p className={styles.bio}>
+        {formatCharLength(item.bio, TEXT_RESTRICTIONS.short_text)}
+      </p>
 
       <div className={styles.social}>
         <hr className="divider" />

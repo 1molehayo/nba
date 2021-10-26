@@ -59,8 +59,7 @@ export const EVENT_FORM_MODEL = {
 export const MEETING_FORM_MODEL = {
   title: '',
   description: '',
-  platform_name: '',
+  platform: '',
   url: '',
-  date: '',
   time: ''
 };

@@ -1,6 +1,20 @@
 @import '../../global/helpers/index';
 @import '../helpers/index';
 
+.buttons {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+  a,
+  button {
+    @include font-size(small);
+    padding: 5px 15px;
+    text-align: center;
+  }
+}
+
 .content {
   width: calc(100% - 100px);
   padding-right: 1.5rem;
@@ -18,16 +32,15 @@
   text-align: right;
 }
 
+.inner {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .time {
   width: 100px;
   text-align: right;
-
-  a {
-    @include font-size(small);
-    width: 100%;
-    padding: 5px 0;
-    text-align: center;
-  }
 
   p {
     @include font-size(small);
@@ -40,10 +53,15 @@
   @include font-size(small);
   @include font-weight(semi-bold);
   color: color(black);
+
+  &__link {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 
 .wrapper {
   @include card;
-  align-items: flex-start;
+  display: block;
   margin-bottom: 2.5rem;
 }

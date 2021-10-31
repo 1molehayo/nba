@@ -4,12 +4,18 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
 import moment from 'moment';
-import { MEETING_HEADERS } from '../../../utility/constants';
+import { DATE_FORMAT_VIEW, MEETING_HEADERS } from '../../../utility/constants';
 import { MeetingCard, Table } from '../../../components/dashboard';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
 import { Empty, Loader } from '../../../components/global';
-import { getPermissions, isArrayEmpty, notify } from '../../../utility';
+import {
+  getOldMeetings,
+  getPermissions,
+  getUpcomingMeetings,
+  isArrayEmpty,
+  notify
+} from '../../../utility';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
 import { useCurrentUser } from '../../../contexts/current-user';
@@ -20,36 +26,6 @@ function Meeting({ meetings, error }) {
   const { role } = useCurrentUser();
 
   useOnError(error);
-
-  const getUpcomingMeetings = (arr) => {
-    if (!arr) {
-      return [];
-    }
-
-    return arr.filter((item) => {
-      const date = moment(item.date).format('DD/MM/YYYY');
-      const datetime = moment(
-        `${date} ${item.time}`,
-        'DD/MM/YYYY HH:mm:ss',
-        true
-      );
-
-      return datetime.isSameOrAfter(new Date(), 'day');
-    });
-  };
-
-  const getOldMeetings = (arr) => {
-    if (!arr) {
-      return [];
-    }
-
-    return arr.filter((item) => {
-      const date = moment(item.date).format('DD/MM/YYYY');
-      const datetime = moment(`${date} HH:mm:ss`, 'DD/MM/YYYY hh:mm:ss', true);
-
-      return datetime.isBefore(new Date(), 'day');
-    });
-  };
 
   const handleDelete = async (id) => {
     setDeleting(true);
@@ -96,7 +72,7 @@ function Meeting({ meetings, error }) {
             <Empty
               className="mt-5 color-black"
               icon="icon-meeting"
-              desc="No meetings available"
+              desc="No upcoming meetings available"
             />
           )}
 
@@ -121,22 +97,31 @@ function Meeting({ meetings, error }) {
           </div>
         </div>
 
-        {!isArrayEmpty(getOldMeetings(meetingData)) && (
-          <div className="section pt-0">
-            <h4 className="pb-5">Meeting History</h4>
+        <div className="section pt-0">
+          <h4 className="pb-5">Meeting History</h4>
 
+          {isArrayEmpty(getOldMeetings(meetingData)) && (
+            <Empty
+              className="mt-5 color-black"
+              icon="icon-meeting"
+              desc="You have not attended any meetings"
+            />
+          )}
+
+          {!isArrayEmpty(getOldMeetings(meetingData)) && (
             <Table headers={MEETING_HEADERS}>
               {getOldMeetings(meetingData).map((imeeting, j) => (
                 <tr key={j}>
+                  <td>{j + 1}</td>
                   <td>{imeeting.title}</td>
                   <td>{imeeting.description}</td>
-                  <td>{moment(imeeting.date, 'DD/MM/YYYY')}</td>
+                  <td>{moment(imeeting.date).format(DATE_FORMAT_VIEW)}</td>
                   <td>{imeeting.time}</td>
                 </tr>
               ))}
             </Table>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </section>
   );

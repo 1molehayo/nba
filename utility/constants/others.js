@@ -30,7 +30,15 @@ export const MEETING_HEADERS = [
   'Title',
   'Description',
   'Date',
-  'Start Time'
+  'Time (24hrs)'
+];
+
+export const MEMBERS_HEADERS = [
+  'S/N',
+  'Name',
+  'Court Number',
+  'Status',
+  'Action'
 ];
 
 // delete later
@@ -138,3 +146,7 @@ export const TEXT_RESTRICTIONS = {
   medium_text: 100,
   long_text: 250
 };
+
+export const DATE_FORMAT = 'YYYY-MM-DD';
+
+export const DATE_FORMAT_VIEW = 'DD-MM-YYYY';

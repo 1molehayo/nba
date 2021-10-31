@@ -1,25 +1,13 @@
 .context {
   position: absolute;
   z-index: 5;
-  top: 100%;
-  right: 0;
-  width: calc(100vw - 4rem);
-  padding: 1.7rem 2.5rem;
-  border: 2px solid color(grey);
+  top: 70%;
+  right: 20%;
+  width: 15rem;
+  padding: 1rem 0;
+  border: 2px solid darken($color: color(light-grey), $amount: 10);
+  border-radius: 5px;
   background-color: color(white);
-
-  @include respond(medium) {
-    width: 450px;
-    padding: 2.2rem 3rem;
-  }
-
-  &__close {
-    @include font-size(medium);
-    margin-right: -6px;
-    padding: 6px;
-    border: 0;
-    background-color: color(white);
-  }
 
   &__empty {
     padding: 3rem 0;
@@ -27,44 +15,39 @@
   }
 
   &__list {
+    text-align: left;
+
     .divider {
-      margin: 1.5rem 0;
+      margin: 0.5rem 0;
       border-width: 1px;
     }
   }
 
   &__item {
-    display: flex;
-    align-items: center;
-    padding: 0;
-  }
+    @include font-size(small);
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
 
-  &__details {
-    flex: 0 0 60%;
-    padding-right: 1rem;
+    @include respond(large) {
+      transition: all 0.3s ease;
 
-    p {
-      @include font-size(regular);
-      width: 100%;
-      margin-bottom: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      @include respond(medium) {
-        @include font-size(medium);
+      &:hover {
+        background-color: color(light-blue);
+        color: color(black);
       }
     }
   }
 
-  &__image {
-    position: relative;
-    flex: 0 0 40%;
-    width: 100%;
-    height: 70px;
+  &__modal {
+    @include modal-wrapper;
+    width: 40rem !important;
+    margin: 0 auto;
 
-    @include respond(medium) {
-      height: 90px;
+    p {
+      @include font-family(montserrat);
+      margin-bottom: 4rem;
+      padding-top: 1rem;
+      color: color(black);
     }
   }
 }

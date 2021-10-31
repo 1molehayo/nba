@@ -2,7 +2,7 @@ import Toastify from 'toastify-js';
 import getConfig from 'next/config';
 import moment from 'moment';
 import { convertFromRaw, convertToRaw } from 'draft-js';
-import { PERMISSIONS } from './constants';
+import { DATE_FORMAT, PERMISSIONS } from './constants';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -182,16 +182,18 @@ export const getUpcomingMeetings = (arr) => {
     return [];
   }
 
-  return arr.filter((item) => {
-    const date = moment(item.date).format('DD/MM/YYYY');
+  const res = arr.filter((item) => {
+    const date = moment(item.date).format(DATE_FORMAT);
     const datetime = moment(
       `${date} ${item.time}`,
-      'DD/MM/YYYY HH:mm:ss',
+      `${DATE_FORMAT} HH:mm:ss`,
       true
     );
 
     return datetime.isSameOrAfter(new Date(), 'day');
   });
+
+  return res;
 };
 
 export const getOldMeetings = (arr) => {
@@ -199,12 +201,18 @@ export const getOldMeetings = (arr) => {
     return [];
   }
 
-  return arr.filter((item) => {
-    const date = moment(item.date).format('DD/MM/YYYY');
-    const datetime = moment(`${date} HH:mm:ss`, 'DD/MM/YYYY hh:mm:ss', true);
+  const res = arr.filter((item) => {
+    const date = moment(item.date).format(DATE_FORMAT);
+    const datetime = moment(
+      `${date} ${item.time}`,
+      `${DATE_FORMAT} HH:mm:ss`,
+      true
+    );
 
     return datetime.isBefore(new Date(), 'day');
   });
+
+  return res;
 };
 
 export const isDraftJsEmpty = (state) => {

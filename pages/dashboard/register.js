@@ -32,7 +32,8 @@ function Register() {
       const userData = {
         username: values.firstName,
         email: values.email,
-        password: values.password
+        password: values.password,
+        blocked: false
       };
 
       const profileData = {

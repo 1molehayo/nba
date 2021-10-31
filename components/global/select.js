@@ -29,7 +29,9 @@ export const Select = forwardRef((props, ref) => {
           ref={ref}
           id={props.id}
           name={props.id}
-          className={classnames('form__input', props.className)}
+          className={classnames('form__input', props.className, {
+            'form__input--empty': !props.value
+          })}
           {...formProps}
         >
           <option value="" disabled>
@@ -57,5 +59,6 @@ Select.propTypes = {
   label: PropTypes.string,
   touched: PropTypes.bool,
   type: PropTypes.string,
+  value: PropTypes.string,
   wrapperClass: PropTypes.string
 };

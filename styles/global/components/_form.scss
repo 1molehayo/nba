@@ -19,6 +19,24 @@
     text-align: left;
     cursor: pointer;
 
+    label {
+      display: inline-block;
+      width: auto !important;
+      height: 5rem;
+      padding: 0 15px !important;
+      background: color(light-grey);
+      color: color(dark) !important;
+      line-height: 5rem;
+      text-align: center !important;
+    }
+
+    &-name {
+      display: inline-block;
+      padding: 0 10px;
+      color: color(dark);
+      line-height: 40px;
+    }
+
     &:hover {
       transition: all 0.3s ease-in-out;
       border-color: color(primary);
@@ -55,24 +73,6 @@
       opacity: 0;
       cursor: pointer;
       filter: alpha(opacity=0);
-    }
-
-    label {
-      display: inline-block;
-      width: auto !important;
-      height: 5rem;
-      padding: 0 15px !important;
-      background: color(light-grey);
-      color: color(dark) !important;
-      line-height: 5rem;
-      text-align: center !important;
-    }
-
-    &-name {
-      display: inline-block;
-      padding: 0 10px;
-      color: color(dark);
-      line-height: 40px;
     }
 
     &-wrapper {
@@ -155,6 +155,10 @@
 
     &:focus-visible {
       outline: color(green) auto 1px;
+    }
+
+    &--empty {
+      color: color(light-grey);
     }
 
     &__wrapper {

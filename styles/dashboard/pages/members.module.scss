@@ -1,0 +1,39 @@
+@import '../../global/helpers/index';
+
+.table {
+  thead th:last-child {
+    text-align: center;
+  }
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 280px;
+  margin-bottom: 3rem;
+  border-radius: 15px;
+  background-color: color(light-grey);
+
+  img {
+    border-radius: 15px;
+  }
+}
+
+.text {
+  @include font-size(regular);
+  color: color(black);
+}
+
+.name {
+  @extend .text;
+  @include font-size(m-large);
+}
+
+.title {
+  @extend .text;
+  @include font-size(small);
+  @include font-family(montserrat);
+  margin-bottom: 5px;
+  color: color(grey);
+}

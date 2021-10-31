@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import styles from '../../styles/dashboard/components/table.module.scss';
 
-export const Table = ({ headers, children }) => {
+export const Table = ({ headers, children, className }) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={classnames(styles.wrapper, className)}>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -22,5 +23,6 @@ export const Table = ({ headers, children }) => {
 
 Table.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
   headers: PropTypes.array
 };

@@ -181,26 +181,6 @@ $start: 0;
     margin-left: 0;
   }
 
-  &:hover {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-
-    span::after,
-    span::before {
-      width: 100%;
-    }
-
-    span:first-child {
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-    }
-
-    span:last-child {
-      -webkit-transform: rotate(45deg);
-      transform: rotate(45deg);
-    }
-  }
-
   span {
     position: absolute;
     top: 18px;
@@ -240,5 +220,48 @@ $start: 0;
       -webkit-transform: rotate(-45deg);
       transform: rotate(-45deg);
     }
+  }
+
+  &:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+
+    span::after,
+    span::before {
+      width: 100%;
+    }
+
+    span:first-child {
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+    }
+
+    span:last-child {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.table-icon {
+  display: inline-block;
+  width: 100%;
+  padding: 1.8rem 2.7rem;
+  border: 0;
+  background: transparent;
+
+  @include respond(large) {
+    transition: color 0.3s ease;
+    color: color(dark);
+
+    &:hover {
+      color: color(primary);
+    }
+  }
+
+  &-wrapper {
+    position: relative;
+    padding: 0 !important;
+    text-align: center;
   }
 }

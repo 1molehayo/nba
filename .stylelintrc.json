@@ -1,10 +1,11 @@
 {
   "extends": [
+    "stylelint-config-recommended-scss",
     "stylelint-config-property-sort-order-smacss",
-    "stylelint-config-prettier"
+    "stylelint-config-prettier",
+    "stylelint-prettier/recommended"
   ],
   "plugins": ["stylelint-prettier"],
-  "ignoreFiles": ["**/*.html", "**/*.js"],
   "rules": {
     "prettier/prettier": true,
     "at-rule-no-unknown": null,
@@ -36,6 +37,10 @@
     "media-feature-name-no-vendor-prefix": true,
     "media-feature-colon-space-before": "never",
     "media-feature-colon-space-after": "always",
-    "max-empty-lines": null
+    "max-empty-lines": null,
+    "no-descending-specificity": null,
+    "scss/operator-no-unspaced": null,
+    "scss/no-global-function-names": null,
+    "scss/at-extend-no-missing-placeholder": null
   }
 }

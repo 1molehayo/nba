@@ -44,11 +44,12 @@ export const CurrentUserProvider = ({ children }) => {
       dispatch({ type: LOGIN_START });
       try {
         const { data } = await axios.get('/profiles/me');
-        const userResponse = await axios.get('/users/me');
 
         dispatch({
           type: LOGIN_COMPLETED,
-          user: { ...data, role: userResponse.data.role }
+          user: {
+            ...data
+          }
         });
       } catch (err) {
         await axios.post('/logout');

@@ -22,18 +22,18 @@ import handleApiError from '../../services/handle-api-error';
 function Dashboard({ books, meetings, payments, error }) {
   const DASHBOARD_CARDS = [
     {
-      title: '1,589',
+      title: books?.length,
       desc: 'Books Available',
       icon: 'icon-book'
     },
     {
-      title: '7',
+      title: payments?.length,
       desc: 'Payments Made',
       icon: 'icon-card'
     },
     {
-      title: '0',
-      desc: 'Pending Payments',
+      title: getUpcomingMeetings(meetings)?.length,
+      desc: 'Upcoming Meetings',
       icon: 'icon-timer'
     }
   ];

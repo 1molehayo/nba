@@ -47,9 +47,7 @@ export const CurrentUserProvider = ({ children }) => {
 
         dispatch({
           type: LOGIN_COMPLETED,
-          user: {
-            ...data
-          }
+          user: data
         });
       } catch (err) {
         await axios.post('/logout');

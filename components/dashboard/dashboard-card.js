@@ -18,7 +18,7 @@ export const DashboardCard = ({ item }) => {
 
 DashboardCard.propTypes = {
   item: PropTypes.shape({
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     desc: PropTypes.string,
     icon: PropTypes.string
   })

@@ -1,0 +1,12 @@
+.error-page {
+  text-align: center;
+
+  h1 {
+    @include font-size(xx-large);
+    color: color(primary);
+
+    @include respond(large) {
+      font-size: 14rem;
+    }
+  }
+}

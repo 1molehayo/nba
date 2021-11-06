@@ -15,9 +15,11 @@ module.exports = {
     includePaths: [path.join(__dirname, 'styles')]
   },
   publicRuntimeConfig: {
-    // Will only be available on the server side
+    // Will only be available on the server side and client side
     baseUrl: process.env.API_BASE_URL || 'http://localhost:1337',
-    raveAPI: process.env.RAVE_API || 'https://api.ravepay.co'
+    raveAPI: process.env.RAVE_API || 'https://api.ravepay.co',
+    ravePublicKey: process.env.RAVE_PUBLIC_KEY,
+    raveSecretKey: process.env.RAVE_SECRET_KEY
   },
   images: {
     domains: ['localhost', removehttp(process.env.API_BASE_URL)]

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
@@ -12,6 +12,8 @@ import { getStatus, isArrayEmpty } from '../../utility';
 import { Empty } from '../../components/global';
 
 function Payments({ dues, payments, error }) {
+  const [paymentsData, setPayments] = useState(payments);
+
   useOnError(error);
 
   return (
@@ -35,7 +37,12 @@ function Payments({ dues, payments, error }) {
           <div className="row">
             {dues.map((due, j) => (
               <div className="col-md-6 col-xl-5 mb-4" key={j}>
-                <PaymentCard title={due.title} amount={due.amount} />
+                <PaymentCard
+                  title={due.title}
+                  amount={due.amount}
+                  payments={paymentsData}
+                  updatePayments={setPayments}
+                />
               </div>
             ))}
           </div>
@@ -44,7 +51,7 @@ function Payments({ dues, payments, error }) {
         <div className="section pt-0">
           <h4 className="pb-5">Payment History</h4>
 
-          {isArrayEmpty(payments) && (
+          {isArrayEmpty(paymentsData) && (
             <Empty
               className="mt-5 color-black"
               icon="icon-card"
@@ -52,9 +59,9 @@ function Payments({ dues, payments, error }) {
             />
           )}
 
-          {!isArrayEmpty(payments) && (
+          {!isArrayEmpty(paymentsData) && (
             <Table headers={PAYMENT_HEADERS}>
-              {payments.map((item, i) => (
+              {paymentsData.map((item, i) => (
                 <tr key={i}>
                   <td>{i + 1}</td>
                   <td>{item.date}</td>

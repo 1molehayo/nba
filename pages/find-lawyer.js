@@ -57,12 +57,13 @@ FindLawyer.propTypes = {
   error: PropTypes.object
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let lawyers = null;
   let error = {};
 
   try {
     const { data } = await axios.get('/profiles');
+    // lawyers = data.filter((item) => item.active);
     lawyers = data;
   } catch (err) {
     error = handleApiError(err);

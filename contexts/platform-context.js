@@ -4,7 +4,6 @@ import { PLATFORM_START, PLATFORM_COMPLETED } from '../utility/constants';
 import axios from '../services/axios';
 import { capitalizeFirstLetter, notify } from '../utility';
 import handleApiError from '../services/handle-api-error';
-import { useCurrentUser } from './current-user';
 
 const ContextDefaultValues = {
   loading: true,
@@ -31,7 +30,6 @@ const reducer = (state, action) => {
 
 export const CurrentPlatformProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, ContextDefaultValues);
-  const { isAuthenticated } = useCurrentUser();
 
   useEffect(() => {
     const fetchPlatform = async () => {
@@ -44,24 +42,22 @@ export const CurrentPlatformProvider = ({ children }) => {
         const error = handleApiError(err);
         const { statusCode, message } = error;
 
-        if (isAuthenticated) {
-          notify({
-            type: 'error',
-            message:
-              statusCode === 500
-                ? capitalizeFirstLetter(message)
-                : 'Problem fetching meeting platforms'
-          });
-        }
+        notify({
+          type: 'error',
+          message:
+            statusCode === 500
+              ? capitalizeFirstLetter(message)
+              : 'Problem fetching meeting platforms'
+        });
       } finally {
         dispatch({ type: PLATFORM_COMPLETED, platforms: null });
       }
-
-      return () => {};
     };
 
     fetchPlatform();
-  }, [isAuthenticated]);
+
+    return () => {};
+  }, []);
 
   return (
     <CurrentPlatformDispatchContext.Provider value={dispatch}>

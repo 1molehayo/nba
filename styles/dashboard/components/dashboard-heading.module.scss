@@ -2,13 +2,20 @@
 
 .heading {
   display: flex;
-  align-items: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   justify-content: space-between;
   padding-bottom: 3.5rem;
+
+  h4 {
+    margin-right: 6rem;
+    white-space: normal;
+  }
 
   a {
     @include font-family(montserrat);
     color: color(black);
+    white-space: nowrap;
 
     &:hover {
       color: color(green);

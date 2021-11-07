@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
+import { useRouter } from 'next/router';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
 import { Empty, EventsCard, Loader } from '../../../components/global';
@@ -15,8 +16,18 @@ function Events({ events, error }) {
   const [eventData, setEvents] = useState(events);
   const [deleting, setDeleting] = useState(false);
   const { role } = useCurrentUser();
+  const router = useRouter();
 
   useOnError(error);
+
+  useEffect(() => {
+    if (!getPermissions(role).includes('find.events')) {
+      router.replace('/dashboard');
+    }
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role]);
 
   const handleDelete = async (id) => {
     setDeleting(true);

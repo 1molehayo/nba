@@ -54,9 +54,11 @@ function Library({ books, error }) {
         <div className="d-flex justify-content-between pb-5">
           <h4>Library</h4>
 
-          <Link href="/dashboard/library/create" passHref>
-            <button className="button button--primary">Create book</button>
-          </Link>
+          {getPermissions(role).includes('create.books') && (
+            <Link href="/dashboard/library/create" passHref>
+              <button className="button button--primary">Create book</button>
+            </Link>
+          )}
         </div>
 
         {isArrayEmpty(bookData) && (

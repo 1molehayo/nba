@@ -30,12 +30,17 @@ export const formatCharLength = (str, len, noElipsis = false) => {
   return str;
 };
 
-export const formatPrice = (amount) => {
+export const formatPrice = (amount, currency = true) => {
   if (!amount) {
     return '';
   }
   const result = amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-  return `₦${result}`;
+
+  if (currency) {
+    return `₦${result}`;
+  }
+
+  return result;
 };
 
 export const getImagePath = (url) => {
@@ -47,7 +52,7 @@ export const getImagePath = (url) => {
 };
 
 export const getStatus = (val) => {
-  if (val && val.toLowerCase() === 'success') {
+  if (val && val.toLowerCase().includes('success')) {
     return (
       <>
         <span className="color-green icon-success mr-2" />
@@ -112,7 +117,7 @@ export const getPermissions = (role) => {
     return [];
   }
 
-  return PERMISSIONS[role.name.toLowerCase()];
+  return PERMISSIONS[role.type.toLowerCase()];
 };
 
 const getToasterStyles = (type) => {

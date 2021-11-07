@@ -4,12 +4,36 @@ import Link from 'next/link';
 import { Context } from '../global';
 import useOnClickOutside from '../../services/use-on-click-outside';
 import { MemberModal } from './member-modal';
+import { DEFAULT_ROLE_TYPE } from '../../utility/constants';
 
-export const MemberRow = ({ member, index, onToggleActivate }) => {
+export const MemberRow = ({
+  member,
+  index,
+  onToggleActivate,
+  onToggleAdmin
+}) => {
   const [showContext, setShowContext] = useState(false);
   const toggleContext = () => setShowContext((prevState) => !prevState);
   const [showDialog, setShowDialog] = useState(false);
-  const toggleDialog = () => setShowDialog((prevState) => !prevState);
+  const [adminDialog, setAdminDialog] = useState(true);
+  const toggleDialog = (val) => {
+    if (val === 'admin') {
+      setAdminDialog(true);
+    } else {
+      setAdminDialog(false);
+    }
+    return setShowDialog((prevState) => !prevState);
+  };
+
+  const onSubmit = () => {
+    if (adminDialog) {
+      onToggleAdmin(member);
+    } else {
+      onToggleActivate(member);
+    }
+
+    toggleDialog();
+  };
 
   const contextRef = useRef(null);
 
@@ -62,6 +86,26 @@ export const MemberRow = ({ member, index, onToggleActivate }) => {
 
                   <hr className="divider" />
 
+                  {member.role.type === DEFAULT_ROLE_TYPE && (
+                    <li
+                      className="context__item"
+                      onClick={() => toggleDialog('admin')}
+                    >
+                      Give admin priviledges
+                    </li>
+                  )}
+
+                  {member.role.type !== DEFAULT_ROLE_TYPE && (
+                    <li
+                      className="context__item"
+                      onClick={() => toggleDialog('admin')}
+                    >
+                      Remove admin priviledges
+                    </li>
+                  )}
+
+                  <hr className="divider" />
+
                   {member.blocked && (
                     <li className="context__item" onClick={toggleDialog}>
                       Reinstate
@@ -84,10 +128,9 @@ export const MemberRow = ({ member, index, onToggleActivate }) => {
         showDialog={showDialog}
         toggleDialog={toggleDialog}
         blocked={member.blocked}
-        onSubmit={() => {
-          onToggleActivate(member);
-          toggleDialog();
-        }}
+        isAdmin={member.role.type !== DEFAULT_ROLE_TYPE}
+        adminDialog={adminDialog}
+        onSubmit={onSubmit}
       />
     </>
   );
@@ -96,5 +139,6 @@ export const MemberRow = ({ member, index, onToggleActivate }) => {
 MemberRow.propTypes = {
   index: PropTypes.number,
   member: PropTypes.object,
-  onToggleActivate: PropTypes.func
+  onToggleActivate: PropTypes.func,
+  onToggleAdmin: PropTypes.func
 };

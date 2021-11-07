@@ -6,7 +6,7 @@ import { isBrowser } from '../utility';
 const isAuth = (WrappedComponent) => {
   // eslint-disable-next-line react/display-name
   return (props) => {
-    const { isAuthenticated, loading } = useCurrentUser();
+    const { isAuthenticated, loading, active } = useCurrentUser();
 
     // checks whether we are on client / browser or server.
     if (isBrowser()) {
@@ -17,7 +17,7 @@ const isAuth = (WrappedComponent) => {
       }
 
       // If user is not authenticated we redirect to the login page.
-      if (!loading && isAuthenticated) {
+      if (!loading && isAuthenticated && active) {
         router.replace('/dashboard');
         return null;
       }

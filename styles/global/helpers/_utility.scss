@@ -265,3 +265,18 @@ $start: 0;
     text-align: center;
   }
 }
+
+.hidden {
+  visibility: collapse;
+}
+
+.relative {
+  position: relative;
+}
+
+.flutterwave-button {
+  visibility: collapse;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

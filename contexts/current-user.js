@@ -56,6 +56,8 @@ export const CurrentUserProvider = ({ children }) => {
     };
 
     fetchUser();
+
+    return () => {};
   }, []);
 
   return (

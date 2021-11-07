@@ -1,3 +1,5 @@
+import { DEFAULT_ROLE_TYPE } from './others';
+
 export const PERMISSIONS = {
   administrator: [
     'find.articles',
@@ -42,7 +44,7 @@ export const PERMISSIONS = {
     'findMe.profiles',
     'updateMe.profiles'
   ],
-  lawyer: [
+  [DEFAULT_ROLE_TYPE]: [
     'find.books',
     'findOne.books',
     'count.books',

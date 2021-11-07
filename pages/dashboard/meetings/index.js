@@ -63,9 +63,13 @@ function Meeting({ meetings, error }) {
           <div className="d-flex justify-content-between pb-5">
             <h4>Upcoming Meetings</h4>
 
-            <Link href="/dashboard/meetings/create" passHref>
-              <button className="button button--primary">Create meeting</button>
-            </Link>
+            {getPermissions(role).includes('create.meetings') && (
+              <Link href="/dashboard/meetings/create" passHref>
+                <button className="button button--primary">
+                  Create meeting
+                </button>
+              </Link>
+            )}
           </div>
 
           {isArrayEmpty(getUpcomingMeetings(meetingData)) && (

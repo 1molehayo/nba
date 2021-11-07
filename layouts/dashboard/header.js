@@ -1,10 +1,10 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from '../../services/axios';
 import { Dropdown } from '../../components/global/dropdown';
-import { Searchbar } from '../../components/global';
+// import { Searchbar } from '../../components/global';
 import {
   LOGOUT_COMPLETED,
   LOGOUT_START,
@@ -20,7 +20,7 @@ import {
 import { getImagePath, shimmer, toBase64 } from '../../utility';
 
 const DashboardHeader = () => {
-  const [searchValue, setSearchValue] = useState();
+  // const [searchValue, setSearchValue] = useState();
   const user = useCurrentUser();
   const { image, loading, isAuthenticated } = user;
   const dispatch = useDispatchCurrentUser();
@@ -39,11 +39,11 @@ const DashboardHeader = () => {
     }
   };
 
-  const handleSearch = async () => {
-    // await api call
-    // eslint-disable-next-line no-console
-    console.log(`searched for ${searchValue}`);
-  };
+  // const handleSearch = async () => {
+  //   // await api call
+  //   // eslint-disable-next-line no-console
+  //   console.log(`searched for ${searchValue}`);
+  // };
 
   const ProfileImage = (
     <Image
@@ -68,13 +68,13 @@ const DashboardHeader = () => {
         </Link>
 
         <nav className={styles.nav}>
-          <Searchbar
+          {/* <Searchbar
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onSearch={handleSearch}
             placeholder="Search"
             className="searchbar--sm"
-          />
+          /> */}
 
           <div className={styles.profile}>
             <Dropdown

@@ -12,7 +12,7 @@ import { useDispatchCurrentUser } from '../../contexts/current-user';
 import styles from '../../styles/dashboard/pages/login.module.scss';
 import BgImage from '../../assets/images/login-bg.png';
 import Logo from '../../assets/images/logo.png';
-import { LOGIN_COMPLETED } from '../../utility/constants';
+import { LOGIN_COMPLETED, LOGOUT_COMPLETED } from '../../utility/constants';
 import isAuth from '../../services/is-auth';
 import { LOGIN_FORM_MODEL } from '../../utility/models';
 
@@ -34,6 +34,17 @@ function Login() {
       try {
         await axios.post('/auth/local', userData);
         const { data } = await axios.get('/profiles/me');
+
+        if (!data.active) {
+          notify({
+            type: 'error',
+            message:
+              'Your account has been deactivated, please reach out to the administrator'
+          });
+
+          dispatch({ type: LOGOUT_COMPLETED });
+          return;
+        }
 
         notify({
           type: 'success',

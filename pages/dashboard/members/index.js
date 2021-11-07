@@ -2,21 +2,32 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
+import { useRouter } from 'next/router';
 import withAuth from '../../../services/with-auth';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
-import { isArrayEmpty, notify } from '../../../utility';
+import { getPermissions, isArrayEmpty, notify } from '../../../utility';
 import { Empty, Loader } from '../../../components/global';
 import { useCurrentUser } from '../../../contexts/current-user';
-import { MEMBERS_HEADERS } from '../../../utility/constants';
+import { DEFAULT_ROLE_TYPE, MEMBERS_HEADERS } from '../../../utility/constants';
 import { MemberRow, Table } from '../../../components/dashboard';
 import styles from '../../../styles/dashboard/pages/members.module.scss';
 
 function Members({ members, error }) {
-  const { uid } = useCurrentUser();
+  const { uid, role } = useCurrentUser();
   const [membersData, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!getPermissions(role).includes('find.profiles')) {
+      router.replace('/dashboard');
+    }
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role]);
 
   useEffect(() => {
     if (members) {
@@ -67,6 +78,49 @@ function Members({ members, error }) {
     }
   };
 
+  const onToggleAdmin = async (member) => {
+    setLoading(true);
+
+    try {
+      const data = {
+        role:
+          member.role.type === 'administrator'
+            ? DEFAULT_ROLE_TYPE
+            : 'administrator'
+      };
+
+      const newData = await axios.put(`/users/${member.uid}`, data);
+
+      const arr = membersData.map((item) => {
+        if (item.uid === member.uid) {
+          return { ...item, role: newData.role };
+        }
+
+        return item;
+      });
+
+      setMembers(arr);
+
+      notify({
+        type: 'success',
+        message: `${member.first_name}'s profile has been ${
+          member.role.type === 'administrator'
+            ? 'upgraded to administrator account'
+            : 'degraded to lawyer account'
+        }`
+      });
+    } catch (err) {
+      const errorObj = handleApiError(err);
+
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section>
       <Head>
@@ -94,6 +148,7 @@ function Members({ members, error }) {
                 index={j + 1}
                 member={member}
                 onToggleActivate={onToggleActivate}
+                onToggleAdmin={onToggleAdmin}
               />
             ))}
           </Table>

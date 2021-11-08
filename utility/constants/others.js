@@ -9,13 +9,9 @@ export const VIDEO_PLAYER_SETTINGS = {
   }
 };
 
-export const PAYMENT_HEADERS = [
-  'S/N',
-  'Date',
-  'Payment details',
-  'Amount',
-  'Status'
-];
+export const PAYMENT_HEADERS = ['S/N', 'Date', 'Title', 'Amount', 'Status'];
+
+export const DASHBOARD_PAYMENT_HEADERS = ['Date', 'Title', 'Amount', 'Status'];
 
 export const MEETING_HEADERS = [
   'S/N',
@@ -43,6 +39,12 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 
 export const DATE_FORMAT_VIEW = 'DD-MM-YYYY';
 
+export const PAYMENT_DATE_FORMAT = 'DD MMM YYYY';
+
 export const DEFAULT_ROLE_TYPE = 'authenticated';
 
 export const PAYMENT_GATEWAY = 'flutterwave';
+
+export const PAGE_SIZE = 10;
+
+export const PAGE_SIZE_ALT = 12;

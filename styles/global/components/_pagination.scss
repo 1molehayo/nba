@@ -1,13 +1,71 @@
 .pagination {
   display: flex;
-  align-items: center;
   justify-content: center;
+  width: 100%;
+  list-style-type: none;
 
-  button {
-    @include font-size(regular);
-    margin: 0 1rem;
-    padding: 0.9rem 1.3rem;
-    background: transparent;
-    color: color(black);
+  &__item {
+    @include font-size(small);
+    @include font-weight(medium);
+    display: flex;
+    align-items: center;
+    min-width: 32px;
+    height: 32px;
+    margin: auto 4px;
+    padding: 0 12px;
+    border-radius: 16px;
+    color: color(grey);
+    letter-spacing: 0.01071em;
+    line-height: 1.43;
+    text-align: center;
+
+    &.dots:hover {
+      background-color: transparent;
+      cursor: default;
+    }
+
+    &:hover {
+      background-color: rgba($color: color(grey), $alpha: 0.14);
+      cursor: pointer;
+    }
+
+    &.selected {
+      background-color: rgba($color: color(green), $alpha: 0.18);
+      color: color(primary);
+    }
+
+    .arrow {
+      &::before {
+        content: '';
+        display: inline-block;
+        position: relative;
+        width: 0.4em;
+        height: 0.4em;
+        border-top: 0.12em solid color(grey);
+        border-right: 0.12em solid color(grey);
+      }
+
+      &.left {
+        transform: rotate(-135deg) translate(-50%);
+      }
+
+      &.right {
+        transform: rotate(45deg);
+      }
+    }
+
+    &.disabled {
+      pointer-events: none;
+
+      .arrow::before {
+        border-top: 0.12em solid rgba($color: color(grey), $alpha: 0.63);
+        border-right: 0.12em solid rgba($color: color(grey), $alpha: 0.63);
+      }
+
+      &:hover {
+        background-color: transparent;
+        cursor: default;
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
+import moment from 'moment';
 import {
   Book,
   DashboardCard,
@@ -12,14 +13,24 @@ import {
 } from '../../components/dashboard';
 import axios from '../../services/axios';
 import styles from '../../styles/dashboard/pages/home.module.scss';
-import { PAYMENT_HEADERS } from '../../utility/constants';
-import { getStatus, getUpcomingMeetings, isArrayEmpty } from '../../utility';
+import {
+  DASHBOARD_PAYMENT_HEADERS,
+  DATE_FORMAT_VIEW
+} from '../../utility/constants';
+import {
+  formatPrice,
+  getStatus,
+  getUpcomingMeetings,
+  isArrayEmpty
+} from '../../utility';
 import withAuth from '../../services/with-auth';
 import { Empty } from '../../components/global';
 import useOnError from '../../services/use-on-error';
 import handleApiError from '../../services/handle-api-error';
 
 function Dashboard({ books, meetings, payments, error }) {
+  useOnError(error);
+
   const DASHBOARD_CARDS = [
     {
       title: books?.length,
@@ -37,8 +48,6 @@ function Dashboard({ books, meetings, payments, error }) {
       icon: 'icon-timer'
     }
   ];
-
-  useOnError(error);
 
   return (
     <section className={styles.wrapper}>
@@ -88,7 +97,7 @@ function Dashboard({ books, meetings, payments, error }) {
       <div className="section">
         <div className="container">
           <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-12 col-xl-4">
               <DashboardHeading
                 title="Upcoming Meetings"
                 url="/dashboard/meetings"
@@ -109,7 +118,7 @@ function Dashboard({ books, meetings, payments, error }) {
                 ))}
             </div>
 
-            <div className="col-md-7">
+            <div className="col-md-12 col-xl-8">
               <div className={styles.payment}>
                 <DashboardHeading
                   title="Recent Payments"
@@ -125,12 +134,15 @@ function Dashboard({ books, meetings, payments, error }) {
                 )}
 
                 {!isArrayEmpty(payments) && (
-                  <Table headers={PAYMENT_HEADERS}>
+                  <Table headers={DASHBOARD_PAYMENT_HEADERS}>
                     {payments.slice(0, 5).map((ipayment, k) => (
                       <tr key={k}>
-                        <td>{ipayment.title}</td>
+                        <td>
+                          {moment(ipayment.updated_at).format(DATE_FORMAT_VIEW)}
+                        </td>
+                        <td>{ipayment.payment_details}</td>
+                        <td>{formatPrice(ipayment.amount)}</td>
                         <td>{getStatus(ipayment.status)}</td>
-                        <td>{ipayment.date}</td>
                       </tr>
                     ))}
                   </Table>
@@ -171,7 +183,10 @@ export async function getServerSideProps(ctx) {
     meetings = meetingResponse.data;
     const bookResponse = await axios.get('/books', config);
     books = bookResponse.data;
-    const paymentsResponse = await axios.get('/payments', config);
+    const paymentsResponse = await axios.get(
+      '/payments?_start=1&_limit=5',
+      config
+    );
     payments = paymentsResponse.data;
   } catch (err) {
     error = handleApiError(err);

@@ -19,11 +19,14 @@ import {
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
 import { useCurrentUser } from '../../../contexts/current-user';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function Meeting({ meetings, error }) {
   const [meetingData, setMeetings] = useState(meetings);
   const [deleting, setDeleting] = useState(false);
   const { role } = useCurrentUser();
+
+  useAuthGuard('find.meetings');
 
   useOnError(error);
 

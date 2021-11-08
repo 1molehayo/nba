@@ -2,7 +2,7 @@ import Toastify from 'toastify-js';
 import getConfig from 'next/config';
 import moment from 'moment';
 import { convertFromRaw, convertToRaw } from 'draft-js';
-import { DATE_FORMAT, PERMISSIONS } from './constants';
+import { DATE_FORMAT, PAGE_SIZE, PERMISSIONS } from './constants';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -228,4 +228,8 @@ export const isDraftJsEmpty = (state) => {
   }
   const contentState = convertFromRaw(rawState);
   return !(contentState.hasText() && contentState.getPlainText() !== '');
+};
+
+export const getStartPage = (page, limit = PAGE_SIZE) => {
+  return limit * (page - 1) + 1;
 };

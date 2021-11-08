@@ -42,6 +42,7 @@ export const PERMISSIONS = {
     'find.profiles',
     'findOne.profiles',
     'findMe.profiles',
+    'update.profiles',
     'updateMe.profiles'
   ],
   [DEFAULT_ROLE_TYPE]: [

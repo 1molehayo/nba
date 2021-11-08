@@ -1,19 +1,10 @@
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import EventForm from '../../../components/dashboard/forms/event';
-import { useCurrentUser } from '../../../contexts/current-user';
+import useAuthGuard from '../../../services/use-auth-guard';
 import withAuth from '../../../services/with-auth';
-import { getPermissions } from '../../../utility';
 
 function NewEvent() {
-  const router = useRouter();
-  const { role } = useCurrentUser();
-
-  useEffect(() => {
-    if (!getPermissions(role).includes('create.events')) {
-      router.replace('/dashboard/events');
-    }
-  }, [role, router]);
+  useAuthGuard('create.events');
 
   return <EventForm />;
 }

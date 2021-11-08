@@ -41,5 +41,9 @@
     height: 100%;
     min-height: 500px;
     background-color: rgba($color: color(white), $alpha: 0.7);
+
+    &--inline {
+      position: absolute;
+    }
   }
 }

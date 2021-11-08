@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
@@ -10,19 +10,16 @@ import useOnError from '../../../services/use-on-error';
 import { useCurrentUser } from '../../../contexts/current-user';
 import { getPermissions, notify } from '../../../utility';
 import { Loader } from '../../../components/global';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function MeetingDetails({ error, meeting }) {
   const [deleting, setDeleting] = useState(false);
   const router = useRouter();
   const { role } = useCurrentUser();
 
-  useOnError(error);
+  useAuthGuard('update.meetings');
 
-  useEffect(() => {
-    if (!getPermissions(role).includes('update.books')) {
-      router.replace('/dashboard/library');
-    }
-  }, [role, router]);
+  useOnError(error);
 
   const handleDelete = async () => {
     setDeleting(true);

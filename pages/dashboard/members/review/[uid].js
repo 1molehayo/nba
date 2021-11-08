@@ -9,11 +9,14 @@ import useOnError from '../../../../services/use-on-error';
 import handleApiError from '../../../../services/handle-api-error';
 import { notify } from '../../../../utility';
 import { MemberDetails } from '../../../../components/dashboard/member-details';
+import useAuthGuard from '../../../../services/use-auth-guard';
 
 function ProfileReview({ member, error }) {
   const [reviewing, setReviewing] = useState(false);
 
   const router = useRouter();
+
+  useAuthGuard('update.profiles');
 
   useOnError(error);
 

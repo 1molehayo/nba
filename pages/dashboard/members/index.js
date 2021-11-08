@@ -2,32 +2,33 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
-import { useRouter } from 'next/router';
 import withAuth from '../../../services/with-auth';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
-import { getPermissions, isArrayEmpty, notify } from '../../../utility';
+import { getStartPage, isArrayEmpty, notify } from '../../../utility';
 import { Empty, Loader } from '../../../components/global';
 import { useCurrentUser } from '../../../contexts/current-user';
-import { DEFAULT_ROLE_TYPE, MEMBERS_HEADERS } from '../../../utility/constants';
+import {
+  DEFAULT_ROLE_TYPE,
+  MEMBERS_HEADERS,
+  PAGE_SIZE
+} from '../../../utility/constants';
 import { MemberRow, Table } from '../../../components/dashboard';
 import styles from '../../../styles/dashboard/pages/members.module.scss';
+import Pagination from '../../../components/global/pagination';
+import useAuthGuard from '../../../services/use-auth-guard';
 
-function Members({ members, error }) {
-  const { uid, role } = useCurrentUser();
+function Members({ members, membersCount, error }) {
+  const { uid } = useCurrentUser();
+  const [currentPage, setCurrentPage] = useState(1);
   const [membersData, setMembers] = useState([]);
+  const [toggling, setToggling] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
-  useEffect(() => {
-    if (!getPermissions(role).includes('find.profiles')) {
-      router.replace('/dashboard');
-    }
+  useAuthGuard('find.profiles');
 
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role]);
+  useOnError(error);
 
   useEffect(() => {
     if (members) {
@@ -38,10 +39,8 @@ function Members({ members, error }) {
     return () => {};
   }, [members, uid]);
 
-  useOnError(error);
-
   const onToggleActivate = async (member) => {
-    setLoading(true);
+    setToggling(true);
 
     try {
       const data = {
@@ -74,12 +73,12 @@ function Members({ members, error }) {
         message: errorObj.message
       });
     } finally {
-      setLoading(false);
+      setToggling(false);
     }
   };
 
   const onToggleAdmin = async (member) => {
-    setLoading(true);
+    setToggling(true);
 
     try {
       const data = {
@@ -117,6 +116,26 @@ function Members({ members, error }) {
         message: errorObj.message
       });
     } finally {
+      setToggling(false);
+    }
+  };
+
+  const handlePageChange = async (page) => {
+    setLoading(true);
+
+    try {
+      const { data } = await axios.get(
+        `/profiles?_start=${getStartPage(page)}&_limit=${PAGE_SIZE}`
+      );
+      setMembers(data);
+      setCurrentPage(page);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
       setLoading(false);
     }
   };
@@ -127,7 +146,7 @@ function Members({ members, error }) {
         <title>Members | NBA-Ikeja</title>
       </Head>
 
-      {loading && <Loader />}
+      {toggling && <Loader />}
 
       <div className="section pt-0">
         <h4 className="pb-5">Members list</h4>
@@ -140,27 +159,44 @@ function Members({ members, error }) {
           />
         )}
 
-        {!isArrayEmpty(membersData) && (
-          <Table headers={MEMBERS_HEADERS} className={styles.table}>
-            {membersData.map((member, j) => (
-              <MemberRow
-                key={j}
-                index={j + 1}
-                member={member}
-                onToggleActivate={onToggleActivate}
-                onToggleAdmin={onToggleAdmin}
+        <div className="relative">
+          {loading && <Loader inline />}
+
+          {!isArrayEmpty(membersData) && (
+            <Table headers={MEMBERS_HEADERS} className={styles.table}>
+              {membersData.map((member, j) => (
+                <MemberRow
+                  key={j}
+                  index={j + 1}
+                  member={member}
+                  onToggleActivate={onToggleActivate}
+                  onToggleAdmin={onToggleAdmin}
+                />
+              ))}
+            </Table>
+          )}
+
+          {!loading && membersCount > PAGE_SIZE && (
+            <div className="section pb-0">
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={membersCount}
+                pageSize={PAGE_SIZE}
+                onPageChange={(page) => handlePageChange(page)}
               />
-            ))}
-          </Table>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
 }
 
 Members.propTypes = {
+  error: PropTypes.object,
   members: PropTypes.array,
-  error: PropTypes.object
+  membersCount: PropTypes.number
 };
 
 export default withAuth(Members);
@@ -175,17 +211,21 @@ export async function getServerSideProps(ctx) {
   };
 
   let members = null;
+  let membersCount = null;
   let error = {};
 
   try {
-    const { data } = await axios.get('/profiles', config);
+    const { data } = await axios.get('/profiles?_start=1&_limit=10', config);
     members = data;
+    const countResponse = await axios.get('/profiles/count', config);
+    membersCount = countResponse.data;
   } catch (err) {
     error = handleApiError(err);
   } finally {
     return {
       props: {
         members,
+        membersCount,
         error
       }
     };

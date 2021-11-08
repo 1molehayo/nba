@@ -8,16 +8,51 @@ import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import withAuth from '../../../services/with-auth';
 import { Empty, Loader } from '../../../components/global';
-import { getPermissions, isArrayEmpty, notify } from '../../../utility';
+import {
+  getPermissions,
+  getStartPage,
+  isArrayEmpty,
+  notify
+} from '../../../utility';
 import handleApiError from '../../../services/handle-api-error';
 import { useCurrentUser } from '../../../contexts/current-user';
+import Pagination from '../../../components/global/pagination';
+import { PAGE_SIZE_ALT } from '../../../utility/constants';
+import useAuthGuard from '../../../services/use-auth-guard';
 
-function Library({ books, error }) {
+function Library({ books, bookCount, error }) {
+  const [currentPage, setCurrentPage] = useState(1);
   const [bookData, setBooks] = useState(books);
   const [deleting, setDeleting] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { role } = useCurrentUser();
 
+  useAuthGuard('find.books');
+
   useOnError(error);
+
+  const handlePageChange = async (page) => {
+    setLoading(true);
+
+    try {
+      const { data } = await axios.get(
+        `/books?_start=${getStartPage(
+          page,
+          PAGE_SIZE_ALT
+        )}&_limit=${PAGE_SIZE_ALT}`
+      );
+      setBooks(data);
+      setCurrentPage(page);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onDelete = async (id) => {
     setDeleting(true);
@@ -69,27 +104,43 @@ function Library({ books, error }) {
           />
         )}
 
-        {!isArrayEmpty(bookData) && (
-          <div className="row">
-            {bookData.map((item, i) => (
-              <div className="col-md-4 mb-10" key={i}>
-                <Book
-                  item={item}
-                  link={
-                    getPermissions(role).includes('update.books')
-                      ? `/dashboard/library/${item.slug}`
-                      : null
-                  }
-                  onDelete={
-                    getPermissions(role).includes('delete.books')
-                      ? () => onDelete(item.id)
-                      : null
-                  }
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="relative">
+          {loading && <Loader inline />}
+
+          {!isArrayEmpty(bookData) && (
+            <div className="row">
+              {bookData.map((item, i) => (
+                <div className="col-md-4 mb-10" key={i}>
+                  <Book
+                    item={item}
+                    link={
+                      getPermissions(role).includes('update.books')
+                        ? `/dashboard/library/${item.slug}`
+                        : null
+                    }
+                    onDelete={
+                      getPermissions(role).includes('delete.books')
+                        ? () => onDelete(item.id)
+                        : null
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {bookCount > PAGE_SIZE_ALT && (
+            <div className="section pb-0">
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={bookCount}
+                pageSize={PAGE_SIZE_ALT}
+                onPageChange={(page) => handlePageChange(page)}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -97,6 +148,7 @@ function Library({ books, error }) {
 
 Library.propTypes = {
   books: PropTypes.array,
+  bookCount: PropTypes.number,
   error: PropTypes.object
 };
 
@@ -111,17 +163,21 @@ export async function getServerSideProps(ctx) {
   };
 
   let books = null;
+  let bookCount = 0;
   let error = {};
 
   try {
-    const { data } = await axios.get('/books', config);
+    const { data } = await axios.get('/books?_start=1&_limit=12', config);
     books = data;
+    const countResponse = await axios.get('/books/count', config);
+    bookCount = countResponse.data;
   } catch (err) {
     error = handleApiError(err);
   } finally {
     return {
       props: {
         books,
+        bookCount,
         error
       } // will be passed to the page component as props
     };

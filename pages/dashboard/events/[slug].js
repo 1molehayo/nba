@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
@@ -10,19 +10,16 @@ import EventForm from '../../../components/dashboard/forms/event';
 import { Loader } from '../../../components/global';
 import { useCurrentUser } from '../../../contexts/current-user';
 import { getPermissions, notify } from '../../../utility';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function EventDetails({ event, error }) {
   const [deleting, setDeleting] = useState(false);
   const router = useRouter();
   const { role } = useCurrentUser();
 
-  useOnError(error);
+  useAuthGuard('update.events');
 
-  useEffect(() => {
-    if (!getPermissions(role).includes('update.events')) {
-      router.replace('/dashboard/events');
-    }
-  }, [role, router]);
+  useOnError(error);
 
   const handleDelete = async () => {
     setDeleting(true);

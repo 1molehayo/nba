@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
 import { useRouter } from 'next/router';
@@ -10,19 +10,16 @@ import withAuth from '../../../services/with-auth';
 import { Loader } from '../../../components/global';
 import { getPermissions, notify } from '../../../utility';
 import { useCurrentUser } from '../../../contexts/current-user';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function Article({ article, error }) {
   const [deleting, setDeleting] = useState(false);
   const router = useRouter();
   const { role } = useCurrentUser();
 
-  useOnError(error);
+  useAuthGuard('update.articles');
 
-  useEffect(() => {
-    if (!getPermissions(role).includes('update.articles')) {
-      router.replace('/dashboard/news');
-    }
-  }, [role, router]);
+  useOnError(error);
 
   const handleDelete = async () => {
     setDeleting(true);

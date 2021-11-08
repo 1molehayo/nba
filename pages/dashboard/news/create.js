@@ -1,19 +1,10 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import ArticleForm from '../../../components/dashboard/forms/news';
 import withAuth from '../../../services/with-auth';
-import { getPermissions } from '../../../utility';
-import { useCurrentUser } from '../../../contexts/current-user';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function NewArticle() {
-  const router = useRouter();
-  const { role } = useCurrentUser();
-
-  useEffect(() => {
-    if (!getPermissions(role).includes('create.articles')) {
-      router.replace('/dashboard/news');
-    }
-  }, [role, router]);
+  useAuthGuard('create.articles');
 
   return <ArticleForm />;
 }

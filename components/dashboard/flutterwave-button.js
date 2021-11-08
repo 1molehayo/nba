@@ -33,7 +33,7 @@ const FlutterwaveButton = forwardRef((props, ref) => {
     customizations: {
       title,
       description,
-      logo
+      logo: logo.src
     }
   };
 

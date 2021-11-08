@@ -2,19 +2,53 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
+import moment from 'moment';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
 import withAuth from '../../services/with-auth';
 import useOnError from '../../services/use-on-error';
 import { PaymentCard, Table } from '../../components/dashboard';
-import { PAYMENT_HEADERS } from '../../utility/constants';
-import { getStatus, isArrayEmpty } from '../../utility';
-import { Empty } from '../../components/global';
+import Pagination from '../../components/global/pagination';
+import {
+  PAGE_SIZE,
+  PAYMENT_DATE_FORMAT,
+  PAYMENT_HEADERS
+} from '../../utility/constants';
+import {
+  formatPrice,
+  getStartPage,
+  getStatus,
+  isArrayEmpty,
+  notify
+} from '../../utility';
+import { Empty, Loader } from '../../components/global';
 
-function Payments({ dues, payments, error }) {
+function Payments({ dues, payments, paymentsCount, error }) {
+  const [currentPage, setCurrentPage] = useState(1);
   const [paymentsData, setPayments] = useState(payments);
+  const [loading, setLoading] = useState(false);
 
   useOnError(error);
+
+  const handlePageChange = async (page) => {
+    setLoading(true);
+
+    try {
+      const { data } = await axios.get(
+        `/payments?_start=${getStartPage(page)}&_limit=${PAGE_SIZE}`
+      );
+      setPayments(data);
+      setCurrentPage(page);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section className="section pt-0">
@@ -59,19 +93,39 @@ function Payments({ dues, payments, error }) {
             />
           )}
 
-          {!isArrayEmpty(paymentsData) && (
-            <Table headers={PAYMENT_HEADERS}>
-              {paymentsData.map((item, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td>{item.date}</td>
-                  <td>{item.payment_details}</td>
-                  <td>{item.amount}</td>
-                  <td>{getStatus(item.status)}</td>
-                </tr>
-              ))}
-            </Table>
-          )}
+          <div className="relative">
+            {loading && <Loader inline />}
+
+            {!isArrayEmpty(paymentsData) && (
+              <Table headers={PAYMENT_HEADERS}>
+                {paymentsData.map((item, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>
+                      {moment(item.updated_at).format(
+                        `${PAYMENT_DATE_FORMAT}, hh:mm a`
+                      )}
+                    </td>
+                    <td>{item.payment_details}</td>
+                    <td>{formatPrice(item.amount)}</td>
+                    <td>{getStatus(item.status)}</td>
+                  </tr>
+                ))}
+              </Table>
+            )}
+
+            {!loading && paymentsCount > PAGE_SIZE && (
+              <div className="section pb-0">
+                <Pagination
+                  className="pagination-bar"
+                  currentPage={currentPage}
+                  totalCount={paymentsCount}
+                  pageSize={PAGE_SIZE}
+                  onPageChange={(page) => handlePageChange(page)}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
@@ -81,7 +135,8 @@ function Payments({ dues, payments, error }) {
 Payments.propTypes = {
   dues: PropTypes.array,
   error: PropTypes.object,
-  payments: PropTypes.array
+  payments: PropTypes.array,
+  paymentsCount: PropTypes.number
 };
 
 export default withAuth(Payments);
@@ -96,13 +151,19 @@ export async function getServerSideProps(ctx) {
 
   let dues = null;
   let payments = null;
+  let paymentsCount = 0;
   let error = {};
 
   try {
     const duesResponse = await axios.get('/dues', config);
     dues = duesResponse.data;
-    const paymentsResponse = await axios.get('/payments', config);
+    const paymentsResponse = await axios.get(
+      '/payments?_start=1&_limit=10',
+      config
+    );
     payments = paymentsResponse.data;
+    const { data } = await axios.get('/payments/count', config);
+    paymentsCount = data;
   } catch (err) {
     error = handleApiError(err);
   } finally {
@@ -110,6 +171,7 @@ export async function getServerSideProps(ctx) {
       props: {
         dues,
         payments,
+        paymentsCount,
         error
       } // will be passed to the page component as props
     };

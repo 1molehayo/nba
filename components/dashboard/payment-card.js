@@ -30,6 +30,7 @@ export const PaymentCard = ({ title, amount, payments, updatePayments }) => {
       const { data } = await axios.post('/payments', orderData);
 
       setOrder(data);
+      updatePayments([...payments, data]);
       flutterwaveRef.current.click();
     } catch (err) {
       const error = handleApiError(err);

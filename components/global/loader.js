@@ -1,8 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import Classnames from 'classnames';
 
-export const Loader = () => {
+export const Loader = ({ inline }) => {
   return (
-    <div className="loader__wrapper">
+    <div
+      className={Classnames('loader__wrapper', {
+        'loader__wrapper--inline': inline
+      })}
+    >
       <div className="loader">
         <div></div>
         <div></div>
@@ -11,4 +17,8 @@ export const Loader = () => {
       </div>
     </div>
   );
+};
+
+Loader.propTypes = {
+  inline: PropTypes.bool
 };

@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Banner } from '../components/app';
 import { LawyerCard } from '../components/app/lawyer-card';
+import { Empty } from '../components/global';
 import { Searchbar } from '../components/global/searchbar';
 import axios from '../services/axios';
 import handleApiError from '../services/handle-api-error';
 import useOnError from '../services/use-on-error';
+import { isArrayEmpty } from '../utility';
 
 export default function FindLawyer({ lawyers, error }) {
   const [searchValue, setSearchValue] = useState();
@@ -39,6 +41,14 @@ export default function FindLawyer({ lawyers, error }) {
 
       <div className="section">
         <div className="container">
+          {isArrayEmpty(lawyers) && (
+            <Empty
+              className="mt-5 color-black"
+              icon="icon-profile"
+              desc="No lawyers available"
+            />
+          )}
+
           <div className="row">
             {lawyers.map((item, i) => (
               <div className="col-md-6 col-lg-4 col-xl-3 mb-5" key={i}>
@@ -58,13 +68,12 @@ FindLawyer.propTypes = {
 };
 
 export async function getServerSideProps() {
-  let lawyers = null;
+  let lawyers = [];
   let error = {};
 
   try {
     const { data } = await axios.get('/profiles');
-    // lawyers = data.filter((item) => item.active);
-    lawyers = data;
+    lawyers = data.filter((item) => item.active);
   } catch (err) {
     error = handleApiError(err);
   } finally {

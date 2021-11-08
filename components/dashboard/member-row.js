@@ -15,7 +15,8 @@ export const MemberRow = ({
   const [showContext, setShowContext] = useState(false);
   const toggleContext = () => setShowContext((prevState) => !prevState);
   const [showDialog, setShowDialog] = useState(false);
-  const [adminDialog, setAdminDialog] = useState(true);
+  const [adminDialog, setAdminDialog] = useState(false);
+
   const toggleDialog = (val) => {
     if (val === 'admin') {
       setAdminDialog(true);
@@ -91,7 +92,7 @@ export const MemberRow = ({
                       className="context__item"
                       onClick={() => toggleDialog('admin')}
                     >
-                      Give admin priviledges
+                      Make admin
                     </li>
                   )}
 
@@ -100,7 +101,7 @@ export const MemberRow = ({
                       className="context__item"
                       onClick={() => toggleDialog('admin')}
                     >
-                      Remove admin priviledges
+                      Remove admin
                     </li>
                   )}
 

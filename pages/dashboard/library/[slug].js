@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
@@ -10,21 +10,18 @@ import withAuth from '../../../services/with-auth';
 import { Loader } from '../../../components/global';
 import { useCurrentUser } from '../../../contexts/current-user';
 import { getPermissions, notify } from '../../../utility';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function BookDetails({ book, error }) {
   const [deleting, setDeleting] = useState(false);
+
+  useAuthGuard('update.books');
 
   useOnError(error);
 
   const router = useRouter();
 
   const { role } = useCurrentUser();
-
-  useEffect(() => {
-    if (!getPermissions(role).includes('update.books')) {
-      router.replace('/dashboard/library');
-    }
-  }, [role, router]);
 
   const handleDelete = async () => {
     setDeleting(true);

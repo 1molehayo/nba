@@ -1,19 +1,10 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import BookForm from '../../../components/dashboard/forms/book';
-import { useCurrentUser } from '../../../contexts/current-user';
-import { getPermissions } from '../../../utility';
 import withAuth from '../../../services/with-auth';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function NewBook() {
-  const router = useRouter();
-  const { role } = useCurrentUser();
-
-  useEffect(() => {
-    if (!getPermissions(role).includes('create.books')) {
-      router.replace('/dashboard/library');
-    }
-  }, [role, router]);
+  useAuthGuard('create.books');
 
   return <BookForm />;
 }

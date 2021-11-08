@@ -33,8 +33,7 @@ export const LawyerCard = ({ item }) => {
         {item.first_name} {item.last_name}
       </p>
 
-      <p className={styles.job}>{item.job_title}</p>
-      <p className={styles.job}>{item.job_type}</p>
+      <p className={styles.job}>{`${item.job_type} (${item.job_title})`}</p>
 
       <hr className="divider" />
 

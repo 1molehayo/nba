@@ -14,6 +14,9 @@
   speak: never;
 }
 
+.icon-close::before {
+  content: '\e921';
+}
 .icon-ellipsis::before {
   content: '\e920';
 }

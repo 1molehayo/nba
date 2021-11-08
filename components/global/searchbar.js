@@ -8,6 +8,7 @@ export const Searchbar = ({
   className,
   onChange,
   onSearch,
+  onClear,
   placeholder,
   value
 }) => {
@@ -16,7 +17,6 @@ export const Searchbar = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     await onSearch(value);
-    // inputRef.current.value = "";
   };
 
   return (
@@ -24,13 +24,20 @@ export const Searchbar = ({
       onSubmit={handleSubmit}
       className={classnames('searchbar', className)}
     >
-      <FormField
-        ref={inputRef}
-        className=""
-        placeholder={placeholder || 'Search'}
-        onChange={onChange}
-        value={value}
-      />
+      <div className="relative">
+        <FormField
+          ref={inputRef}
+          className=""
+          placeholder={placeholder || 'Search'}
+          onChange={onChange}
+          value={value}
+        />
+
+        {value && (
+          <span className="icon-close searchbar__close" onClick={onClear} />
+        )}
+      </div>
+
       <button type="submit" className="button button--primary">
         {buttonLabel || 'Find'}
       </button>
@@ -42,6 +49,7 @@ Searchbar.propTypes = {
   buttonLabel: PropTypes.string,
   className: PropTypes.string,
   onChange: PropTypes.func,
+  onClear: PropTypes.func,
   onSearch: PropTypes.func,
   placeholder: PropTypes.string,
   value: PropTypes.string

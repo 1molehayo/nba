@@ -4,20 +4,32 @@ import { useState } from 'react';
 import { Banner } from '../components/app';
 import { LawyerCard } from '../components/app/lawyer-card';
 import { Empty } from '../components/global';
+import Pagination from '../components/global/pagination';
 import { Searchbar } from '../components/global/searchbar';
 import axios from '../services/axios';
 import handleApiError from '../services/handle-api-error';
 import useOnError from '../services/use-on-error';
 import { isArrayEmpty } from '../utility';
+import { PAGE_SIZE_ALT } from '../utility/constants';
 
 export default function FindLawyer({ lawyers, error }) {
-  const [searchValue, setSearchValue] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lawyerData, setLawyers] = useState(lawyers);
+  const [searchValue, setSearchValue] = useState('');
   useOnError(error);
 
   const handleSearch = async () => {
-    // await api call
-    // eslint-disable-next-line no-console
-    console.log(`searched for ${searchValue}`);
+    const arr = lawyers.filter(
+      (item) =>
+        item.first_name.includes(searchValue) ||
+        item.last_name.includes(searchValue)
+    );
+    setLawyers(arr);
+  };
+
+  const onClear = () => {
+    setLawyers(lawyers);
+    setSearchValue('');
   };
 
   return (
@@ -33,15 +45,16 @@ export default function FindLawyer({ lawyers, error }) {
           <Searchbar
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
+            onClear={onClear}
             onSearch={handleSearch}
-            placeholder="Search using full name"
+            placeholder="Search by name"
           />
         </div>
       </div>
 
       <div className="section">
         <div className="container">
-          {isArrayEmpty(lawyers) && (
+          {isArrayEmpty(lawyerData) && (
             <Empty
               className="mt-5 color-black"
               icon="icon-profile"
@@ -49,12 +62,26 @@ export default function FindLawyer({ lawyers, error }) {
             />
           )}
 
-          <div className="row">
-            {lawyers.map((item, i) => (
-              <div className="col-md-6 col-lg-4 col-xl-3 mb-5" key={i}>
-                <LawyerCard item={item} />
+          <div className="relative">
+            <div className="row">
+              {lawyerData.map((item, i) => (
+                <div className="col-md-6 col-lg-4 col-xl-3 mb-5" key={i}>
+                  <LawyerCard item={item} />
+                </div>
+              ))}
+            </div>
+
+            {lawyerData.length > PAGE_SIZE_ALT && (
+              <div className="section pb-0">
+                <Pagination
+                  className="pagination-bar"
+                  currentPage={currentPage}
+                  totalCount={lawyerData.length}
+                  pageSize={PAGE_SIZE_ALT}
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -63,8 +90,8 @@ export default function FindLawyer({ lawyers, error }) {
 }
 
 FindLawyer.propTypes = {
-  lawyers: PropTypes.array,
-  error: PropTypes.object
+  error: PropTypes.object,
+  lawyers: PropTypes.array
 };
 
 export async function getServerSideProps() {

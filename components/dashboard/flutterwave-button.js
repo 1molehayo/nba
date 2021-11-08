@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import getConfig from 'next/config';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
-import logo from '../../assets/images/logo.png';
 import axios from '../../services/axios';
 import { notify } from '../../utility';
 import handleApiError from '../../services/handle-api-error';
@@ -33,7 +32,7 @@ const FlutterwaveButton = forwardRef((props, ref) => {
     customizations: {
       title,
       description,
-      logo: logo.src
+      logo: 'https://nbaikeja.netlify.app/favicon.png'
     }
   };
 

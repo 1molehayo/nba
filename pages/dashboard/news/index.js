@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
-import { useRouter } from 'next/router';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
 import { Empty, Loader, NewsCard } from '../../../components/global';
@@ -18,6 +17,7 @@ import handleApiError from '../../../services/handle-api-error';
 import { useCurrentUser } from '../../../contexts/current-user';
 import { PAGE_SIZE_ALT } from '../../../utility/constants';
 import Pagination from '../../../components/global/pagination';
+import useAuthGuard from '../../../services/use-auth-guard';
 
 function News({ articles, articlesCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,16 +25,8 @@ function News({ articles, articlesCount, error }) {
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
   const { role } = useCurrentUser();
-  const router = useRouter();
 
-  useEffect(() => {
-    if (!getPermissions(role).includes('find.articles')) {
-      router.replace('/dashboard');
-    }
-
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role]);
+  useAuthGuard('find.articles');
 
   useOnError(error);
 
@@ -93,9 +85,11 @@ function News({ articles, articlesCount, error }) {
         <div className="d-flex justify-content-between pb-5">
           <h4>News</h4>
 
-          <Link href="/dashboard/news/create" passHref>
-            <button className="button button--primary">Create news</button>
-          </Link>
+          {getPermissions(role).includes('create.articles') && (
+            <Link href="/dashboard/news/create" passHref>
+              <button className="button button--primary">Create news</button>
+            </Link>
+          )}
         </div>
 
         {isArrayEmpty(articleData) && (
@@ -165,7 +159,7 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const { data } = await axios.get('/articles?_start=1&_limit=10', config);
+    const { data } = await axios.get('/articles?_start=1&_limit=12', config);
     articles = data;
     const countResponse = await axios.get('/articles/count', config);
     articlesCount = countResponse.data;

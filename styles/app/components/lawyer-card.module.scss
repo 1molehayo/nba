@@ -2,7 +2,7 @@
 
 .bio {
   @include font-size(small);
-  padding-bottom: 35px;
+  padding-bottom: 50px;
 }
 
 .image {
@@ -11,6 +11,9 @@
 
 .job {
   @include font-family(montserrat);
+  @include font-size(x-small);
+  @include font-weight(semi-bold);
+  color: color(primary);
 }
 
 .name {
@@ -37,7 +40,7 @@
   a {
     position: relative;
     flex: 1;
-    padding: 0.5rem 0;
+    padding: 1rem 0;
 
     &:not(:last-child) {
       &::before {
@@ -49,6 +52,14 @@
         height: 70%;
         transform: translateY(-50%);
         background-color: color(lighter-grey);
+      }
+    }
+
+    @include respond(large) {
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: color(green);
       }
     }
   }

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
-import qs from 'qs';
+import * as qs from 'qs';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
 import {

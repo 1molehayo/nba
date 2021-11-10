@@ -3,11 +3,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
+import qs from 'qs';
 import { Book } from '../../../components/dashboard';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import withAuth from '../../../services/with-auth';
-import { Empty, Loader } from '../../../components/global';
+import { Empty, Loader, Searchbar } from '../../../components/global';
 import {
   getPermissions,
   getStartPage,
@@ -23,38 +24,17 @@ import useAuthGuard from '../../../services/use-auth-guard';
 function Library({ books, bookCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [bookData, setBooks] = useState(books);
+  const [bookDataCount, setBookCount] = useState(bookCount);
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const { role } = useCurrentUser();
 
   useAuthGuard('find.books');
 
   useOnError(error);
 
-  const handlePageChange = async (page) => {
-    setLoading(true);
-
-    try {
-      const { data } = await axios.get(
-        `/books?_start=${getStartPage(
-          page,
-          PAGE_SIZE_ALT
-        )}&_limit=${PAGE_SIZE_ALT}`
-      );
-      setBooks(data);
-      setCurrentPage(page);
-    } catch (err) {
-      const errorObj = handleApiError(err);
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onDelete = async (id) => {
+  const handleDelete = async (id) => {
     setDeleting(true);
     try {
       await axios.delete(`/books/${id}`);
@@ -77,6 +57,65 @@ function Library({ books, bookCount, error }) {
     }
   };
 
+  const handlePageChange = async (page) => {
+    setLoading(true);
+
+    try {
+      const query = qs.stringify({
+        _start: getStartPage(page),
+        _limit: PAGE_SIZE_ALT
+      });
+
+      const { data } = await axios.get(`/books?${query}`);
+      setBooks(data);
+      setCurrentPage(page);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = async () => {
+    setLoading(true);
+
+    try {
+      const query = qs.stringify({
+        _where: [{ title_contains: searchValue }],
+        _start: 1,
+        _limit: PAGE_SIZE_ALT
+      });
+      const { data } = await axios.get(`/books?${query}`);
+      setBooks(data);
+
+      const countQuery = qs.stringify({
+        _where: [{ title_contains: searchValue }]
+      });
+      const countResponse = await axios.get(`/books/count?${countQuery}`);
+      setBookCount(countResponse.data);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onClear = () => {
+    setBooks(books);
+    setBookCount(bookCount);
+    setCurrentPage(1);
+    setSearchValue('');
+  };
+
   return (
     <section className="section pt-0">
       <Head>
@@ -86,14 +125,27 @@ function Library({ books, bookCount, error }) {
       {deleting && <Loader />}
 
       <div className="container">
-        <div className="d-flex justify-content-between pb-5">
+        <div className="header-title-block">
           <h4>Library</h4>
 
-          {getPermissions(role).includes('create.books') && (
-            <Link href="/dashboard/library/create" passHref>
-              <button className="button button--primary">Create book</button>
-            </Link>
-          )}
+          <div className="d-flex align-items-center">
+            <Searchbar
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onClear={onClear}
+              onSearch={handleSearch}
+              placeholder="Search by name"
+              className="searchbar--sm"
+            />
+
+            {getPermissions(role).includes('create.books') && (
+              <Link href="/dashboard/library/create" passHref>
+                <button className="button button--primary ml-3">
+                  Create book
+                </button>
+              </Link>
+            )}
+          </div>
         </div>
 
         {isArrayEmpty(bookData) && (
@@ -120,7 +172,7 @@ function Library({ books, bookCount, error }) {
                     }
                     onDelete={
                       getPermissions(role).includes('delete.books')
-                        ? () => onDelete(item.id)
+                        ? () => handleDelete(item.id)
                         : null
                     }
                   />
@@ -129,12 +181,12 @@ function Library({ books, bookCount, error }) {
             </div>
           )}
 
-          {bookCount > PAGE_SIZE_ALT && (
+          {bookDataCount > PAGE_SIZE_ALT && (
             <div className="section pb-0">
               <Pagination
                 className="pagination-bar"
                 currentPage={currentPage}
-                totalCount={bookCount}
+                totalCount={bookDataCount}
                 pageSize={PAGE_SIZE_ALT}
                 onPageChange={(page) => handlePageChange(page)}
               />

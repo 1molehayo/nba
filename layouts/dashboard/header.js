@@ -1,10 +1,8 @@
-// import { useState } from 'react';
 import classnames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from '../../services/axios';
 import { Dropdown } from '../../components/global/dropdown';
-// import { Searchbar } from '../../components/global';
 import {
   LOGOUT_COMPLETED,
   LOGOUT_START,
@@ -20,7 +18,6 @@ import {
 import { getImagePath, shimmer, toBase64 } from '../../utility';
 
 const DashboardHeader = () => {
-  // const [searchValue, setSearchValue] = useState();
   const user = useCurrentUser();
   const { image, loading, isAuthenticated } = user;
   const dispatch = useDispatchCurrentUser();
@@ -39,12 +36,6 @@ const DashboardHeader = () => {
     }
   };
 
-  // const handleSearch = async () => {
-  //   // await api call
-  //   // eslint-disable-next-line no-console
-  //   console.log(`searched for ${searchValue}`);
-  // };
-
   const ProfileImage = (
     <Image
       src={getImagePath(image?.url)}
@@ -58,6 +49,21 @@ const DashboardHeader = () => {
     />
   );
 
+  const EmptyImage = (
+    <div
+      style={{
+        width: 60,
+        height: 60,
+        backgroundColor: '#eee',
+        borderRadius: 60
+      }}
+    >
+      <div className="empty-card h-100 justify-content-center">
+        <span className="font-size-large icon-profile" />
+      </div>
+    </div>
+  );
+
   return (
     <header className={classnames('header', styles.wrapper)}>
       <div className={styles.container}>
@@ -68,17 +74,13 @@ const DashboardHeader = () => {
         </Link>
 
         <nav className={styles.nav}>
-          {/* <Searchbar
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onSearch={handleSearch}
-            placeholder="Search"
-            className="searchbar--sm"
-          /> */}
-
           <div className={styles.profile}>
             <Dropdown
-              titleNode={isAuthenticated && !loading ? ProfileImage : null}
+              titleNode={
+                isAuthenticated && !loading && getImagePath(image?.url)
+                  ? ProfileImage
+                  : EmptyImage
+              }
               items={PROFILE_MENU}
               buttonlinks={{ logout: () => handleLogout() }}
             />

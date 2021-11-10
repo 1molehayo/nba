@@ -5,7 +5,7 @@ const handleApiError = (e) => {
   if (e.response && e.response.data) {
     const { data, statusCode, error, message } = e.response.data;
 
-    if (message) {
+    if (message && !Array.isArray(message)) {
       return {
         statusCode,
         error,

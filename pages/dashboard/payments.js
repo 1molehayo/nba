@@ -3,6 +3,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
 import moment from 'moment';
+import qs from 'qs';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
 import withAuth from '../../services/with-auth';
@@ -26,17 +27,72 @@ import { Empty, Loader } from '../../components/global';
 function Payments({ dues, payments, paymentsCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [paymentsData, setPayments] = useState(payments);
+  const [paymentsDataCount, setPaymentsCount] = useState(paymentsCount);
+  const [filterData, setFilter] = useState({
+    title: '',
+    status: ''
+  });
+
   const [loading, setLoading] = useState(false);
 
   useOnError(error);
+
+  // eslint-disable-next-line no-unused-vars
+  const handleFilter = async () => {
+    setLoading(true);
+
+    try {
+      const query = qs.stringify({
+        _where: [
+          { title_contains: filterData.title },
+          { status: filterData.status }
+        ],
+        _start: 1,
+        _limit: PAGE_SIZE
+      });
+      const { data } = await axios.get(`/payments/me?${query}`);
+      setPayments(data);
+
+      const countQuery = qs.stringify({
+        _where: [
+          { title_contains: filterData.title },
+          { status: filterData.status }
+        ]
+      });
+      const countResponse = await axios.get(`/payments/count?${countQuery}`);
+      setPaymentsCount(countResponse.data);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  const onClear = () => {
+    setPayments(payments);
+    setPaymentsCount(paymentsCount);
+    setCurrentPage(1);
+    setFilter({
+      title: '',
+      status: ''
+    });
+  };
 
   const handlePageChange = async (page) => {
     setLoading(true);
 
     try {
-      const { data } = await axios.get(
-        `/payments?_start=${getStartPage(page)}&_limit=${PAGE_SIZE}`
-      );
+      const query = qs.stringify({
+        _start: getStartPage(page),
+        _limit: PAGE_SIZE
+      });
+      const { data } = await axios.get(`/payments/me?${query}`);
       setPayments(data);
       setCurrentPage(page);
     } catch (err) {
@@ -114,12 +170,12 @@ function Payments({ dues, payments, paymentsCount, error }) {
               </Table>
             )}
 
-            {!loading && paymentsCount > PAGE_SIZE && (
+            {!loading && paymentsDataCount > PAGE_SIZE && (
               <div className="section pb-0">
                 <Pagination
                   className="pagination-bar"
                   currentPage={currentPage}
-                  totalCount={paymentsCount}
+                  totalCount={paymentsDataCount}
                   pageSize={PAGE_SIZE}
                   onPageChange={(page) => handlePageChange(page)}
                 />
@@ -145,7 +201,7 @@ export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
   const config = {
     headers: {
-      Authorization: `Bearer ${cookies.token}`
+      Authorization: `Bearer ${cookies.token} `
     }
   };
 
@@ -158,7 +214,7 @@ export async function getServerSideProps(ctx) {
     const duesResponse = await axios.get('/dues', config);
     dues = duesResponse.data;
     const paymentsResponse = await axios.get(
-      '/payments?_start=1&_limit=10',
+      '/payments/me?_start=1&_limit=10',
       config
     );
     payments = paymentsResponse.data;

@@ -9,8 +9,8 @@ function removehttp(url) {
 }
 
 module.exports = {
-  target: 'serverless',
   reactStrictMode: true,
+  trailingSlashes: true,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
   },

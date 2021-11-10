@@ -3,9 +3,15 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
+import qs from 'qs';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
-import { Empty, EventsCard, Loader } from '../../../components/global';
+import {
+  Empty,
+  EventsCard,
+  Loader,
+  Searchbar
+} from '../../../components/global';
 import {
   getPermissions,
   getStartPage,
@@ -22,8 +28,10 @@ import useAuthGuard from '../../../services/use-auth-guard';
 function Events({ events, eventsCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [eventData, setEvents] = useState(events);
+  const [eventDataCount, setEventsCount] = useState(eventsCount);
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const { role } = useCurrentUser();
 
   useAuthGuard('find.events');
@@ -57,9 +65,12 @@ function Events({ events, eventsCount, error }) {
     setLoading(true);
 
     try {
-      const { data } = await axios.get(
-        `/events?_start=${getStartPage(page)}&_limit=${PAGE_SIZE_ALT}`
-      );
+      const query = qs.stringify({
+        _start: getStartPage(page),
+        _limit: PAGE_SIZE_ALT
+      });
+
+      const { data } = await axios.get(`/events?${query}`);
       setEvents(data);
       setCurrentPage(page);
     } catch (err) {
@@ -73,6 +84,43 @@ function Events({ events, eventsCount, error }) {
     }
   };
 
+  const handleSearch = async () => {
+    setLoading(true);
+
+    try {
+      const query = qs.stringify({
+        _where: [{ title_contains: searchValue }],
+        _start: 1,
+        _limit: PAGE_SIZE_ALT
+      });
+
+      const { data } = await axios.get(`/events?${query}`);
+      setEvents(data);
+
+      const countQuery = qs.stringify({
+        _where: [{ title_contains: searchValue }]
+      });
+      const countResponse = await axios.get(`/events/count?${countQuery}`);
+      setEventsCount(countResponse.data);
+    } catch (err) {
+      const errorObj = handleApiError(err);
+
+      notify({
+        type: 'error',
+        message: errorObj.message
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onClear = () => {
+    setEvents(events);
+    setEventsCount(eventsCount);
+    setCurrentPage(1);
+    setSearchValue('');
+  };
+
   return (
     <section className="section pt-0">
       <Head>
@@ -83,14 +131,27 @@ function Events({ events, eventsCount, error }) {
 
       <div className="container">
         <div className="section pt-0">
-          <div className="d-flex justify-content-between pb-5">
-            <h4 className="">Events</h4>
+          <div className="header-title-block">
+            <h4>Events</h4>
 
-            {getPermissions(role).includes('create.events') && (
-              <Link href="/dashboard/events/create" passHref>
-                <button className="button button--primary">Create event</button>
-              </Link>
-            )}
+            <div className="d-flex align-items-center">
+              <Searchbar
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onClear={onClear}
+                onSearch={handleSearch}
+                placeholder="Search by name"
+                className="searchbar--sm"
+              />
+
+              {getPermissions(role).includes('create.events') && (
+                <Link href="/dashboard/events/create" passHref>
+                  <button className="button button--primary ml-3">
+                    Create event
+                  </button>
+                </Link>
+              )}
+            </div>
           </div>
 
           {isArrayEmpty(eventData) && (
@@ -126,12 +187,12 @@ function Events({ events, eventsCount, error }) {
               </div>
             )}
 
-            {eventsCount > PAGE_SIZE_ALT && (
+            {eventDataCount > PAGE_SIZE_ALT && (
               <div className="section pb-0">
                 <Pagination
                   className="pagination-bar"
                   currentPage={currentPage}
-                  totalCount={eventsCount}
+                  totalCount={eventDataCount}
                   pageSize={PAGE_SIZE_ALT}
                   onPageChange={(page) => handlePageChange(page)}
                 />

@@ -113,7 +113,7 @@ const EventForm = ({ data, onDelete }) => {
       </Head>
 
       <div className="section container pt-0 pb-0">
-        <div className="d-flex justify-content-between pb-5">
+        <div className="header-title-block">
           <h4>Event</h4>
 
           <Link href="/dashboard/events" passHref>

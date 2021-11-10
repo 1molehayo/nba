@@ -4,7 +4,11 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
 import moment from 'moment';
-import { DATE_FORMAT_VIEW, MEETING_HEADERS } from '../../../utility/constants';
+import {
+  DATE_FORMAT_VIEW,
+  MEETING_HEADERS,
+  PAGE_SIZE
+} from '../../../utility/constants';
 import { MeetingCard, Table } from '../../../components/dashboard';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
@@ -20,8 +24,10 @@ import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
 import { useCurrentUser } from '../../../contexts/current-user';
 import useAuthGuard from '../../../services/use-auth-guard';
+import Pagination from '../../../components/global/pagination';
 
 function Meeting({ meetings, error }) {
+  const [currentPage, setCurrentPage] = useState(1);
   const [meetingData, setMeetings] = useState(meetings);
   const [deleting, setDeleting] = useState(false);
   const { role } = useCurrentUser();
@@ -63,7 +69,7 @@ function Meeting({ meetings, error }) {
 
       <div className="container">
         <div className="section pt-0">
-          <div className="d-flex justify-content-between pb-5">
+          <div className="header-title-block">
             <h4>Upcoming Meetings</h4>
 
             {getPermissions(role).includes('create.meetings') && (
@@ -127,6 +133,18 @@ function Meeting({ meetings, error }) {
                 </tr>
               ))}
             </Table>
+          )}
+
+          {getOldMeetings(meetingData).length > PAGE_SIZE && (
+            <div className="section pb-0">
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={getOldMeetings(meetingData).length}
+                pageSize={PAGE_SIZE}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
           )}
         </div>
       </div>

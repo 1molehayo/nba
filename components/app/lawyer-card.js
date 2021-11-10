@@ -14,19 +14,38 @@ export const LawyerCard = ({ item }) => {
   return (
     <div className={styles.wrapper}>
       <div className="text-center">
-        <Image
-          className={styles.image}
-          placeholder="blur"
-          blurDataURL={`data:image/svg+xml;base64,${toBase64(
-            shimmer(128, 128)
-          )}`}
-          alt={item.first_name}
-          width={128}
-          height={128}
-          objectFit="cover"
-          objectPosition="center top"
-          src={getImagePath(item.image.url)}
-        />
+        {item.image && (
+          <Image
+            className={styles.image}
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+              shimmer(128, 128)
+            )}`}
+            alt={item.first_name}
+            width={128}
+            height={128}
+            objectFit="cover"
+            objectPosition="center top"
+            src={getImagePath(item.image.url)}
+          />
+        )}
+
+        {!item.image && (
+          <div
+            style={{
+              width: 128,
+              height: 128,
+              backgroundColor: '#eee',
+              borderRadius: 128,
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }}
+          >
+            <div className="empty-card h-100 justify-content-center">
+              <span className="font-size-m-large icon-profile" />
+            </div>
+          </div>
+        )}
       </div>
 
       <p className={styles.name}>
@@ -38,7 +57,7 @@ export const LawyerCard = ({ item }) => {
       <hr className="divider" />
 
       <p className={styles.bio}>
-        {formatCharLength(item.bio, TEXT_RESTRICTIONS.short_text)}
+        {formatCharLength(item.bio, TEXT_RESTRICTIONS.short_text) || 'N/A'}
       </p>
 
       <div className={styles.social}>

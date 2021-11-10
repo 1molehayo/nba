@@ -16,6 +16,7 @@ export default function FindLawyer({ lawyers, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lawyerData, setLawyers] = useState(lawyers);
   const [searchValue, setSearchValue] = useState('');
+
   useOnError(error);
 
   const handleSearch = async () => {

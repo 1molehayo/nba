@@ -39,17 +39,19 @@ export const AboutCard = ({ item }) => {
         onClick={() => getProfile(item.id)}
       >
         <div className={styles.image}>
-          <Image
-            src={item.image}
-            alt={item.name}
-            placeholder="blur"
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-              shimmer(700, 500)
-            )}`}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="top"
-          />
+          {item.image && (
+            <Image
+              src={item.image}
+              alt={item.name}
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                shimmer(700, 500)
+              )}`}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="top"
+            />
+          )}
         </div>
 
         <p className={styles.title}>{item.name}</p>

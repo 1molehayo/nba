@@ -60,14 +60,12 @@ function Register() {
         formData.append('data', JSON.stringify(profileData));
         formData.append('files.image', file);
 
-        await axios.post('/profiles/me', formData);
+        const { data } = await axios.post('/profiles/me', formData);
 
         notify({
           type: 'success',
           message: 'Registration successful'
         });
-
-        const { data } = await axios.get('/profiles/me');
 
         setTimeout(() => {
           dispatch({ type: LOGIN_COMPLETED, user: data });
@@ -80,7 +78,9 @@ function Register() {
           message: errorObj.message
         });
 
+        await axios.delete('/users/me');
         await axios.post('/logout');
+
         dispatch({ type: LOGOUT_COMPLETED });
       } finally {
         setRegistering(false);

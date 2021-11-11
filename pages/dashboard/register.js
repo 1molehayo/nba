@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import styles from '../../styles/dashboard/pages/register.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
@@ -22,6 +23,7 @@ function Register() {
   const [registering, setRegistering] = useState(false);
   const [file, setFile] = useState();
   const dispatch = useDispatchCurrentUser();
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: REGISTER_FORM_MODEL,
@@ -30,7 +32,7 @@ function Register() {
       setRegistering(true);
 
       const userData = {
-        username: values.firstName,
+        username: values.email,
         email: values.email,
         password: values.password,
         blocked: false
@@ -67,7 +69,18 @@ function Register() {
           message: 'Registration successful'
         });
 
-        setTimeout(() => {
+        if (!data.active) {
+          await axios.post('/logout');
+          router.replace('/dashboard/login');
+
+          notify({
+            type: 'error',
+            message:
+              'Please reach out to the administrator to complete registration.'
+          });
+        }
+
+        return setTimeout(() => {
           dispatch({ type: LOGIN_COMPLETED, user: data });
         }, 1200);
       } catch (err) {

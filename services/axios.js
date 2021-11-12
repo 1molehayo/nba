@@ -5,7 +5,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const axios = _axios.create({
   baseURL: publicRuntimeConfig.baseUrl,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'

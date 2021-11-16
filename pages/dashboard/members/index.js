@@ -153,7 +153,7 @@ function Members({ members, membersCount, error }) {
 
         {isArrayEmpty(membersData) && (
           <Empty
-            className="mt-5 color-black"
+            className="mt-5 color-primary"
             icon="icon-profile"
             desc="No other users have signed up"
           />

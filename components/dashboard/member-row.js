@@ -129,7 +129,7 @@ export const MemberRow = ({
         showDialog={showDialog}
         toggleDialog={toggleDialog}
         blocked={member.blocked}
-        isAdmin={member.role.type !== DEFAULT_ROLE_TYPE}
+        isAdmin={member.role?.type !== DEFAULT_ROLE_TYPE}
         adminDialog={adminDialog}
         onSubmit={onSubmit}
       />

@@ -48,7 +48,7 @@ export default function Events({ events, eventsCount, error }) {
       <div className="section container">
         {isArrayEmpty(eventData) && (
           <div className="mt-8">
-            <Empty icon="icon-calendar" />
+            <Empty className="color-primary" icon="icon-calendar" />
           </div>
         )}
 

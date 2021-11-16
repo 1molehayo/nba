@@ -150,7 +150,7 @@ function Library({ books, bookCount, error }) {
 
         {isArrayEmpty(bookData) && (
           <Empty
-            className="mt-5 color-black"
+            className="mt-5 color-primary"
             icon="icon-book"
             desc="No books available"
           />

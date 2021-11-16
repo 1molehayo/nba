@@ -156,7 +156,7 @@ function Events({ events, eventsCount, error }) {
 
           {isArrayEmpty(eventData) && (
             <Empty
-              className="mt-5 color-black"
+              className="mt-5 color-primary"
               icon="icon-calendar"
               desc="No events available"
             />

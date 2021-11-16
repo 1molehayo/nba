@@ -93,7 +93,7 @@ function News({ articles, articlesCount, error }) {
         </div>
 
         {isArrayEmpty(articleData) && (
-          <Empty icon="icon-news" className="color-primary" />
+          <Empty icon="icon-news" className="mt-5 color-primary" />
         )}
 
         <div className="relative">

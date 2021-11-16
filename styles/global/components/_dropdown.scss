@@ -23,7 +23,7 @@ $menu_width: 150px;
   &--active {
     .dropdown__menu {
       padding: 15px 0;
-      transition: 0.5s 0.1s padding;
+      transition: 0.3s 0.1s padding;
 
       & > * {
         visibility: visible;
@@ -48,7 +48,7 @@ $menu_width: 150px;
     left: 1.6rem;
     min-width: $menu_width;
     padding: 0;
-    transition: 0.5s padding, 0.5s background;
+    transition: 0.3s padding, 0.5s background;
     background: color(light-blue);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 
@@ -61,7 +61,7 @@ $menu_width: 150px;
       margin: 0;
       padding: 0 10px;
       overflow: hidden;
-      transition: 0.5s 0.1s height, 0.5s 0.1s padding, 0.5s 0.1s margin,
+      transition: 0.3s 0.1s height, 0.5s 0.1s padding, 0.5s 0.1s margin,
         0.3s color, 0.2s background-color, 0.3s color, 0.6s visibility;
       text-transform: uppercase;
       white-space: nowrap;

@@ -118,7 +118,7 @@ function Payments({ dues, payments, paymentsCount, error }) {
 
           {isArrayEmpty(dues) && (
             <Empty
-              className="mt-5 color-black"
+              className="mt-5 color-primary"
               icon="icon-card"
               desc="No dues available"
             />
@@ -143,7 +143,7 @@ function Payments({ dues, payments, paymentsCount, error }) {
 
           {isArrayEmpty(paymentsData) && (
             <Empty
-              className="mt-5 color-black"
+              className="mt-5 color-primary"
               icon="icon-card"
               desc="You have not made any payments"
             />

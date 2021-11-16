@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import { useDispatchCurrentUser } from 'contexts/current-user';
+import { LOGIN_COMPLETED, LOGOUT_COMPLETED } from 'utility/constants';
 import styles from '../../styles/dashboard/pages/reset-password.module.scss';
 import Logo from '../../assets/images/logo.png';
 import { FormField } from '../../components/global/formfield';
@@ -13,20 +16,40 @@ import handleApiError from '../../services/handle-api-error';
 import { capitalizeFirstLetter, isObjectEmpty, notify } from '../../utility';
 import { RESET_PASSWORD_FORM_MODEL } from '../../utility/models';
 
-function ResetPassword() {
+function ResetPassword({ code }) {
   const [error, setError] = useState();
   const [updating, setUpdating] = useState(false);
+  const dispatch = useDispatchCurrentUser();
 
   const formik = useFormik({
-    initialValues: RESET_PASSWORD_FORM_MODEL,
+    initialValues: { ...RESET_PASSWORD_FORM_MODEL, code },
     validationSchema: ResetPasswordSchema,
     onSubmit: async (values) => {
+      setUpdating(true);
+
       try {
         await axios.post('/auth/reset-password', values);
+        const { data } = await axios.get('/profiles/me');
+
+        if (!data.active) {
+          notify({
+            type: 'error',
+            message:
+              'Your account has been deactivated, please reach out to the administrator'
+          });
+
+          dispatch({ type: LOGOUT_COMPLETED });
+          return;
+        }
+
         notify({
           type: 'success',
           message: 'Your password has been reset successfully'
         });
+
+        setTimeout(() => {
+          dispatch({ type: LOGIN_COMPLETED, user: data });
+        }, 1200);
       } catch (err) {
         const errorObj = handleApiError(err);
 
@@ -34,8 +57,9 @@ function ResetPassword() {
           errorObj.message = 'There was a problem reseting your password!';
         }
 
-        setUpdating(false);
         setError(errorObj);
+      } finally {
+        setUpdating(false);
       }
     }
   });
@@ -62,30 +86,35 @@ function ResetPassword() {
               )}
 
               <div className="form__logo">
-                <Image
-                  src={Logo}
-                  alt="NBA Ikeja logo"
-                  width={221}
-                  height={55}
-                />
+                <div>
+                  <Image
+                    src={Logo}
+                    alt="NBA Ikeja logo"
+                    width={221}
+                    height={55}
+                  />
+                </div>
+
+                <h6 className="mt-5 text-none">Reset password</h6>
               </div>
 
               <FormField
                 id="code"
                 type="text"
-                label="Code"
+                label="Verification Code"
                 display="inline"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.code}
                 error={formik.errors.code}
+                disabled
                 touched={formik.touched.code}
               />
 
               <FormField
                 id="password"
                 type="password"
-                label="Password"
+                label="New Password"
                 display="inline"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -138,11 +167,18 @@ function ResetPassword() {
   );
 }
 
+ResetPassword.propTypes = {
+  code: PropTypes.string
+};
+
 export default isAuth(ResetPassword);
 
-export async function getStaticProps() {
+export async function getServerSideProps({ query }) {
+  const { code } = query;
+
   return {
     props: {
+      code,
       hasNav: false,
       hasSidebar: false
     } // will be passed to the page component as props

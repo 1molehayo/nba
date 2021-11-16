@@ -24,8 +24,11 @@ function ForgotPassword() {
     },
     validationSchema: ForgotPasswordSchema,
     onSubmit: async (values) => {
+      setReseting(true);
+
       try {
         await axios.post('/auth/forgot-password', values);
+
         notify({
           type: 'success',
           message: 'A link has been sent to your email!'
@@ -39,8 +42,9 @@ function ForgotPassword() {
           errorObj.message = 'There was a problem reseting your password!';
         }
 
-        setReseting(false);
         setError(errorObj);
+      } finally {
+        setReseting(false);
       }
     }
   });
@@ -53,7 +57,7 @@ function ForgotPassword() {
   return (
     <section className={styles.wrapper}>
       <Head>
-        <title>Reset Password | NBA-Ikeja</title>
+        <title>Forgot Password | NBA-Ikeja</title>
       </Head>
 
       <div className="container">
@@ -67,12 +71,16 @@ function ForgotPassword() {
               )}
 
               <div className="form__logo">
-                <Image
-                  src={Logo}
-                  alt="NBA Ikeja logo"
-                  width={221}
-                  height={55}
-                />
+                <div>
+                  <Image
+                    src={Logo}
+                    alt="NBA Ikeja logo"
+                    width={221}
+                    height={55}
+                  />
+                </div>
+
+                <h6 className="mt-5 text-none">Reset Password</h6>
               </div>
 
               <FormField
@@ -90,9 +98,9 @@ function ForgotPassword() {
               <button
                 type="submit"
                 disabled={reseting}
-                className="button button--primary mt-4"
+                className="button button--primary mt-2"
               >
-                {reseting ? 'Loading...' : 'Reset Password'}
+                {reseting ? 'Loading...' : 'Send Email'}
               </button>
 
               <div className="pt-4 extra-info">

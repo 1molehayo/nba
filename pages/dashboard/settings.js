@@ -41,7 +41,7 @@ function Settings() {
 
   const [updating, setUpdating] = useState(false);
   const [file, setFile] = useState();
-  const [avatar, setAvatar] = useState(getImagePath(image.url));
+  const [avatar, setAvatar] = useState(getImagePath(image?.url));
 
   const formik = useFormik({
     initialValues: {
@@ -100,6 +100,12 @@ function Settings() {
   });
 
   const handleFileChange = (event) => {
+    if (!event) {
+      setAvatar();
+      setFile();
+      return;
+    }
+
     setFile(event.target.files[0]);
 
     if (isArrayEmpty(event.target.files)) {
@@ -292,7 +298,7 @@ function Settings() {
               <p className="color-black font-size-small">Profile Picture</p>
 
               <div className={styles.image}>
-                {image && (
+                {avatar && (
                   <Image
                     src={avatar}
                     placeholder="blur"
@@ -303,6 +309,19 @@ function Settings() {
                     objectFit="cover"
                     layout="fill"
                   />
+                )}
+
+                {avatar && (
+                  <button
+                    className="button button--red"
+                    onClick={() => handleFileChange()}
+                  >
+                    Delete <span className="icon-delete" />
+                  </button>
+                )}
+
+                {!avatar && (
+                  <span className="font-size-xx-large icon-profile" />
                 )}
 
                 <input type="file" onChange={handleFileChange} id="file" />

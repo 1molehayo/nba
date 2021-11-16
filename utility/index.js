@@ -1,10 +1,7 @@
 import Toastify from 'toastify-js';
-import getConfig from 'next/config';
 import moment from 'moment';
 import { convertFromRaw, convertToRaw } from 'draft-js';
 import { DATE_FORMAT, PAGE_SIZE, PERMISSIONS } from './constants';
-
-const { publicRuntimeConfig } = getConfig();
 
 export const capitalizeFirstLetter = (str) => {
   if (!str) {
@@ -48,7 +45,8 @@ export const getImagePath = (url) => {
     return '';
   }
 
-  return `${publicRuntimeConfig.baseUrl}${url}`;
+  // return `${publicRuntimeConfig.baseUrl}/${url}`;
+  return `${url}`;
 };
 
 export const getStatus = (val) => {

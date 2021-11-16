@@ -105,7 +105,7 @@ function Dashboard({ books, meetings, payments, error }) {
 
               {isArrayEmpty(getUpcomingMeetings(meetings)) && (
                 <Empty
-                  className="mt-5 color-black"
+                  className="mt-5 color-primary"
                   icon="icon-meeting"
                   desc="No meetings available"
                 />
@@ -127,7 +127,7 @@ function Dashboard({ books, meetings, payments, error }) {
 
                 {isArrayEmpty(payments) && (
                   <Empty
-                    className="mt-5 color-black"
+                    className="mt-5 color-primary"
                     icon="icon-card"
                     desc="You have not made any payments"
                   />

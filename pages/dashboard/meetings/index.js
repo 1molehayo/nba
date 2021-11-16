@@ -83,7 +83,7 @@ function Meeting({ meetings, error }) {
 
           {isArrayEmpty(getUpcomingMeetings(meetingData)) && (
             <Empty
-              className="mt-5 color-black"
+              className="mt-5 color-primary"
               icon="icon-meeting"
               desc="No upcoming meetings available"
             />
@@ -115,7 +115,7 @@ function Meeting({ meetings, error }) {
 
           {isArrayEmpty(getOldMeetings(meetingData)) && (
             <Empty
-              className="mt-5 color-black"
+              className="mt-5 color-primary"
               icon="icon-meeting"
               desc="You have not attended any meetings"
             />

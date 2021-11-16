@@ -48,7 +48,7 @@ export default function News({ articles, articlesCount, error }) {
       <div className="section container">
         {isArrayEmpty(articleData) && (
           <div className="mt-8">
-            <Empty icon="icon-calendar" />
+            <Empty className="color-primary" icon="icon-calendar" />
           </div>
         )}
 

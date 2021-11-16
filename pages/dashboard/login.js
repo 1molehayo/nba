@@ -151,7 +151,7 @@ function Login() {
                 </p>
                 <p className="font-size-small">
                   Forgot Password?{' '}
-                  <Link href="/dashboard/reset-password">
+                  <Link href="/dashboard/forgot-password">
                     <a className="form__link">Click here</a>
                   </Link>
                 </p>

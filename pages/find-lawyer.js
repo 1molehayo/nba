@@ -59,7 +59,7 @@ export default function FindLawyer({ lawyers, error }) {
         <div className="container">
           {isArrayEmpty(lawyerData) && (
             <Empty
-              className="mt-5 color-black"
+              className="mt-5 color-primary"
               icon="icon-profile"
               desc="No lawyers available"
             />

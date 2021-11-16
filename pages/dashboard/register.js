@@ -121,12 +121,16 @@ function Register() {
           <div className={styles.form}>
             <form className="form form--inline" onSubmit={handleRegister}>
               <div className="form__logo">
-                <Image
-                  src={Logo}
-                  alt="NBA Ikeja logo"
-                  width={221}
-                  height={55}
-                />
+                <div>
+                  <Image
+                    src={Logo}
+                    alt="NBA Ikeja logo"
+                    width={221}
+                    height={55}
+                  />
+                </div>
+
+                <h6 className="mt-5 text-none">Create a new account</h6>
               </div>
 
               <div className={styles.fullname}>

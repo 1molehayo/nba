@@ -27,7 +27,7 @@ import { TEXT_RESTRICTIONS } from '../../../utility/constants';
 const ArticleForm = ({ data, onDelete }) => {
   const [file, setFile] = useState();
   const [image, setImage] = useState(
-    data ? getImagePath(data.image.url) : null
+    data ? getImagePath(data?.image?.url) : null
   );
   const [loading, setLoading] = useState(false);
   const [editorState, setEditorState] = useState();

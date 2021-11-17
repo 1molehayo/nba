@@ -205,8 +205,8 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let dues = null;
-  let payments = null;
+  let dues = [];
+  let payments = [];
   let paymentsCount = 0;
   let error = {};
 

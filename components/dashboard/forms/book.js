@@ -148,7 +148,7 @@ const BookForm = ({ data, onDelete }) => {
             id="pdf"
             label="Select Book (pdf)"
             onChange={handlePdfChange}
-            fileName={data ? data.file.name : getFileName(pdf)}
+            fileName={data ? data?.file?.name : getFileName(pdf)}
             allowedFiles=".pdf"
             error={pdfError}
             isRequired
@@ -158,7 +158,7 @@ const BookForm = ({ data, onDelete }) => {
             id="image"
             label="Select Image"
             onChange={handleImageChange}
-            fileName={data ? data.image.name : getFileName(image)}
+            fileName={data ? data?.image?.name : getFileName(image)}
           />
 
           <FormField

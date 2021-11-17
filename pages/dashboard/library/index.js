@@ -214,7 +214,7 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let books = null;
+  let books = [];
   let bookCount = 0;
   let error = {};
 

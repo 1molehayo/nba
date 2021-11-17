@@ -210,8 +210,8 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let members = null;
-  let membersCount = null;
+  let members = [];
+  let membersCount = 0;
   let error = {};
 
   try {

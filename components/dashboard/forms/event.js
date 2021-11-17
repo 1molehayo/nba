@@ -156,7 +156,7 @@ const EventForm = ({ data, onDelete }) => {
             id="image"
             label="Select Image"
             onChange={handleImageChange}
-            fileName={data ? data.image.name : getFileName(image)}
+            fileName={data ? data?.image?.name : getFileName(image)}
           />
 
           <FormField

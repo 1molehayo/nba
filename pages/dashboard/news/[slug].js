@@ -73,7 +73,7 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let article = null;
+  let article = {};
   let error = {};
 
   try {

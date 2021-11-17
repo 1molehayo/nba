@@ -12,7 +12,7 @@ export const MemberDetails = ({ member, status }) => {
         <div className={styles.image}>
           {member?.image && (
             <Image
-              src={getImagePath(member.image.url)}
+              src={getImagePath(member?.image?.url)}
               placeholder="blur"
               blurDataURL={`data:image/svg+xml;base64,${toBase64(
                 shimmer(300, 300)

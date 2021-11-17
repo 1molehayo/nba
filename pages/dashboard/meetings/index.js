@@ -167,7 +167,7 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let meetings = null;
+  let meetings = [];
   let error = {};
 
   try {

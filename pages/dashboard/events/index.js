@@ -221,7 +221,7 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let events = null;
+  let events = [];
   let eventsCount = 0;
   let error = {};
 

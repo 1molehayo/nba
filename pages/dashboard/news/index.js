@@ -154,7 +154,7 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let articles = null;
+  let articles = [];
   let articlesCount = 0;
   let error = {};
 

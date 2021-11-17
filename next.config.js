@@ -14,11 +14,7 @@ module.exports = {
     raveSecretKey: process.env.RAVE_SECRET_KEY
   },
   images: {
-    domains: [
-      'localhost',
-      process.env.API_BASE_URL,
-      process.env.DO_SPACE_ENDPOINT
-    ]
+    domains: ['localhost', process.env.DO_SPACE_ENDPOINT]
   },
   webpack: (config) => {
     config.module.rules.push({

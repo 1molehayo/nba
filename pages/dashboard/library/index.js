@@ -30,6 +30,8 @@ function Library({ books, bookCount, error }) {
   const [searchValue, setSearchValue] = useState('');
   const { role } = useCurrentUser();
 
+  console.log(books);
+
   useAuthGuard('find.books');
 
   useOnError(error);
@@ -219,7 +221,7 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const { data } = await axios.get('/books?_start=1&_limit=12', config);
+    const { data } = await axios.get('/books?_limit=12', config);
     books = data;
     const countResponse = await axios.get('/books/count', config);
     bookCount = countResponse.data;

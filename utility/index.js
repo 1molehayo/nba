@@ -186,14 +186,7 @@ export const getUpcomingMeetings = (arr) => {
   }
 
   const res = arr.filter((item) => {
-    const date = moment(item.date).format(DATE_FORMAT);
-    const datetime = moment(
-      `${date} ${item.time}`,
-      `${DATE_FORMAT} HH:mm:ss`,
-      true
-    );
-
-    return datetime.isSameOrAfter(new Date(), 'day');
+    return moment(item.date).isSameOrAfter(new Date(), 'day');
   });
 
   return res;
@@ -205,14 +198,7 @@ export const getOldMeetings = (arr) => {
   }
 
   const res = arr.filter((item) => {
-    const date = moment(item.date).format(DATE_FORMAT);
-    const datetime = moment(
-      `${date} ${item.time}`,
-      `${DATE_FORMAT} HH:mm:ss`,
-      true
-    );
-
-    return datetime.isBefore(new Date(), 'day');
+    return moment(item.date).isBefore(new Date(), 'day');
   });
 
   return res;

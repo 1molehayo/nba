@@ -45,6 +45,8 @@ export const CurrentUserProvider = ({ children }) => {
       try {
         const { data } = await axios.get('/profiles/me');
 
+        console.log('profile', data);
+
         dispatch({
           type: LOGIN_COMPLETED,
           user: data

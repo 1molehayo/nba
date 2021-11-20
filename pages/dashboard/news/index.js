@@ -159,7 +159,7 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const { data } = await axios.get('/articles?_start=1&_limit=12', config);
+    const { data } = await axios.get('/articles?_limit=12', config);
     articles = data;
     const countResponse = await axios.get('/articles/count', config);
     articlesCount = countResponse.data;

@@ -32,6 +32,9 @@ function Meeting({ meetings, error }) {
   const [deleting, setDeleting] = useState(false);
   const { role } = useCurrentUser();
 
+  console.log('meetings', meetingData);
+  console.log('upcoming', getUpcomingMeetings(meetingData));
+
   useAuthGuard('find.meetings');
 
   useOnError(error);

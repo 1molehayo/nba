@@ -226,7 +226,7 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const { data } = await axios.get('/events?_start=1&_limit=12', config);
+    const { data } = await axios.get('/events?_limit=12', config);
     events = data;
     const countResponse = await axios.get('/events/count', config);
     eventsCount = countResponse.data;

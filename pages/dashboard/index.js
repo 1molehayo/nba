@@ -179,17 +179,11 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const meetingResponse = await axios.get(
-      '/meetings?_start=1&_limit=3',
-      config
-    );
+    const meetingResponse = await axios.get('/meetings?_limit=3', config);
     meetings = meetingResponse.data;
-    const bookResponse = await axios.get('/books?_start=1&_limit=3', config);
+    const bookResponse = await axios.get('/books?_limit=3', config);
     books = bookResponse.data;
-    const paymentsResponse = await axios.get(
-      '/payments/me?_start=1&_limit=5',
-      config
-    );
+    const paymentsResponse = await axios.get('/payments/me?_limit=5', config);
     payments = paymentsResponse.data;
   } catch (err) {
     error = handleApiError(err);

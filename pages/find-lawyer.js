@@ -41,19 +41,17 @@ export default function FindLawyer({ lawyers, error }) {
 
       <Banner title="Find Lawyer" />
 
-      {!isArrayEmpty(lawyerData) && (
-        <div className="section pb-0">
-          <div className="container">
-            <Searchbar
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onClear={onClear}
-              onSearch={handleSearch}
-              placeholder="Search by name"
-            />
-          </div>
+      <div className="section pb-0">
+        <div className="container">
+          <Searchbar
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onClear={onClear}
+            onSearch={handleSearch}
+            placeholder="Search by name"
+          />
         </div>
-      )}
+      </div>
 
       <div className="section">
         <div className="container">

@@ -37,6 +37,7 @@ export const CurrentPlatformProvider = ({ children }) => {
 
       try {
         const { data } = await axios.get('/platforms');
+        console.log('platforms', data);
         dispatch({ type: PLATFORM_COMPLETED, platforms: data });
       } catch (err) {
         const error = handleApiError(err);
@@ -49,7 +50,7 @@ export const CurrentPlatformProvider = ({ children }) => {
               ? capitalizeFirstLetter(message)
               : 'Problem fetching meeting platforms'
         });
-      } finally {
+
         dispatch({ type: PLATFORM_COMPLETED, platforms: null });
       }
     };

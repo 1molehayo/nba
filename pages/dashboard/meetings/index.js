@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -61,6 +61,16 @@ function Meeting({ meetings, error }) {
       setDeleting(false);
     }
   };
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      const { data } = await axios.get('/meetings');
+      console.log(data);
+    };
+
+    fetchMeetings();
+    return () => {};
+  }, []);
 
   return (
     <section className="section pt-0">
@@ -169,8 +179,6 @@ export async function getServerSideProps(ctx) {
       Authorization: `Bearer ${cookies.token}`
     }
   };
-
-  console.log('ctx', ctx);
 
   console.log('cookies', cookies);
 

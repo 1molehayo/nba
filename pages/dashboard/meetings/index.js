@@ -170,6 +170,10 @@ export async function getServerSideProps(ctx) {
     }
   };
 
+  console.log('ctx', ctx);
+
+  console.log('cookies', cookies);
+
   console.log('token', cookies.token);
 
   let meetings = [];

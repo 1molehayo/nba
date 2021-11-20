@@ -100,7 +100,7 @@ export async function getServerSideProps() {
   let error = {};
 
   try {
-    const { data } = await axios.get('/profiles');
+    const { data } = await axios.get('/profiles?_start=1&_limit=3');
     lawyers = data.filter((item) => item.active);
   } catch (err) {
     error = handleApiError(err);

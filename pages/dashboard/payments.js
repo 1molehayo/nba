@@ -3,7 +3,6 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
 import moment from 'moment';
-import * as qs from 'qs';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
 import withAuth from '../../services/with-auth';
@@ -20,54 +19,47 @@ import {
   getStartPage,
   getStatus,
   isArrayEmpty,
-  notify
+  setTableIndex
 } from '../../utility';
 import { Empty, Loader } from '../../components/global';
 
 function Payments({ dues, payments, paymentsCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [errorData, setError] = useState(error);
   const [paymentsData, setPayments] = useState(payments);
   const [paymentsDataCount, setPaymentsCount] = useState(paymentsCount);
   const [filterData, setFilter] = useState({
     title: '',
     status: ''
   });
-
   const [loading, setLoading] = useState(false);
 
-  useOnError(error);
+  useOnError(errorData);
+
+  const query = { _sort: 'updated_at:DESC' };
 
   // eslint-disable-next-line no-unused-vars
   const handleFilter = async () => {
     setLoading(true);
 
     try {
-      const query = qs.stringify({
-        _where: [
-          { title_contains: filterData.title },
-          { status: filterData.status }
-        ],
-        _start: 1,
-        _limit: PAGE_SIZE
+      const newQuery = {
+        ...query,
+        title_contains: filterData.title,
+        status: filterData.status
+      };
+
+      const { data } = await axios.get('/payments/me', {
+        params: { ...newQuery, _limit: PAGE_SIZE }
       });
-      const { data } = await axios.get(`/payments/me?${query}`);
       setPayments(data);
 
-      const countQuery = qs.stringify({
-        _where: [
-          { title_contains: filterData.title },
-          { status: filterData.status }
-        ]
+      const countResponse = await axios.get('/payments/count', {
+        params: newQuery
       });
-      const countResponse = await axios.get(`/payments/count?${countQuery}`);
       setPaymentsCount(countResponse.data);
     } catch (err) {
-      const errorObj = handleApiError(err);
-
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }
@@ -88,19 +80,16 @@ function Payments({ dues, payments, paymentsCount, error }) {
     setLoading(true);
 
     try {
-      const query = qs.stringify({
+      const newQuery = {
+        ...query,
         _start: getStartPage(page),
         _limit: PAGE_SIZE
-      });
-      const { data } = await axios.get(`/payments/me?${query}`);
+      };
+      const { data } = await axios.get('/payments/me', { params: newQuery });
       setPayments(data);
       setCurrentPage(page);
     } catch (err) {
-      const errorObj = handleApiError(err);
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }
@@ -156,7 +145,7 @@ function Payments({ dues, payments, paymentsCount, error }) {
               <Table headers={PAYMENT_HEADERS}>
                 {paymentsData.map((item, i) => (
                   <tr key={i}>
-                    <td>{i + 1}</td>
+                    <td>{setTableIndex(currentPage, i)}</td>
                     <td>
                       {moment(item.updated_at).format(
                         `${PAYMENT_DATE_FORMAT}, hh:mm a`
@@ -211,13 +200,16 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const duesResponse = await axios.get('/dues', config);
-    dues = duesResponse.data;
-    const paymentsResponse = await axios.get(
-      '/payments/me?_start=1&_limit=10',
-      config
-    );
-    payments = paymentsResponse.data;
+    const { data: duesData } = await axios.get('/dues', config);
+    dues = duesData;
+    const { data: paymentData } = await axios.get('/payments/me', {
+      ...config,
+      params: {
+        _sort: 'updated_at:DESC',
+        _limit: PAGE_SIZE
+      }
+    });
+    payments = paymentData;
     const { data } = await axios.get('/payments/count', config);
     paymentsCount = data;
   } catch (err) {

@@ -8,6 +8,7 @@ import draftToHtml from 'draftjs-to-html';
 import moment from 'moment';
 import {
   capitalizeFirstLetter,
+  convertToTime,
   formatCharLength,
   isArrayEmpty,
   notify
@@ -38,8 +39,8 @@ const MeetingForm = ({ data, onDelete }) => {
       TEXT_RESTRICTIONS.long_text,
       true
     ),
-    time: data?.time,
-    platform: data?.platform,
+    time: convertToTime(data?.time),
+    platform: `${data?.platform}`,
     url: data?.url
   };
 
@@ -174,7 +175,7 @@ const MeetingForm = ({ data, onDelete }) => {
           >
             {!isArrayEmpty(platforms) &&
               platforms.map((pItem, i) => (
-                <option key={i} value={pItem.id}>
+                <option key={i} value={`${pItem.id}`}>
                   {capitalizeFirstLetter(pItem.name)}
                 </option>
               ))}

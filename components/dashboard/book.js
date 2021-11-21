@@ -26,7 +26,7 @@ export const Book = ({ item, link, onDelete }) => {
         <div className={styles.image}>
           {item.image && (
             <Image
-              src={getImagePath(item.image.url)}
+              src={getImagePath(item.image.formats.thumbnail.url)}
               placeholder="blur"
               blurDataURL={`data:image/svg+xml;base64,${toBase64(
                 shimmer(108, 150)

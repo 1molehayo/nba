@@ -1,84 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
-import moment from 'moment';
-import {
-  DATE_FORMAT_VIEW,
-  MEETING_HEADERS,
-  PAGE_SIZE
-} from '../../../utility/constants';
-import { MeetingCard, Table } from '../../../components/dashboard';
-import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
-import { Empty, Loader } from '../../../components/global';
-import {
-  getOldMeetings,
-  getPermissions,
-  getUpcomingMeetings,
-  isArrayEmpty,
-  notify
-} from '../../../utility';
-import useOnError from '../../../services/use-on-error';
-import handleApiError from '../../../services/handle-api-error';
+import { getPermissions } from '../../../utility';
 import { useCurrentUser } from '../../../contexts/current-user';
 import useAuthGuard from '../../../services/use-auth-guard';
-import Pagination from '../../../components/global/pagination';
+import UpcomingMeetings from '../../../components/dashboard/meetings/upcoming-meetings';
+import PastMeetings from '../../../components/dashboard/meetings/past-meetings';
 
-function Meeting({ meetings, error }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [meetingData, setMeetings] = useState(meetings);
-  const [deleting, setDeleting] = useState(false);
+function Meeting() {
   const { role } = useCurrentUser();
 
-  console.log('meetings', meetingData);
-  console.log('upcoming', getUpcomingMeetings(meetingData));
-
   useAuthGuard('find.meetings');
-
-  useOnError(error);
-
-  const handleDelete = async (id) => {
-    setDeleting(true);
-    try {
-      await axios.delete(`/meetings/${id}`);
-      const arr = meetingData.filter((item) => item.id !== id);
-      setMeetings(arr);
-
-      notify({
-        type: 'success',
-        message: 'Meeting deleted successfully'
-      });
-    } catch (err) {
-      const errorObj = handleApiError(err);
-
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
-    } finally {
-      setDeleting(false);
-    }
-  };
-
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      const { data } = await axios.get('/meetings');
-      console.log(data);
-    };
-
-    fetchMeetings();
-    return () => {};
-  }, []);
 
   return (
     <section className="section pt-0">
       <Head>
         <title>Meetings | NBA-Ikeja</title>
       </Head>
-
-      {deleting && <Loader />}
 
       <div className="container">
         <div className="section pt-0">
@@ -94,72 +34,10 @@ function Meeting({ meetings, error }) {
             )}
           </div>
 
-          {isArrayEmpty(getUpcomingMeetings(meetingData)) && (
-            <Empty
-              className="mt-5 color-primary"
-              icon="icon-meeting"
-              desc="No upcoming meetings available"
-            />
-          )}
-
-          <div className="row">
-            {getUpcomingMeetings(meetingData).map((item, i) => (
-              <div className="col-6" key={i}>
-                <MeetingCard
-                  item={item}
-                  link={
-                    getPermissions(role).includes('update.meetings')
-                      ? `/dashboard/meetings/${item.slug}`
-                      : null
-                  }
-                  onDelete={
-                    getPermissions(role).includes('delete.meetings')
-                      ? () => handleDelete(item.id)
-                      : null
-                  }
-                />
-              </div>
-            ))}
-          </div>
+          <UpcomingMeetings />
         </div>
 
-        <div className="section pt-0">
-          <h4 className="pb-5">Meeting History</h4>
-
-          {isArrayEmpty(getOldMeetings(meetingData)) && (
-            <Empty
-              className="mt-5 color-primary"
-              icon="icon-meeting"
-              desc="You have not attended any meetings"
-            />
-          )}
-
-          {!isArrayEmpty(getOldMeetings(meetingData)) && (
-            <Table headers={MEETING_HEADERS}>
-              {getOldMeetings(meetingData).map((imeeting, j) => (
-                <tr key={j}>
-                  <td>{j + 1}</td>
-                  <td>{imeeting.title}</td>
-                  <td>{imeeting.description}</td>
-                  <td>{moment(imeeting.date).format(DATE_FORMAT_VIEW)}</td>
-                  <td>{imeeting.time}</td>
-                </tr>
-              ))}
-            </Table>
-          )}
-
-          {getOldMeetings(meetingData).length > PAGE_SIZE && (
-            <div className="section pb-0">
-              <Pagination
-                className="pagination-bar"
-                currentPage={currentPage}
-                totalCount={getOldMeetings(meetingData).length}
-                pageSize={PAGE_SIZE}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </div>
-          )}
-        </div>
+        <PastMeetings />
       </div>
     </section>
   );
@@ -171,33 +49,3 @@ Meeting.propTypes = {
 };
 
 export default withAuth(Meeting);
-
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
-    }
-  };
-
-  console.log('cookies', cookies);
-
-  console.log('token', cookies.token);
-
-  let meetings = [];
-  let error = {};
-
-  try {
-    const { data } = await axios.get('/meetings', config);
-    meetings = data;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        meetings,
-        error
-      } // will be passed to the page component as props
-    };
-  }
-}

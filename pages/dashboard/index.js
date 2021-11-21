@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
@@ -17,33 +17,54 @@ import {
   DASHBOARD_PAYMENT_HEADERS,
   DATE_FORMAT_VIEW
 } from '../../utility/constants';
-import {
-  formatPrice,
-  getStatus,
-  getUpcomingMeetings,
-  isArrayEmpty
-} from '../../utility';
+import { formatPrice, getStatus, isArrayEmpty } from '../../utility';
 import withAuth from '../../services/with-auth';
-import { Empty } from '../../components/global';
+import { Empty, Loader } from '../../components/global';
 import useOnError from '../../services/use-on-error';
 import handleApiError from '../../services/handle-api-error';
 
-function Dashboard({ books, meetings, payments, error }) {
-  useOnError(error);
+function Dashboard({ books, payments, paymentsMade, error }) {
+  const [loading, setLoading] = useState(true);
+  const [meetings, setMeetings] = useState([]);
+  const [errorData, setError] = useState(error);
+
+  const fetchMeetings = useCallback(async () => {
+    setLoading(true);
+    try {
+      const query = {
+        date_gte: new Date().toISOString(),
+        _limit: 3,
+        _sort: 'date:DESC'
+      };
+      const { data } = await axios.get('/meetings', { params: query });
+      setMeetings(data || []);
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMeetings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useOnError(errorData);
 
   const DASHBOARD_CARDS = [
     {
-      title: books?.length,
+      title: books.length,
       desc: 'Books Available',
       icon: 'icon-book'
     },
     {
-      title: payments?.length,
+      title: paymentsMade,
       desc: 'Payments Made',
       icon: 'icon-card'
     },
     {
-      title: getUpcomingMeetings(meetings)?.length,
+      title: meetings.length,
       desc: 'Upcoming Meetings',
       icon: 'icon-timer'
     }
@@ -54,6 +75,8 @@ function Dashboard({ books, meetings, payments, error }) {
       <Head>
         <title>Dashboard | NBA-Ikeja</title>
       </Head>
+
+      {loading && <Loader />}
 
       <div className="section pt-0">
         <div className="container pl-0 pr-0">
@@ -84,7 +107,7 @@ function Dashboard({ books, meetings, payments, error }) {
 
           {!isArrayEmpty(books) && (
             <div className="row">
-              {books.slice(0, 3).map((item, i) => (
+              {books.map((item, i) => (
                 <div className="col-md-4 mb-10" key={i}>
                   <Book item={item} />
                 </div>
@@ -103,7 +126,7 @@ function Dashboard({ books, meetings, payments, error }) {
                 url="/dashboard/meetings"
               />
 
-              {isArrayEmpty(getUpcomingMeetings(meetings)) && (
+              {isArrayEmpty(meetings) && (
                 <Empty
                   className="mt-5 color-primary"
                   icon="icon-meeting"
@@ -111,11 +134,9 @@ function Dashboard({ books, meetings, payments, error }) {
                 />
               )}
 
-              {getUpcomingMeetings(meetings)
-                .slice(0, 3)
-                .map((imeeting, j) => (
-                  <MeetingCard item={imeeting} key={j} />
-                ))}
+              {meetings.map((imeeting, j) => (
+                <MeetingCard item={imeeting} key={j} />
+              ))}
             </div>
 
             <div className="col-md-12 col-xl-8">
@@ -135,7 +156,7 @@ function Dashboard({ books, meetings, payments, error }) {
 
                 {!isArrayEmpty(payments) && (
                   <Table headers={DASHBOARD_PAYMENT_HEADERS}>
-                    {payments.slice(0, 5).map((ipayment, k) => (
+                    {payments.map((ipayment, k) => (
                       <tr key={k}>
                         <td>
                           {moment(ipayment.updated_at).format(DATE_FORMAT_VIEW)}
@@ -159,8 +180,8 @@ function Dashboard({ books, meetings, payments, error }) {
 Dashboard.propTypes = {
   books: PropTypes.array,
   error: PropTypes.object,
-  meetings: PropTypes.array,
-  payments: PropTypes.array
+  payments: PropTypes.array,
+  paymentsMade: PropTypes.number
 };
 
 export default withAuth(Dashboard);
@@ -173,18 +194,29 @@ export async function getServerSideProps(ctx) {
     }
   };
 
-  let books = null;
-  let meetings = null;
-  let payments = null;
+  let books = [];
+  let payments = [];
+  let paymentsMade = 0;
   let error = {};
 
   try {
-    const meetingResponse = await axios.get('/meetings?_limit=3', config);
-    meetings = meetingResponse.data;
-    const bookResponse = await axios.get('/books?_limit=3', config);
-    books = bookResponse.data;
-    const paymentsResponse = await axios.get('/payments/me?_limit=5', config);
-    payments = paymentsResponse.data;
+    const { data: bookData } = await axios.get('/books', {
+      ...config,
+      params: { _limit: 3, _sort: 'created_at:DESC' }
+    });
+    books = bookData;
+
+    const { data: paymentData } = await axios.get('/payments/me', {
+      ...config,
+      params: { _limit: 5, _sort: 'updated_at:DESC' }
+    });
+    payments = paymentData;
+
+    const { data: paymentCount } = await axios.get('/payments/count', {
+      ...config,
+      params: { status: 'successful' }
+    });
+    paymentsMade = paymentCount;
   } catch (err) {
     error = handleApiError(err);
   } finally {
@@ -192,8 +224,8 @@ export async function getServerSideProps(ctx) {
       props: {
         books,
         error,
-        meetings,
-        payments
+        payments,
+        paymentsMade
       } // will be passed to the page component as props
     };
   }

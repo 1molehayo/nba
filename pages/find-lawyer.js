@@ -3,34 +3,94 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Banner } from '../components/app';
 import { LawyerCard } from '../components/app/lawyer-card';
-import { Empty } from '../components/global';
+import { Empty, Loader } from '../components/global';
 import Pagination from '../components/global/pagination';
 import { Searchbar } from '../components/global/searchbar';
 import axios from '../services/axios';
 import handleApiError from '../services/handle-api-error';
 import useOnError from '../services/use-on-error';
-import { isArrayEmpty } from '../utility';
+import { getStartPage, isArrayEmpty } from '../utility';
 import { PAGE_SIZE_ALT } from '../utility/constants';
 
-export default function FindLawyer({ lawyers, error }) {
+export default function FindLawyer({ lawyers, lawyersCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lawyerData, setLawyers] = useState(lawyers);
+  const [lawyersDataCount, setLawyersCount] = useState(lawyersCount);
+  const [errorData, setError] = useState(error);
   const [searchValue, setSearchValue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
 
-  useOnError(error);
+  useOnError(errorData);
 
-  const handleSearch = async () => {
-    const arr = lawyers.filter(
-      (item) =>
-        item.first_name.includes(searchValue) ||
-        item.last_name.includes(searchValue)
-    );
-    setLawyers(arr);
+  const handlePageChange = async (page) => {
+    setLoading(true);
+
+    try {
+      const newQuery = {
+        ...query,
+        _start: getStartPage(page, PAGE_SIZE_ALT)
+      };
+
+      const { data } = await axios.get('/profiles', {
+        params: newQuery
+      });
+
+      setLawyers(data);
+      setCurrentPage(page);
+      setQuery(newQuery);
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const onClear = () => {
-    setLawyers(lawyers);
+  const handleSearch = async () => {
+    try {
+      const searchQuery = {
+        '_where[_or][0][first_name_contains]': searchValue,
+        '_where[_or][1][last_name_contains]': searchValue
+      };
+
+      const newQuery = {
+        ...query,
+        ...searchQuery
+      };
+
+      const { data } = await axios.get('/profiles', { params: newQuery });
+      setLawyers(data);
+      setQuery(newQuery);
+
+      const { data: countData } = await axios.get('/profiles/count', {
+        params: searchQuery
+      });
+      setLawyersCount(countData);
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetData = async () => {
+    const { data } = await axios.get('/profiles', {
+      params: { _limit: PAGE_SIZE_ALT, active: 1 }
+    });
+
+    setLawyers(data);
+    setQuery({ _limit: PAGE_SIZE_ALT });
+
+    const { data: countData } = await axios.get('/profiles/count');
+    setLawyersCount(countData);
+  };
+
+  const onClear = async () => {
+    setLoading(true);
+    await resetData();
+    setCurrentPage(1);
     setSearchValue('');
+    setLoading(false);
   };
 
   return (
@@ -57,13 +117,15 @@ export default function FindLawyer({ lawyers, error }) {
         <div className="container">
           {isArrayEmpty(lawyerData) && (
             <Empty
-              className="mt-5 color-primary"
+              className="mt-8 color-primary"
               icon="icon-profile"
               desc="No lawyers available"
             />
           )}
 
           <div className="relative">
+            {loading && <Loader />}
+
             <div className="row">
               {lawyerData.map((item, i) => (
                 <div className="col-md-6 col-lg-4 col-xl-3 mb-5" key={i}>
@@ -72,14 +134,14 @@ export default function FindLawyer({ lawyers, error }) {
               ))}
             </div>
 
-            {lawyerData.length > PAGE_SIZE_ALT && (
+            {lawyersDataCount > PAGE_SIZE_ALT && (
               <div className="section pb-0">
                 <Pagination
                   className="pagination-bar"
                   currentPage={currentPage}
-                  totalCount={lawyerData.length}
+                  totalCount={lawyersDataCount}
                   pageSize={PAGE_SIZE_ALT}
-                  onPageChange={(page) => setCurrentPage(page)}
+                  onPageChange={(page) => handlePageChange(page)}
                 />
               </div>
             )}
@@ -92,22 +154,33 @@ export default function FindLawyer({ lawyers, error }) {
 
 FindLawyer.propTypes = {
   error: PropTypes.object,
-  lawyers: PropTypes.array
+  lawyers: PropTypes.array,
+  lawyersCount: PropTypes.number
 };
 
 export async function getServerSideProps() {
   let lawyers = [];
+  let lawyersCount = 0;
   let error = {};
 
   try {
-    const { data } = await axios.get('/profiles?_start=1&_limit=3');
-    lawyers = data.filter((item) => item.active);
+    const { data } = await axios.get('/profiles', {
+      params: { _limit: PAGE_SIZE_ALT, active: 1 }
+    });
+    lawyers = data;
+
+    const { data: countData } = await axios.get('/profiles/count', {
+      params: { active: 1 }
+    });
+
+    lawyersCount = countData;
   } catch (err) {
     error = handleApiError(err);
   } finally {
     return {
       props: {
         lawyers,
+        lawyersCount,
         error
       } // will be passed to the page component as props
     };

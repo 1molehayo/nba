@@ -1,7 +1,7 @@
 import Toastify from 'toastify-js';
 import moment from 'moment';
 import { convertFromRaw, convertToRaw } from 'draft-js';
-import { DATE_FORMAT, PAGE_SIZE, PERMISSIONS } from './constants';
+import { PAGE_SIZE, PERMISSIONS } from './constants';
 
 export const capitalizeFirstLetter = (str) => {
   if (!str) {
@@ -216,4 +216,35 @@ export const isDraftJsEmpty = (state) => {
 
 export const getStartPage = (page, limit = PAGE_SIZE) => {
   return limit * (page - 1) + 1;
+};
+
+export const convertToTime = (val, type = false) => {
+  if (!val) {
+    return '';
+  }
+
+  const time = `${val}`.substring(0, 5);
+
+  if (!type) {
+    return time;
+  }
+
+  const arr = time.split(':');
+  const num = parseInt(arr[0], 10);
+
+  if (num === 0) {
+    return `12:${arr[1]}am`;
+  }
+
+  if (num <= 12) {
+    return `${time}am`;
+  }
+
+  const result = 24 - num;
+
+  return `${result}:${arr[1]}pm`;
+};
+
+export const setTableIndex = (currentPage, index, limit = PAGE_SIZE) => {
+  return (currentPage - 1) * limit + index + 1;
 };

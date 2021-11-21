@@ -4,3 +4,6 @@ export const LOGOUT_START = 'LOGOUT_START';
 export const LOGOUT_COMPLETED = 'LOGOUT_COMPLETED';
 export const PLATFORM_START = 'PLATFORM_START';
 export const PLATFORM_COMPLETED = 'PLATFORM_COMPLETED';
+export const FETCHING = 'FETCHING';
+export const FETCHED = 'FETCHED';
+export const FETCH_ERROR = 'FETCH_ERROR';

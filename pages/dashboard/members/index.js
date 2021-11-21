@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
@@ -7,8 +7,7 @@ import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
 import handleApiError from '../../../services/handle-api-error';
 import { getStartPage, isArrayEmpty, notify } from '../../../utility';
-import { Empty, Loader } from '../../../components/global';
-import { useCurrentUser } from '../../../contexts/current-user';
+import { Empty, Loader, Searchbar } from '../../../components/global';
 import {
   DEFAULT_ROLE_TYPE,
   MEMBERS_HEADERS,
@@ -20,24 +19,21 @@ import Pagination from '../../../components/global/pagination';
 import useAuthGuard from '../../../services/use-auth-guard';
 
 function Members({ members, membersCount, error }) {
-  const { uid } = useCurrentUser();
+  const [errorData, setError] = useState(error);
   const [currentPage, setCurrentPage] = useState(1);
-  const [membersData, setMembers] = useState([]);
+  const [membersData, setMembers] = useState(members);
+  const [membersCountData, setMembersCount] = useState(membersCount);
   const [toggling, setToggling] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState({
+    _limit: PAGE_SIZE,
+    _sort: 'first_name:ASC'
+  });
 
   useAuthGuard('find.profiles');
 
-  useOnError(error);
-
-  useEffect(() => {
-    if (members) {
-      const membersArr = members.filter((item) => item.uid !== uid);
-      setMembers(membersArr);
-    }
-
-    return () => {};
-  }, [members, uid]);
+  useOnError(errorData);
 
   const onToggleActivate = async (member) => {
     setToggling(true);
@@ -124,20 +120,70 @@ function Members({ members, membersCount, error }) {
     setLoading(true);
 
     try {
-      const { data } = await axios.get(
-        `/profiles?_start=${getStartPage(page)}&_limit=${PAGE_SIZE}`
-      );
+      const newQuery = {
+        ...query,
+        _start: getStartPage(page)
+      };
+
+      const { data } = await axios.get('/profiles', {
+        params: newQuery
+      });
+
       setMembers(data);
       setCurrentPage(page);
+      setQuery(newQuery);
     } catch (err) {
-      const errorObj = handleApiError(err);
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = async () => {
+    try {
+      const searchQuery = {
+        '_where[_or][0][first_name_contains]': searchValue,
+        '_where[_or][1][last_name_contains]': searchValue
+      };
+
+      const newQuery = {
+        ...query,
+        ...searchQuery
+      };
+
+      const { data } = await axios.get('/profiles', { params: newQuery });
+      setMembers(data);
+      setQuery(newQuery);
+
+      const { data: countData } = await axios.get('/profiles/count', {
+        params: searchQuery
+      });
+      setMembersCount(countData);
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetData = async () => {
+    const { data } = await axios.get('/profiles', {
+      params: { _limit: PAGE_SIZE, _sort: 'first_name:ASC' }
+    });
+
+    setMembers(data);
+    setQuery({ _limit: PAGE_SIZE, _sort: 'first_name:ASC' });
+
+    const { data: countData } = await axios.get('/profiles/count');
+    setMembersCount(countData);
+  };
+
+  const onClear = async () => {
+    setLoading(true);
+    await resetData();
+    setCurrentPage(1);
+    setSearchValue('');
+    setLoading(false);
   };
 
   return (
@@ -146,10 +192,19 @@ function Members({ members, membersCount, error }) {
         <title>Members | NBA-Ikeja</title>
       </Head>
 
-      {toggling && <Loader />}
-
       <div className="section pt-0">
-        <h4 className="pb-5">Members list</h4>
+        <div className="d-flex justify-content-between pb-5">
+          <h4 className="mb-0">Members list</h4>
+
+          <Searchbar
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onClear={onClear}
+            onSearch={handleSearch}
+            placeholder="Search by name"
+            className="searchbar--sm"
+          />
+        </div>
 
         {isArrayEmpty(membersData) && (
           <Empty
@@ -160,7 +215,7 @@ function Members({ members, membersCount, error }) {
         )}
 
         <div className="relative">
-          {loading && <Loader inline />}
+          {(loading || toggling) && <Loader inline />}
 
           {!isArrayEmpty(membersData) && (
             <Table headers={MEMBERS_HEADERS} className={styles.table}>
@@ -176,12 +231,12 @@ function Members({ members, membersCount, error }) {
             </Table>
           )}
 
-          {!loading && membersCount > PAGE_SIZE && (
+          {membersCountData > PAGE_SIZE && (
             <div className="section pb-0">
               <Pagination
                 className="pagination-bar"
                 currentPage={currentPage}
-                totalCount={membersCount}
+                totalCount={membersCountData}
                 pageSize={PAGE_SIZE}
                 onPageChange={(page) => handlePageChange(page)}
               />
@@ -215,7 +270,10 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const { data } = await axios.get('/profiles?_start=1&_limit=10', config);
+    const { data } = await axios.get('/profiles', {
+      ...config,
+      params: { _limit: PAGE_SIZE, _sort: 'first_name:ASC' }
+    });
     members = data;
     const countResponse = await axios.get('/profiles/count', config);
     membersCount = countResponse.data;

@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
-import * as qs from 'qs';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
 import {
@@ -28,34 +27,42 @@ import useAuthGuard from '../../../services/use-auth-guard';
 function Events({ events, eventsCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [eventData, setEvents] = useState(events);
+  const [errorData, setError] = useState(error);
   const [eventDataCount, setEventsCount] = useState(eventsCount);
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
   const { role } = useCurrentUser();
 
   useAuthGuard('find.events');
 
-  useOnError(error);
+  useOnError(errorData);
+
+  const resetData = async () => {
+    const { data } = await axios.get('/events', {
+      params: { _limit: PAGE_SIZE_ALT }
+    });
+
+    setEvents(data);
+    setQuery({ _limit: PAGE_SIZE_ALT });
+
+    const { data: countData } = await axios.get('/events/count');
+    setEventsCount(countData);
+  };
 
   const handleDelete = async (id) => {
     setDeleting(true);
     try {
       await axios.delete(`/events/${id}`);
-      const arr = eventData.filter((item) => item.id !== id);
-      setEvents(arr);
+      await resetData();
 
       notify({
         type: 'success',
         message: 'Event deleted successfully'
       });
     } catch (err) {
-      const errorObj = handleApiError(err);
-
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setDeleting(false);
     }
@@ -65,20 +72,20 @@ function Events({ events, eventsCount, error }) {
     setLoading(true);
 
     try {
-      const query = qs.stringify({
-        _start: getStartPage(page),
-        _limit: PAGE_SIZE_ALT
+      const newQuery = {
+        ...query,
+        _start: getStartPage(page, PAGE_SIZE_ALT)
+      };
+
+      const { data } = await axios.get('/events', {
+        params: newQuery
       });
 
-      const { data } = await axios.get(`/events?${query}`);
       setEvents(data);
       setCurrentPage(page);
+      setQuery(newQuery);
     } catch (err) {
-      const errorObj = handleApiError(err);
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }
@@ -88,37 +95,34 @@ function Events({ events, eventsCount, error }) {
     setLoading(true);
 
     try {
-      const query = qs.stringify({
-        _where: [{ title_contains: searchValue }],
-        _start: 1,
-        _limit: PAGE_SIZE_ALT
-      });
+      const searchQuery = { title_contains: searchValue };
 
-      const { data } = await axios.get(`/events?${query}`);
+      const newQuery = {
+        ...query,
+        ...searchQuery
+      };
+
+      const { data } = await axios.get('/events', { params: newQuery });
       setEvents(data);
+      setQuery(newQuery);
 
-      const countQuery = qs.stringify({
-        _where: [{ title_contains: searchValue }]
+      const { data: countData } = await axios.get('/events/count', {
+        params: searchQuery
       });
-      const countResponse = await axios.get(`/events/count?${countQuery}`);
-      setEventsCount(countResponse.data);
+      setEventsCount(countData);
     } catch (err) {
-      const errorObj = handleApiError(err);
-
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }
   };
 
-  const onClear = () => {
-    setEvents(events);
-    setEventsCount(eventsCount);
+  const onClear = async () => {
+    setLoading(true);
+    await resetData();
     setCurrentPage(1);
     setSearchValue('');
+    setLoading(false);
   };
 
   return (
@@ -126,8 +130,6 @@ function Events({ events, eventsCount, error }) {
       <Head>
         <title>Events | NBA-Ikeja</title>
       </Head>
-
-      {deleting && <Loader />}
 
       <div className="container">
         <div className="section pt-0">
@@ -140,7 +142,7 @@ function Events({ events, eventsCount, error }) {
                 onChange={(e) => setSearchValue(e.target.value)}
                 onClear={onClear}
                 onSearch={handleSearch}
-                placeholder="Search by name"
+                placeholder="Search by title"
                 className="searchbar--sm"
               />
 
@@ -154,38 +156,36 @@ function Events({ events, eventsCount, error }) {
             </div>
           </div>
 
-          {isArrayEmpty(eventData) && (
-            <Empty
-              className="mt-5 color-primary"
-              icon="icon-calendar"
-              desc="No events available"
-            />
-          )}
+          <div className="relative pt-5">
+            {(loading || deleting) && <Loader inline />}
 
-          <div className="relative">
-            {loading && <Loader inline />}
-
-            {eventData && (
-              <div className="row">
-                {eventData.map((item, i) => (
-                  <div className="col-md-6 col-xl-4 mb-5" key={i}>
-                    <EventsCard
-                      item={item}
-                      link={
-                        getPermissions(role).includes('update.events')
-                          ? `/dashboard/events/${item.slug}`
-                          : null
-                      }
-                      onDelete={
-                        getPermissions(role).includes('delete.events')
-                          ? () => handleDelete(item.id)
-                          : null
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
+            {isArrayEmpty(eventData) && (
+              <Empty
+                className="mt-5 color-primary"
+                icon="icon-calendar"
+                desc="No events available"
+              />
             )}
+
+            <div className="row">
+              {eventData.map((item, i) => (
+                <div className="col-md-6 col-xl-4 mb-5" key={i}>
+                  <EventsCard
+                    item={item}
+                    link={
+                      getPermissions(role).includes('update.events')
+                        ? `/dashboard/events/${item.slug}`
+                        : null
+                    }
+                    onDelete={
+                      getPermissions(role).includes('delete.events')
+                        ? () => handleDelete(item.id)
+                        : null
+                    }
+                  />
+                </div>
+              ))}
+            </div>
 
             {eventDataCount > PAGE_SIZE_ALT && (
               <div className="section pb-0">
@@ -226,10 +226,13 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    const { data } = await axios.get('/events?_limit=12', config);
+    const { data } = await axios.get('/events', {
+      ...config,
+      params: { _limit: PAGE_SIZE_ALT }
+    });
     events = data;
-    const countResponse = await axios.get('/events/count', config);
-    eventsCount = countResponse.data;
+    const { data: countData } = await axios.get('/events/count', config);
+    eventsCount = countData;
   } catch (err) {
     error = handleApiError(err);
   } finally {

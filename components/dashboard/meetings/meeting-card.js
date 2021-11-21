@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import classnames from 'classnames';
-import styles from '../../styles/dashboard/components/meeting-card.module.scss';
-import { formatCharLength, getImagePath } from '../../utility';
-import { useCurrentPlatform } from '../../contexts/platform-context';
-import { TEXT_RESTRICTIONS } from '../../utility/constants';
+import styles from '../../../styles/dashboard/components/meeting-card.module.scss';
+import {
+  convertToTime,
+  formatCharLength,
+  getImagePath
+} from '../../../utility';
+import { useCurrentPlatform } from '../../../contexts/platform-context';
+import { TEXT_RESTRICTIONS } from '../../../utility/constants';
 
 export const MeetingCard = ({ item, link, onDelete }) => {
+  const [showReadmore, setShowReadmore] = useState(false);
+
   const { platforms } = useCurrentPlatform();
 
   const getPlatform = () => {
@@ -20,6 +26,8 @@ export const MeetingCard = ({ item, link, onDelete }) => {
     const result = platforms.filter((pitem) => pitem.id === item.platform)[0];
     return result;
   };
+
+  const toggleReadmore = () => setShowReadmore((prevState) => !prevState);
 
   return (
     <div className={styles.wrapper}>
@@ -41,11 +49,13 @@ export const MeetingCard = ({ item, link, onDelete }) => {
           <p className={styles.desc}>
             {formatCharLength(item.description, TEXT_RESTRICTIONS.short_text)}
           </p>
+
           <p
-            dangerouslySetInnerHTML={{
-              __html: item.extra_info
-            }}
-          ></p>
+            className={classnames(styles.desc, styles.readmore)}
+            onClick={toggleReadmore}
+          >
+            {showReadmore ? 'show details' : 'hide details'}
+          </p>
         </div>
 
         <div className={styles.time}>
@@ -62,9 +72,18 @@ export const MeetingCard = ({ item, link, onDelete }) => {
 
           <p className="mb-0">{moment(item.date).format('Do MMM YYYY')}</p>
 
-          <p>{item.time}</p>
+          <p>{convertToTime(item.time)}</p>
         </div>
       </div>
+
+      {showReadmore && (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: item.extra_info
+          }}
+          className={styles.desc}
+        />
+      )}
 
       <div className={styles.buttons}>
         <a

@@ -15,7 +15,7 @@ export const NewsCard = ({ item, link, onDelete }) => (
     <div className="news-card__image">
       {item.image && (
         <Image
-          src={getImagePath(item.image.url)}
+          src={getImagePath(item.image.formats.thumbnail.url)}
           placeholder="blur"
           blurDataURL={`data:image/svg+xml;base64,${toBase64(
             shimmer(700, 500)

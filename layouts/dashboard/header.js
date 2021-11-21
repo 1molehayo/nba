@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import axios from '../../services/axios';
 import { Dropdown } from '../../components/global/dropdown';
 import {
@@ -16,9 +17,11 @@ import {
   useDispatchCurrentUser
 } from '../../contexts/current-user';
 import { getImagePath, shimmer, toBase64 } from '../../utility';
+import useOnError from '../../services/use-on-error';
 
 const DashboardHeader = () => {
   const user = useCurrentUser();
+  const [error, setError] = useState();
   const { image, loading, isAuthenticated } = user;
   const dispatch = useDispatchCurrentUser();
 
@@ -30,15 +33,15 @@ const DashboardHeader = () => {
       dispatch({ type: LOGOUT_COMPLETED });
     } catch (err) {
       const errorObj = handleApiError();
-      // eslint-disable-next-line no-console
-      console.log(errorObj);
-      // setError(errorObj);
+      setError(errorObj);
     }
   };
 
+  useOnError(error);
+
   const ProfileImage = (
     <Image
-      src={getImagePath(image?.url)}
+      src={getImagePath(image?.formats?.thumbnail?.url)}
       placeholder="blur"
       blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(60, 60))}`}
       alt="user avatar"

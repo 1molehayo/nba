@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   LOGIN_START,
@@ -39,28 +45,25 @@ const reducer = (state, action) => {
 export const CurrentUserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, ContextDefaultValues);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      dispatch({ type: LOGIN_START });
-      try {
-        const { data } = await axios.get('/profiles/me');
+  const fetchUser = useCallback(async () => {
+    dispatch({ type: LOGIN_START });
+    try {
+      const { data } = await axios.get('/profiles/me');
 
-        console.log('profile', data);
-
-        dispatch({
-          type: LOGIN_COMPLETED,
-          user: data
-        });
-      } catch (err) {
-        await axios.post('/logout');
-        dispatch({ type: LOGOUT_COMPLETED });
-      }
-    };
-
-    fetchUser();
-
-    return () => {};
+      dispatch({
+        type: LOGIN_COMPLETED,
+        user: data
+      });
+    } catch (err) {
+      await axios.post('/logout');
+      dispatch({ type: LOGOUT_COMPLETED });
+    }
   }, []);
+
+  useEffect(() => {
+    fetchUser();
+    return () => {};
+  }, [fetchUser]);
 
   return (
     <CurrentUserDispatchContext.Provider value={dispatch}>

@@ -138,8 +138,6 @@ function ProfileDetails({ member, error }) {
                 </button>
               )}
 
-              {console.log(memberData)}
-
               {memberData.blocked && (
                 <button
                   className="button button--primary mr-2"

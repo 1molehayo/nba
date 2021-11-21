@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer
+} from 'react';
 import PropTypes from 'prop-types';
 import { PLATFORM_START, PLATFORM_COMPLETED } from '../utility/constants';
 import axios from '../services/axios';
@@ -31,34 +37,32 @@ const reducer = (state, action) => {
 export const CurrentPlatformProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, ContextDefaultValues);
 
-  useEffect(() => {
-    const fetchPlatform = async () => {
-      dispatch({ type: PLATFORM_START });
+  const fetchPlatform = useCallback(async () => {
+    dispatch({ type: PLATFORM_START });
 
-      try {
-        const { data } = await axios.get('/platforms');
-        console.log('platforms', data);
-        dispatch({ type: PLATFORM_COMPLETED, platforms: data });
-      } catch (err) {
-        const error = handleApiError(err);
-        const { statusCode, message } = error;
+    try {
+      const { data } = await axios.get('/platforms');
+      dispatch({ type: PLATFORM_COMPLETED, platforms: data });
+    } catch (err) {
+      const error = handleApiError(err);
+      const { statusCode, message } = error;
 
-        notify({
-          type: 'error',
-          message:
-            statusCode === 500
-              ? capitalizeFirstLetter(message)
-              : 'Problem fetching meeting platforms'
-        });
+      notify({
+        type: 'error',
+        message:
+          statusCode === 500
+            ? capitalizeFirstLetter(message)
+            : 'Problem fetching meeting platforms'
+      });
 
-        dispatch({ type: PLATFORM_COMPLETED, platforms: null });
-      }
-    };
-
-    fetchPlatform();
-
-    return () => {};
+      dispatch({ type: PLATFORM_COMPLETED, platforms: null });
+    }
   }, []);
+
+  useEffect(() => {
+    fetchPlatform();
+    return () => {};
+  }, [fetchPlatform]);
 
   return (
     <CurrentPlatformDispatchContext.Provider value={dispatch}>

@@ -47,4 +47,6 @@ export const PAYMENT_GATEWAY = 'flutterwave';
 
 export const PAGE_SIZE = 10;
 
+export const PAGE_SIZE_SM = 6;
+
 export const PAGE_SIZE_ALT = 12;

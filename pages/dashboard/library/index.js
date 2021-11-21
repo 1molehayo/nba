@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { parseCookies } from 'nookies';
-import * as qs from 'qs';
 import { Book } from '../../../components/dashboard';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
@@ -23,37 +22,43 @@ import useAuthGuard from '../../../services/use-auth-guard';
 
 function Library({ books, bookCount, error }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [errorData, setError] = useState(error);
   const [bookData, setBooks] = useState(books);
   const [bookDataCount, setBookCount] = useState(bookCount);
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
   const { role } = useCurrentUser();
-
-  console.log(books);
 
   useAuthGuard('find.books');
 
-  useOnError(error);
+  useOnError(errorData);
+
+  const resetData = async () => {
+    const { data } = await axios.get('/books', {
+      params: { _limit: PAGE_SIZE_ALT }
+    });
+
+    setBooks(data);
+    setQuery({ _limit: PAGE_SIZE_ALT });
+
+    const { data: countData } = await axios.get('/books/count');
+    setBookCount(countData);
+  };
 
   const handleDelete = async (id) => {
     setDeleting(true);
     try {
       await axios.delete(`/books/${id}`);
-      const arr = bookData.filter((item) => item.id !== id);
-      setBooks(arr);
+      await resetData();
 
       notify({
         type: 'success',
         message: 'Book deleted successfully'
       });
     } catch (err) {
-      const errorObj = handleApiError(err);
-
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setDeleting(false);
     }
@@ -63,14 +68,16 @@ function Library({ books, bookCount, error }) {
     setLoading(true);
 
     try {
-      const query = qs.stringify({
-        _start: getStartPage(page),
-        _limit: PAGE_SIZE_ALT
-      });
+      const newQuery = {
+        ...query,
+        _start: getStartPage(page, PAGE_SIZE_ALT)
+      };
 
-      const { data } = await axios.get(`/books?${query}`);
+      const { data } = await axios.get('/books', { params: newQuery });
+
       setBooks(data);
       setCurrentPage(page);
+      setQuery(newQuery);
     } catch (err) {
       const errorObj = handleApiError(err);
       notify({
@@ -86,36 +93,34 @@ function Library({ books, bookCount, error }) {
     setLoading(true);
 
     try {
-      const query = qs.stringify({
-        _where: [{ title_contains: searchValue }],
-        _start: 1,
-        _limit: PAGE_SIZE_ALT
-      });
-      const { data } = await axios.get(`/books?${query}`);
+      const searchQuery = { title_contains: searchValue };
+
+      const newQuery = {
+        ...query,
+        ...searchQuery
+      };
+
+      const { data } = await axios.get('/books', { params: newQuery });
       setBooks(data);
+      setQuery(newQuery);
 
-      const countQuery = qs.stringify({
-        _where: [{ title_contains: searchValue }]
+      const { data: countData } = await axios.get('/books/count', {
+        params: searchQuery
       });
-      const countResponse = await axios.get(`/books/count?${countQuery}`);
-      setBookCount(countResponse.data);
+      setBookCount(countData);
     } catch (err) {
-      const errorObj = handleApiError(err);
-
-      notify({
-        type: 'error',
-        message: errorObj.message
-      });
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }
   };
 
-  const onClear = () => {
-    setBooks(books);
-    setBookCount(bookCount);
+  const onClear = async () => {
+    setLoading(true);
+    await resetData();
     setCurrentPage(1);
     setSearchValue('');
+    setLoading(false);
   };
 
   return (
@@ -158,7 +163,7 @@ function Library({ books, bookCount, error }) {
           />
         )}
 
-        <div className="relative">
+        <div className="relative pt-5">
           {loading && <Loader inline />}
 
           {!isArrayEmpty(bookData) && (

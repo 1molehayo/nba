@@ -1,15 +1,23 @@
 import Head from 'next/head';
-import PropTypes from 'prop-types';
 import About from '../components/app/home/about';
 import Events from '../components/app/home/events';
 import Hero from '../components/app/home/hero';
 import News from '../components/app/home/news';
 import Quote from '../components/app/home/quote';
 import TwitterFeeds from '../components/app/home/twitter-feeds';
-import axios from '../services/axios';
-import handleApiError from '../services/handle-api-error';
+import { Loader } from '../components/global';
+import useHomeAPIs from '../services/api-functions/app';
+import useOnError from '../services/use-on-error';
 
-export default function Home({ articles, events }) {
+export default function Home() {
+  const { articles, error, events, loading } = useHomeAPIs();
+
+  useOnError(error);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <section className="home">
       <Head>
@@ -31,36 +39,10 @@ export default function Home({ articles, events }) {
   );
 }
 
-Home.propTypes = {
-  articles: PropTypes.array,
-  error: PropTypes.object,
-  events: PropTypes.array,
-  dues: PropTypes.array
-};
-
 export async function getServerSideProps() {
-  let events = null;
-  let articles = null;
-  // let slides = null;
-  let error = null;
-
-  try {
-    const eventResponse = await axios.get('/events');
-    const articleResponse = await axios.get('/articles');
-
-    events = eventResponse.data;
-    articles = articleResponse.data;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        articles,
-        error,
-        events,
-        hasOval: false
-        // slides
-      } // will be passed to the page component as props
-    };
-  }
+  return {
+    props: {
+      hasOval: false
+    } // will be passed to the page component as props
+  };
 }

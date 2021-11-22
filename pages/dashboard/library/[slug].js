@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import BookForm from '../../../components/dashboard/forms/book';
 import useOnError from '../../../services/use-on-error';
@@ -11,11 +10,15 @@ import { Loader } from '../../../components/global';
 import { useCurrentUser } from '../../../contexts/current-user';
 import { getPermissions, notify } from '../../../utility';
 import useAuthGuard from '../../../services/use-auth-guard';
+import useFetch from '../../../services/use-fetch';
+import { FETCHING } from '../../../utility/constants';
 
-function BookDetails({ book, error }) {
+function BookDetails({ slug }) {
   const [deleting, setDeleting] = useState(false);
 
   useAuthGuard('update.books');
+
+  const { data: book, error, status } = useFetch(`/books?slug=${slug}`, true);
 
   useOnError(error);
 
@@ -48,10 +51,10 @@ function BookDetails({ book, error }) {
 
   return (
     <>
-      {deleting && <Loader />}
+      {(deleting || status === FETCHING) && <Loader />}
 
       <BookForm
-        data={book}
+        data={book || null}
         onDelete={
           getPermissions(role).includes('delete.books') ? handleDelete : null
         }
@@ -61,35 +64,17 @@ function BookDetails({ book, error }) {
 }
 
 BookDetails.propTypes = {
-  book: PropTypes.object,
-  error: PropTypes.object
+  slug: PropTypes.string
 };
 
 export default withAuth(BookDetails);
 
 export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
+  const { slug } = ctx.params;
+
+  return {
+    props: {
+      slug
     }
   };
-
-  let book = null;
-  let error = {};
-
-  try {
-    const { slug } = ctx.params;
-    const { data } = await axios.get(`/books?slug=${slug}`, config);
-    book = { ...data[0] };
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        book,
-        error
-      }
-    };
-  }
 }

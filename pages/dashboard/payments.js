@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+/* eslint-disable no-underscore-dangle */
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import moment from 'moment';
 import axios from '../../services/axios';
 import handleApiError from '../../services/handle-api-error';
@@ -23,20 +22,69 @@ import {
 } from '../../utility';
 import { Empty, Loader } from '../../components/global';
 
-function Payments({ dues, payments, paymentsCount, error }) {
+const DEFAULT_QUERY = { _limit: PAGE_SIZE, _sort: 'updated_at:DESC' };
+function Payments() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [errorData, setError] = useState(error);
-  const [paymentsData, setPayments] = useState(payments);
-  const [paymentsDataCount, setPaymentsCount] = useState(paymentsCount);
+  const [errorData, setError] = useState();
+  const [dues, setDues] = useState([]);
+  const [paymentsData, setPayments] = useState([]);
+  const [paymentsDataCount, setPaymentsCount] = useState(0);
   const [filterData, setFilter] = useState({
     title: '',
     status: ''
   });
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState(DEFAULT_QUERY);
 
   useOnError(errorData);
 
-  const query = { _sort: 'updated_at:DESC' };
+  const fetchDues = useCallback(async () => {
+    const { data } = await axios.get('/dues');
+    setDues(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchPayments = useCallback(async () => {
+    const { data } = await axios.get('/payments/me', {
+      params: query
+    });
+    setPayments(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchPaymentsCount = useCallback(async () => {
+    const { data } = await axios.get('/payments/count');
+    setPaymentsCount(data);
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchDues(), fetchPayments(), fetchPaymentsCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const resetData = async () => {
+    const { data } = await axios.get('/payments/me', {
+      params: DEFAULT_QUERY
+    });
+
+    setPayments(data);
+    setQuery(DEFAULT_QUERY);
+
+    const { data: countData } = await axios.get('/payments/count');
+    setPaymentsCount(countData);
+  };
 
   // eslint-disable-next-line no-unused-vars
   const handleFilter = async () => {
@@ -54,8 +102,10 @@ function Payments({ dues, payments, paymentsCount, error }) {
       });
       setPayments(data);
 
+      const countQuery = { ...newQuery };
+      delete countQuery._limit;
       const countResponse = await axios.get('/payments/count', {
-        params: newQuery
+        params: countQuery
       });
       setPaymentsCount(countResponse.data);
     } catch (err) {
@@ -66,9 +116,8 @@ function Payments({ dues, payments, paymentsCount, error }) {
   };
 
   // eslint-disable-next-line no-unused-vars
-  const onClear = () => {
-    setPayments(payments);
-    setPaymentsCount(paymentsCount);
+  const onClear = async () => {
+    await resetData();
     setCurrentPage(1);
     setFilter({
       title: '',
@@ -82,8 +131,7 @@ function Payments({ dues, payments, paymentsCount, error }) {
     try {
       const newQuery = {
         ...query,
-        _start: getStartPage(page),
-        _limit: PAGE_SIZE
+        _start: getStartPage(page)
       };
       const { data } = await axios.get('/payments/me', { params: newQuery });
       setPayments(data);
@@ -177,51 +225,4 @@ function Payments({ dues, payments, paymentsCount, error }) {
   );
 }
 
-Payments.propTypes = {
-  dues: PropTypes.array,
-  error: PropTypes.object,
-  payments: PropTypes.array,
-  paymentsCount: PropTypes.number
-};
-
 export default withAuth(Payments);
-
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token} `
-    }
-  };
-
-  let dues = [];
-  let payments = [];
-  let paymentsCount = 0;
-  let error = {};
-
-  try {
-    const { data: duesData } = await axios.get('/dues', config);
-    dues = duesData;
-    const { data: paymentData } = await axios.get('/payments/me', {
-      ...config,
-      params: {
-        _sort: 'updated_at:DESC',
-        _limit: PAGE_SIZE
-      }
-    });
-    payments = paymentData;
-    const { data } = await axios.get('/payments/count', config);
-    paymentsCount = data;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        dues,
-        payments,
-        paymentsCount,
-        error
-      } // will be passed to the page component as props
-    };
-  }
-}

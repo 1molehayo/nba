@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Banner } from '../components/app';
 import { LawyerCard } from '../components/app/lawyer-card';
 import { Empty, Loader } from '../components/global';
@@ -12,16 +11,51 @@ import useOnError from '../services/use-on-error';
 import { getStartPage, isArrayEmpty } from '../utility';
 import { PAGE_SIZE_ALT } from '../utility/constants';
 
-export default function FindLawyer({ lawyers, lawyersCount, error }) {
+const DEFAULT_QUERY = {
+  _limit: PAGE_SIZE_ALT,
+  active: 1,
+  _sort: 'first_name:ASC'
+};
+export default function FindLawyer() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [lawyerData, setLawyers] = useState(lawyers);
-  const [lawyersDataCount, setLawyersCount] = useState(lawyersCount);
-  const [errorData, setError] = useState(error);
+  const [lawyerData, setLawyers] = useState([]);
+  const [lawyersDataCount, setLawyersCount] = useState(0);
+  const [errorData, setError] = useState();
   const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
+  const [query, setQuery] = useState(DEFAULT_QUERY);
 
   useOnError(errorData);
+
+  const fetchLawyers = useCallback(async () => {
+    const { data } = await axios.get('/profiles', { params: query });
+    setLawyers(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchLawyersCount = useCallback(async () => {
+    const { data } = await axios.get('/profiles/count', {
+      params: { active: 1 }
+    });
+    setLawyersCount(data);
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchLawyers(), fetchLawyersCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePageChange = async (page) => {
     setLoading(true);
@@ -63,7 +97,7 @@ export default function FindLawyer({ lawyers, lawyersCount, error }) {
       setQuery(newQuery);
 
       const { data: countData } = await axios.get('/profiles/count', {
-        params: searchQuery
+        params: { ...searchQuery, active: 1 }
       });
       setLawyersCount(countData);
     } catch (err) {
@@ -75,13 +109,15 @@ export default function FindLawyer({ lawyers, lawyersCount, error }) {
 
   const resetData = async () => {
     const { data } = await axios.get('/profiles', {
-      params: { _limit: PAGE_SIZE_ALT, active: 1 }
+      params: DEFAULT_QUERY
     });
 
     setLawyers(data);
-    setQuery({ _limit: PAGE_SIZE_ALT });
+    setQuery(DEFAULT_QUERY);
 
-    const { data: countData } = await axios.get('/profiles/count');
+    const { data: countData } = await axios.get('/profiles/count', {
+      params: { active: 1 }
+    });
     setLawyersCount(countData);
   };
 
@@ -150,39 +186,4 @@ export default function FindLawyer({ lawyers, lawyersCount, error }) {
       </div>
     </section>
   );
-}
-
-FindLawyer.propTypes = {
-  error: PropTypes.object,
-  lawyers: PropTypes.array,
-  lawyersCount: PropTypes.number
-};
-
-export async function getServerSideProps() {
-  let lawyers = [];
-  let lawyersCount = 0;
-  let error = {};
-
-  try {
-    const { data } = await axios.get('/profiles', {
-      params: { _limit: PAGE_SIZE_ALT, active: 1 }
-    });
-    lawyers = data;
-
-    const { data: countData } = await axios.get('/profiles/count', {
-      params: { active: 1 }
-    });
-
-    lawyersCount = countData;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        lawyers,
-        lawyersCount,
-        error
-      } // will be passed to the page component as props
-    };
-  }
 }

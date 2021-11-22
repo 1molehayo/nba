@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import MeetingForm from '../../../components/dashboard/forms/meeting';
 import withAuth from '../../../services/with-auth';
@@ -11,13 +10,17 @@ import { useCurrentUser } from '../../../contexts/current-user';
 import { getPermissions, notify } from '../../../utility';
 import { Loader } from '../../../components/global';
 import useAuthGuard from '../../../services/use-auth-guard';
+import useFetch from '../../../services/use-fetch';
+import { FETCHING } from '../../../utility/constants';
 
-function MeetingDetails({ error, meeting }) {
+function MeetingDetails({ slug }) {
   const [deleting, setDeleting] = useState(false);
   const router = useRouter();
   const { role } = useCurrentUser();
 
   useAuthGuard('update.meetings');
+
+  const { data: meeting, error, status } = useFetch(`/meetings?slug=${slug}`);
 
   useOnError(error);
 
@@ -25,7 +28,7 @@ function MeetingDetails({ error, meeting }) {
     setDeleting(true);
 
     try {
-      await axios.delete(`/meetings/${meeting.id}`);
+      await axios.delete(`/meetings/${meeting[0].id}`);
 
       notify({
         type: 'success',
@@ -47,9 +50,9 @@ function MeetingDetails({ error, meeting }) {
 
   return (
     <>
-      {deleting && <Loader />}
+      {(deleting || status === FETCHING) && <Loader />}
       <MeetingForm
-        data={meeting}
+        data={meeting ? meeting[0] : null}
         onDelete={
           getPermissions(role).includes('delete.events') ? handleDelete : null
         }
@@ -61,33 +64,15 @@ function MeetingDetails({ error, meeting }) {
 export default withAuth(MeetingDetails);
 
 MeetingDetails.propTypes = {
-  error: PropTypes.object,
-  meeting: PropTypes.object
+  slug: PropTypes.string
 };
 
 export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
+  const { slug } = ctx.params;
+
+  return {
+    props: {
+      slug
     }
   };
-
-  let meeting = null;
-  let error = {};
-
-  try {
-    const { slug } = ctx.params;
-    const { data } = await axios.get(`/meetings?slug=${slug}`, config);
-    meeting = { ...data[0] };
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        error,
-        meeting
-      }
-    };
-  }
 }

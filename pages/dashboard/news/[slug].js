@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import { useRouter } from 'next/router';
 import axios from '../../../services/axios';
 import handleApiError from '../../../services/handle-api-error';
@@ -11,13 +10,21 @@ import { Loader } from '../../../components/global';
 import { getPermissions, notify } from '../../../utility';
 import { useCurrentUser } from '../../../contexts/current-user';
 import useAuthGuard from '../../../services/use-auth-guard';
+import { FETCHING } from '../../../utility/constants';
+import useFetch from '../../../services/use-fetch';
 
-function Article({ article, error }) {
+function Article({ slug }) {
   const [deleting, setDeleting] = useState(false);
   const router = useRouter();
   const { role } = useCurrentUser();
 
   useAuthGuard('update.articles');
+
+  const {
+    data: article,
+    error,
+    status
+  } = useFetch(`/articles?slug=${slug}`, true);
 
   useOnError(error);
 
@@ -44,12 +51,14 @@ function Article({ article, error }) {
     }
   };
 
+  if (deleting || status === FETCHING) {
+    return <Loader />;
+  }
+
   return (
     <>
-      {deleting && <Loader />}
-
       <ArticleForm
-        data={article}
+        data={article || null}
         onDelete={
           getPermissions(role).includes('delete.articles') ? handleDelete : null
         }
@@ -59,35 +68,17 @@ function Article({ article, error }) {
 }
 
 Article.propTypes = {
-  article: PropTypes.object,
-  error: PropTypes.object
+  slug: PropTypes.string
 };
 
 export default withAuth(Article);
 
 export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
+  const { slug } = ctx.params;
+
+  return {
+    props: {
+      slug
     }
   };
-
-  let article = {};
-  let error = {};
-
-  try {
-    const { slug } = ctx.params;
-    const { data } = await axios.get(`/articles?slug=${slug}`, config);
-    article = { ...data[0] };
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        article,
-        error
-      }
-    };
-  }
 }

@@ -29,6 +29,7 @@ const BookForm = ({ data, onDelete }) => {
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: data ? initialData : BOOK_FORM_MODEL,
     validationSchema: BookSchema,
     onSubmit: async (values) => {

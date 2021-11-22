@@ -4,7 +4,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { formatCharLength, getFileName, notify } from '../../../utility';
+import {
+  convertToTime,
+  formatCharLength,
+  getFileName,
+  notify
+} from '../../../utility';
 import axios from '../../../services/axios';
 import handleApiError from '../../../services/handle-api-error';
 import { EVENT_FORM_MODEL } from '../../../utility/models';
@@ -28,11 +33,12 @@ const EventForm = ({ data, onDelete }) => {
       TEXT_RESTRICTIONS.long_text,
       true
     ),
-    time: data?.time,
+    time: convertToTime(data?.time),
     venue: formatCharLength(data?.venue, TEXT_RESTRICTIONS.long_text, true)
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: data ? initialData : EVENT_FORM_MODEL,
     validationSchema: EventSchema,
     onSubmit: async (values) => {

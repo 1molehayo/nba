@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Banner } from '../components/app';
 import axios from '../services/axios';
 import handleApiError from '../services/handle-api-error';
@@ -10,16 +9,48 @@ import useOnError from '../services/use-on-error';
 import { PAGE_SIZE_ALT } from '../utility/constants';
 import Pagination from '../components/global/pagination';
 
-export default function Events({ events, eventsCount, error }) {
+const DEFAULT_QUERY = {
+  _limit: PAGE_SIZE_ALT,
+  _sort: 'created_at:DESC'
+};
+export default function Events() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [errorData, setError] = useState(error);
-  const [eventData, setEvents] = useState(events);
-  const [eventDataCount, setEventsCount] = useState(eventsCount);
+  const [errorData, setError] = useState();
+  const [eventData, setEvents] = useState([]);
+  const [eventDataCount, setEventsCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
+  const [query, setQuery] = useState(DEFAULT_QUERY);
 
   useOnError(errorData);
+
+  const fetchEvents = useCallback(async () => {
+    const { data } = await axios.get('/events', { params: query });
+    setEvents(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchEventsCount = useCallback(async () => {
+    const { data } = await axios.get('/events/count');
+    setEventsCount(data);
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchEvents(), fetchEventsCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePageChange = async (page) => {
     setLoading(true);
@@ -72,11 +103,11 @@ export default function Events({ events, eventsCount, error }) {
 
   const resetData = async () => {
     const { data } = await axios.get('/events', {
-      params: { _limit: PAGE_SIZE_ALT }
+      params: DEFAULT_QUERY
     });
 
     setEvents(data);
-    setQuery({ _limit: PAGE_SIZE_ALT });
+    setQuery(DEFAULT_QUERY);
 
     const { data: countData } = await axios.get('/events/count');
     setEventsCount(countData);
@@ -147,35 +178,4 @@ export default function Events({ events, eventsCount, error }) {
       </div>
     </section>
   );
-}
-
-Events.propTypes = {
-  error: PropTypes.object,
-  events: PropTypes.object,
-  eventsCount: PropTypes.number
-};
-
-export async function getServerSideProps() {
-  let events = [];
-  let eventsCount = 0;
-  let error = {};
-
-  try {
-    const { data } = await axios.get('/events', {
-      params: { _limit: PAGE_SIZE_ALT }
-    });
-    events = data;
-    const { data: countData } = await axios.get('/events/count');
-    eventsCount = countData;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        events,
-        eventsCount,
-        error
-      } // will be passed to the page component as props
-    };
-  }
 }

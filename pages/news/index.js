@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Banner } from '../../components/app';
 import { Empty, Loader, NewsCard, Searchbar } from '../../components/global';
 import Pagination from '../../components/global/pagination';
@@ -10,16 +9,48 @@ import useOnError from '../../services/use-on-error';
 import { getStartPage, isArrayEmpty } from '../../utility';
 import { PAGE_SIZE_ALT } from '../../utility/constants';
 
-export default function News({ articles, articlesCount, error }) {
+const DEFAULT_QUERY = {
+  _limit: PAGE_SIZE_ALT,
+  _sort: 'created_at:DESC'
+};
+export default function News() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [articleData, setArticles] = useState(articles);
-  const [errorData, setError] = useState(error);
-  const [newsDataCount, setNewsCount] = useState(articlesCount);
+  const [articleData, setArticles] = useState([]);
+  const [errorData, setError] = useState();
+  const [newsDataCount, setNewsCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
+  const [query, setQuery] = useState(DEFAULT_QUERY);
 
   useOnError(errorData);
+
+  const fetchArticles = useCallback(async () => {
+    const { data } = await axios.get('/articles', { params: query });
+    setArticles(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchArticlesCount = useCallback(async () => {
+    const { data } = await axios.get('/articles/count');
+    setNewsCount(data);
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchArticles(), fetchArticlesCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePageChange = async (page) => {
     setLoading(true);
@@ -67,11 +98,11 @@ export default function News({ articles, articlesCount, error }) {
 
   const resetData = async () => {
     const { data } = await axios.get('/articles', {
-      params: { _limit: PAGE_SIZE_ALT }
+      params: DEFAULT_QUERY
     });
 
     setArticles(data);
-    setQuery({ _limit: PAGE_SIZE_ALT });
+    setQuery(DEFAULT_QUERY);
 
     const { data: countData } = await axios.get('/articles/count');
     setNewsCount(countData);
@@ -141,35 +172,4 @@ export default function News({ articles, articlesCount, error }) {
       </div>
     </section>
   );
-}
-
-News.propTypes = {
-  articles: PropTypes.array,
-  articlesCount: PropTypes.number,
-  error: PropTypes.object
-};
-
-export async function getServerSideProps() {
-  let articles = null;
-  let articlesCount = 0;
-  let error = {};
-
-  try {
-    const articleResponse = await axios.get('/articles', {
-      params: { _limit: PAGE_SIZE_ALT }
-    });
-    articles = articleResponse.data;
-    const { data: countData } = await axios.get('/articles/count');
-    articlesCount = countData;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        articles,
-        articlesCount,
-        error
-      } // will be passed to the page component as props
-    };
-  }
 }

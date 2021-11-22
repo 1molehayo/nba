@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import withAuth from '../../../services/with-auth';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
@@ -17,23 +15,59 @@ import { MemberRow, Table } from '../../../components/dashboard';
 import styles from '../../../styles/dashboard/pages/members.module.scss';
 import Pagination from '../../../components/global/pagination';
 import useAuthGuard from '../../../services/use-auth-guard';
+import { useCurrentUser } from '../../../contexts/current-user';
 
-function Members({ members, membersCount, error }) {
-  const [errorData, setError] = useState(error);
+function Members() {
+  const [errorData, setError] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [membersData, setMembers] = useState(members);
-  const [membersCountData, setMembersCount] = useState(membersCount);
+  const [membersData, setMembers] = useState([]);
+  const [membersCountData, setMembersCount] = useState(0);
   const [toggling, setToggling] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState({
+  const { uid } = useCurrentUser();
+
+  const DEFAULT_QUERY = {
     _limit: PAGE_SIZE,
-    _sort: 'first_name:ASC'
-  });
+    _sort: 'first_name:ASC',
+    uid_ne: uid
+  };
+  const [query, setQuery] = useState(DEFAULT_QUERY);
 
   useAuthGuard('find.profiles');
 
   useOnError(errorData);
+
+  const fetchMembers = useCallback(async () => {
+    const { data } = await axios.get('/profiles', { params: query });
+    setMembers(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchMembersCount = useCallback(async () => {
+    const { data } = await axios.get('/profiles/count', {
+      params: { uid_ne: uid }
+    });
+    setMembersCount(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchMembers(), fetchMembersCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onToggleActivate = async (member) => {
     setToggling(true);
@@ -156,7 +190,7 @@ function Members({ members, membersCount, error }) {
       setQuery(newQuery);
 
       const { data: countData } = await axios.get('/profiles/count', {
-        params: searchQuery
+        params: { ...searchQuery, uid_ne: uid }
       });
       setMembersCount(countData);
     } catch (err) {
@@ -168,11 +202,11 @@ function Members({ members, membersCount, error }) {
 
   const resetData = async () => {
     const { data } = await axios.get('/profiles', {
-      params: { _limit: PAGE_SIZE, _sort: 'first_name:ASC' }
+      params: DEFAULT_QUERY
     });
 
     setMembers(data);
-    setQuery({ _limit: PAGE_SIZE, _sort: 'first_name:ASC' });
+    setQuery(DEFAULT_QUERY);
 
     const { data: countData } = await axios.get('/profiles/count');
     setMembersCount(countData);
@@ -248,44 +282,4 @@ function Members({ members, membersCount, error }) {
   );
 }
 
-Members.propTypes = {
-  error: PropTypes.object,
-  members: PropTypes.array,
-  membersCount: PropTypes.number
-};
-
 export default withAuth(Members);
-
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
-    }
-  };
-
-  let members = [];
-  let membersCount = 0;
-  let error = {};
-
-  try {
-    const { data } = await axios.get('/profiles', {
-      ...config,
-      params: { _limit: PAGE_SIZE, _sort: 'first_name:ASC' }
-    });
-    members = data;
-    const countResponse = await axios.get('/profiles/count', config);
-    membersCount = countResponse.data;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        members,
-        membersCount,
-        error
-      }
-    };
-  }
-}

@@ -42,6 +42,7 @@ const ArticleForm = ({ data, onDelete }) => {
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: data ? initialData : ARTICLE_FORM_MODEL,
     validationSchema: ArticleSchema,
     onSubmit: async (values) => {

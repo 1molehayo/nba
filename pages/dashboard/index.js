@@ -1,8 +1,6 @@
 import classnames from 'classnames';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import moment from 'moment';
 import {
   Book,
@@ -11,7 +9,6 @@ import {
   MeetingCard,
   Table
 } from '../../components/dashboard';
-import axios from '../../services/axios';
 import styles from '../../styles/dashboard/pages/home.module.scss';
 import {
   DASHBOARD_PAYMENT_HEADERS,
@@ -21,40 +18,25 @@ import { formatPrice, getStatus, isArrayEmpty } from '../../utility';
 import withAuth from '../../services/with-auth';
 import { Empty, Loader } from '../../components/global';
 import useOnError from '../../services/use-on-error';
-import handleApiError from '../../services/handle-api-error';
+import useDashboardAPIs from '../../services/api-functions/dashboard';
 
-function Dashboard({ books, payments, paymentsMade, error }) {
-  const [loading, setLoading] = useState(true);
-  const [meetings, setMeetings] = useState([]);
-  const [errorData, setError] = useState(error);
+function Dashboard() {
+  const {
+    books,
+    booksCount,
+    error,
+    loading,
+    meetings,
+    meetingsCount,
+    payments,
+    paymentsMade
+  } = useDashboardAPIs();
 
-  const fetchMeetings = useCallback(async () => {
-    setLoading(true);
-    try {
-      const query = {
-        date_gte: new Date().toISOString(),
-        _limit: 3,
-        _sort: 'date:DESC'
-      };
-      const { data } = await axios.get('/meetings', { params: query });
-      setMeetings(data || []);
-    } catch (err) {
-      setError(handleApiError(err));
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchMeetings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useOnError(errorData);
+  useOnError(error);
 
   const DASHBOARD_CARDS = [
     {
-      title: books.length,
+      title: booksCount,
       desc: 'Books Available',
       icon: 'icon-book'
     },
@@ -64,7 +46,7 @@ function Dashboard({ books, payments, paymentsMade, error }) {
       icon: 'icon-card'
     },
     {
-      title: meetings.length,
+      title: meetingsCount,
       desc: 'Upcoming Meetings',
       icon: 'icon-timer'
     }
@@ -177,56 +159,4 @@ function Dashboard({ books, payments, paymentsMade, error }) {
   );
 }
 
-Dashboard.propTypes = {
-  books: PropTypes.array,
-  error: PropTypes.object,
-  payments: PropTypes.array,
-  paymentsMade: PropTypes.number
-};
-
 export default withAuth(Dashboard);
-
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
-    }
-  };
-
-  let books = [];
-  let payments = [];
-  let paymentsMade = 0;
-  let error = {};
-
-  try {
-    const { data: bookData } = await axios.get('/books', {
-      ...config,
-      params: { _limit: 3, _sort: 'created_at:DESC' }
-    });
-    books = bookData;
-
-    const { data: paymentData } = await axios.get('/payments/me', {
-      ...config,
-      params: { _limit: 5, _sort: 'updated_at:DESC' }
-    });
-    payments = paymentData;
-
-    const { data: paymentCount } = await axios.get('/payments/count', {
-      ...config,
-      params: { status: 'successful' }
-    });
-    paymentsMade = paymentCount;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        books,
-        error,
-        payments,
-        paymentsMade
-      } // will be passed to the page component as props
-    };
-  }
-}

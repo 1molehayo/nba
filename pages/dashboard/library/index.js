@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import { Book } from '../../../components/dashboard';
 import axios from '../../../services/axios';
 import useOnError from '../../../services/use-on-error';
@@ -20,20 +18,51 @@ import Pagination from '../../../components/global/pagination';
 import { PAGE_SIZE_ALT } from '../../../utility/constants';
 import useAuthGuard from '../../../services/use-auth-guard';
 
-function Library({ books, bookCount, error }) {
+function Library() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [errorData, setError] = useState(error);
-  const [bookData, setBooks] = useState(books);
-  const [bookDataCount, setBookCount] = useState(bookCount);
+  const [errorData, setError] = useState();
+  const [bookData, setBooks] = useState([]);
+  const [bookDataCount, setBookCount] = useState(0);
   const [deleting, setDeleting] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
+  const [query, setQuery] = useState({
+    _limit: PAGE_SIZE_ALT,
+    _sort: 'created_at:DESC'
+  });
   const { role } = useCurrentUser();
 
   useAuthGuard('find.books');
 
   useOnError(errorData);
+
+  const fetchBooks = useCallback(async () => {
+    const { data } = await axios.get('/books', { params: query });
+    setBooks(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchBooksCount = useCallback(async () => {
+    const { data } = await axios.get('/books/count');
+    setBookCount(data);
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchBooks(), fetchBooksCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const resetData = async () => {
     const { data } = await axios.get('/books', {
@@ -205,43 +234,4 @@ function Library({ books, bookCount, error }) {
   );
 }
 
-Library.propTypes = {
-  books: PropTypes.array,
-  bookCount: PropTypes.number,
-  error: PropTypes.object
-};
-
 export default withAuth(Library);
-
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-
-  console.log('cookie', ctx.req.headers);
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
-    }
-  };
-
-  let books = [];
-  let bookCount = 0;
-  let error = {};
-
-  try {
-    const { data } = await axios.get('/books?_limit=12', config);
-    books = data;
-    const countResponse = await axios.get('/books/count', config);
-    bookCount = countResponse.data;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        books,
-        bookCount,
-        error
-      } // will be passed to the page component as props
-    };
-  }
-}

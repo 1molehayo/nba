@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
-import { parseCookies } from 'nookies';
 import axios from '../../../services/axios';
 import withAuth from '../../../services/with-auth';
 import {
@@ -24,28 +22,61 @@ import { PAGE_SIZE_ALT } from '../../../utility/constants';
 import Pagination from '../../../components/global/pagination';
 import useAuthGuard from '../../../services/use-auth-guard';
 
-function Events({ events, eventsCount, error }) {
+const DEFAULT_QUERY = {
+  _limit: PAGE_SIZE_ALT,
+  _sort: 'created_at:DESC'
+};
+
+function Events() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [eventData, setEvents] = useState(events);
-  const [errorData, setError] = useState(error);
-  const [eventDataCount, setEventsCount] = useState(eventsCount);
+  const [eventData, setEvents] = useState([]);
+  const [errorData, setError] = useState();
+  const [eventDataCount, setEventsCount] = useState(0);
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState({ _limit: PAGE_SIZE_ALT });
+  const [query, setQuery] = useState(DEFAULT_QUERY);
   const { role } = useCurrentUser();
 
   useAuthGuard('find.events');
 
   useOnError(errorData);
 
+  const fetchEvents = useCallback(async () => {
+    const { data } = await axios.get('/events', { params: query });
+    setEvents(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchEventsCount = useCallback(async () => {
+    const { data } = await axios.get('/events/count');
+    setEventsCount(data);
+  }, []);
+
+  const fetchData = useCallback(() => {
+    Promise.all([fetchEvents(), fetchEventsCount()])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(handleApiError(err));
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const resetData = async () => {
     const { data } = await axios.get('/events', {
-      params: { _limit: PAGE_SIZE_ALT }
+      params: DEFAULT_QUERY
     });
 
     setEvents(data);
-    setQuery({ _limit: PAGE_SIZE_ALT });
+    setQuery(DEFAULT_QUERY);
 
     const { data: countData } = await axios.get('/events/count');
     setEventsCount(countData);
@@ -205,43 +236,4 @@ function Events({ events, eventsCount, error }) {
   );
 }
 
-Events.propTypes = {
-  error: PropTypes.object,
-  events: PropTypes.array,
-  eventsCount: PropTypes.number
-};
-
 export default withAuth(Events);
-
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${cookies.token}`
-    }
-  };
-
-  let events = [];
-  let eventsCount = 0;
-  let error = {};
-
-  try {
-    const { data } = await axios.get('/events', {
-      ...config,
-      params: { _limit: PAGE_SIZE_ALT }
-    });
-    events = data;
-    const { data: countData } = await axios.get('/events/count', config);
-    eventsCount = countData;
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        events,
-        eventsCount,
-        error
-      } // will be passed to the page component as props
-    };
-  }
-}

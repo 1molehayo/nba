@@ -1,22 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { FETCHED, FETCHING, FETCH_ERROR } from '../utility/constants';
 import axios from './axios';
 
-const useFetch = (url) => {
+const useFetch = (url, returnObj = false) => {
   const cache = useRef({});
 
   const initialState = {
-    status: 'idle',
+    status: FETCHING,
     error: null,
-    data: []
+    data: !returnObj ? [] : null
   };
 
   const [state, dispatch] = useReducer((reducerState, action) => {
     switch (action.type) {
       case FETCHING:
-        return { ...initialState, status: 'fetching' };
+        return { ...initialState, status: FETCHING };
       case FETCHED:
-        return { ...initialState, status: 'fetched', data: action.payload };
+        return { ...initialState, status: FETCHED, data: action.payload };
       case FETCH_ERROR:
         return { ...initialState, status: 'error', error: action.payload };
       default:
@@ -24,38 +25,35 @@ const useFetch = (url) => {
     }
   }, initialState);
 
-  const fetchData = useCallback(
-    async (cancelRequest) => {
-      if (!url) {
-        return;
-      }
+  const fetchData = useCallback(async (cancelRequest) => {
+    if (!url) {
+      return;
+    }
 
-      try {
-        dispatch({ type: FETCHING });
+    try {
+      dispatch({ type: FETCHING });
 
-        if (cache.current[url]) {
-          const data = cache.current[url];
-          dispatch({ type: FETCHED, payload: data });
-        } else {
-          const response = await axios.get(url);
-          const data = await response.json();
-          cache.current[url] = data.data;
+      if (cache.current[url]) {
+        const data = cache.current[url];
+        dispatch({ type: FETCHED, payload: data });
+      } else {
+        const { data } = await axios.get(url);
+        cache.current[url] = returnObj ? data[0] : data;
 
-          if (cancelRequest) {
-            return;
-          }
-
-          dispatch({ type: FETCHED, payload: data.data });
-        }
-      } catch (error) {
         if (cancelRequest) {
           return;
         }
-        dispatch({ type: FETCH_ERROR, payload: error.message });
+
+        dispatch({ type: FETCHED, payload: returnObj ? data[0] : data });
       }
-    },
-    [url]
-  );
+    } catch (error) {
+      if (cancelRequest) {
+        return;
+      }
+
+      dispatch({ type: FETCH_ERROR, payload: error.message });
+    }
+  }, []);
 
   useEffect(() => {
     let cancelRequest = false;
@@ -65,7 +63,8 @@ const useFetch = (url) => {
     return function cleanup() {
       cancelRequest = true;
     };
-  }, [fetchData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return state;
 };

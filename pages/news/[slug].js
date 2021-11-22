@@ -2,15 +2,26 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import axios from '../../services/axios';
 import { Banner } from '../../components/app';
 import { getImagePath } from '../../utility';
 import styles from '../../styles/app/pages/news.module.scss';
-import handleApiError from '../../services/handle-api-error';
 import useOnError from '../../services/use-on-error';
+import useFetch from '../../services/use-fetch';
+import { FETCHING } from '../../utility/constants';
+import { Loader } from '../../components/global';
 
-export default function Article({ article, error }) {
+export default function Article({ slug }) {
+  const {
+    data: article,
+    error,
+    status
+  } = useFetch(`/articles?slug=${slug}`, true);
+
   useOnError(error);
+
+  if (status === FETCHING) {
+    return <Loader />;
+  }
 
   return (
     <section className="news">
@@ -24,7 +35,7 @@ export default function Article({ article, error }) {
         <h2 className="text-center pb-8">{article?.title}</h2>
 
         <div className={styles.image}>
-          {article && article.image && (
+          {article && article?.image && (
             <Image
               src={getImagePath(article.image.url)}
               alt={article.title}
@@ -47,26 +58,15 @@ export default function Article({ article, error }) {
 }
 
 Article.propTypes = {
-  article: PropTypes.object,
-  error: PropTypes.object
+  slug: PropTypes.string
 };
 
-export async function getServerSideProps({ params }) {
-  let article = null;
-  let error = {};
+export async function getServerSideProps(ctx) {
+  const { slug } = ctx.params;
 
-  try {
-    const { slug } = params;
-    const { data } = await axios.get(`/articles?slug=${slug}`);
-    article = { ...data[0] };
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        article,
-        error
-      }
-    };
-  }
+  return {
+    props: {
+      slug
+    }
+  };
 }

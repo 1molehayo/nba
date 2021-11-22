@@ -10,15 +10,28 @@ import handleApiError from '../../../../services/handle-api-error';
 import { notify } from '../../../../utility';
 import { MemberDetails } from '../../../../components/dashboard/member-details';
 import useAuthGuard from '../../../../services/use-auth-guard';
+import useFetch from '../../../../services/use-fetch';
+import { Loader } from '../../../../components/global';
+import { FETCHING } from '../../../../utility/constants';
 
-function ProfileReview({ member, error }) {
+function ProfileReview({ uid }) {
   const [reviewing, setReviewing] = useState(false);
 
   const router = useRouter();
 
   useAuthGuard('update.profiles');
 
+  const {
+    data: member,
+    error,
+    status
+  } = useFetch(`/profiles?uid=${uid}`, true);
+
   useOnError(error);
+
+  if (status === FETCHING) {
+    return <Loader />;
+  }
 
   if (member?.active) {
     router.replace('/dashboard/members');
@@ -83,28 +96,17 @@ function ProfileReview({ member, error }) {
 }
 
 ProfileReview.propTypes = {
-  member: PropTypes.object,
-  error: PropTypes.object
+  uid: PropTypes.string
 };
 
 export default withAuth(ProfileReview);
 
 export async function getServerSideProps({ params }) {
-  let member = null;
-  let error = {};
+  const { uid } = params;
 
-  try {
-    const { uid } = params;
-    const { data } = await axios.get(`/profiles?uid=${uid}`);
-    member = { ...data[0] };
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        member,
-        error
-      }
-    };
-  }
+  return {
+    props: {
+      uid
+    }
+  };
 }

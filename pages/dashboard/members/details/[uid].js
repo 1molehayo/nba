@@ -10,10 +10,11 @@ import { notify } from '../../../../utility';
 import { MemberDetails } from '../../../../components/dashboard/member-details';
 import { MemberModal } from '../../../../components/dashboard';
 import useAuthGuard from '../../../../services/use-auth-guard';
-import { DEFAULT_ROLE_TYPE } from '../../../../utility/constants';
+import { DEFAULT_ROLE_TYPE, FETCHING } from '../../../../utility/constants';
+import useFetch from '../../../../services/use-fetch';
+import { Loader } from '../../../../components/global';
 
-function ProfileDetails({ member, error }) {
-  const [memberData, setMember] = useState(member);
+function ProfileDetails({ uid }) {
   const [loading, setLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [adminDialog, setAdminDialog] = useState(false);
@@ -28,6 +29,13 @@ function ProfileDetails({ member, error }) {
   };
 
   useAuthGuard('update.profiles');
+
+  const {
+    data: member,
+    error,
+    status
+  } = useFetch(`/profiles?uid=${uid}`, true);
+  const [memberData, setMember] = useState(member);
 
   useOnError(error);
 
@@ -103,6 +111,10 @@ function ProfileDetails({ member, error }) {
     }
   };
 
+  if (status === FETCHING) {
+    return <Loader />;
+  }
+
   return (
     <section>
       <Head>
@@ -116,11 +128,11 @@ function ProfileDetails({ member, error }) {
 
             <MemberDetails
               member={member}
-              status={memberData.blocked ? 'blocked' : 'active'}
+              status={memberData?.blocked ? 'blocked' : 'active'}
             />
 
             <div className="mt-4">
-              {memberData.role.type === DEFAULT_ROLE_TYPE && (
+              {memberData?.role.type === DEFAULT_ROLE_TYPE && (
                 <button
                   className="button button--primary mr-2"
                   onClick={() => toggleDialog('admin')}
@@ -129,7 +141,7 @@ function ProfileDetails({ member, error }) {
                 </button>
               )}
 
-              {memberData.role.type !== DEFAULT_ROLE_TYPE && (
+              {memberData?.role.type !== DEFAULT_ROLE_TYPE && (
                 <button
                   className="button button--primary mr-2"
                   onClick={() => toggleDialog('admin')}
@@ -138,7 +150,7 @@ function ProfileDetails({ member, error }) {
                 </button>
               )}
 
-              {memberData.blocked && (
+              {memberData?.blocked && (
                 <button
                   className="button button--primary mr-2"
                   onClick={toggleDialog}
@@ -147,7 +159,7 @@ function ProfileDetails({ member, error }) {
                 </button>
               )}
 
-              {!memberData.blocked && (
+              {!memberData?.blocked && (
                 <button
                   className="button button--primary mr-2"
                   onClick={toggleDialog}
@@ -167,8 +179,8 @@ function ProfileDetails({ member, error }) {
       <MemberModal
         showDialog={showDialog}
         toggleDialog={toggleDialog}
-        blocked={memberData.blocked}
-        isAdmin={memberData.role.type !== DEFAULT_ROLE_TYPE}
+        blocked={memberData?.blocked}
+        isAdmin={memberData?.role.type !== DEFAULT_ROLE_TYPE}
         adminDialog={adminDialog}
         onSubmit={handleSubmit}
       />
@@ -177,28 +189,17 @@ function ProfileDetails({ member, error }) {
 }
 
 ProfileDetails.propTypes = {
-  member: PropTypes.object,
-  error: PropTypes.object
+  uid: PropTypes.string
 };
 
 export default withAuth(ProfileDetails);
 
 export async function getServerSideProps({ params }) {
-  let member = null;
-  let error = {};
+  const { uid } = params;
 
-  try {
-    const { uid } = params;
-    const { data } = await axios.get(`/profiles?uid=${uid}`);
-    member = { ...data[0] };
-  } catch (err) {
-    error = handleApiError(err);
-  } finally {
-    return {
-      props: {
-        member,
-        error
-      }
-    };
-  }
+  return {
+    props: {
+      uid
+    }
+  };
 }

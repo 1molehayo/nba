@@ -215,6 +215,9 @@ export default withAuth(Library);
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
+
+  console.log('cookie', ctx.req.headers.cookie);
+
   const config = {
     headers: {
       Authorization: `Bearer ${cookies.token}`

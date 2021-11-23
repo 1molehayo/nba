@@ -59,7 +59,9 @@ export const LawyerCard = ({ item }) => {
       <hr className="divider" />
 
       <p className={styles.bio}>
-        {formatCharLength(item.bio, TEXT_RESTRICTIONS.short_text) || 'N/A'}
+        {capitalizeFirstLetter(
+          formatCharLength(item.bio, TEXT_RESTRICTIONS.short_text)
+        ) || 'N/A'}
       </p>
 
       <div className={styles.social}>

@@ -5,6 +5,7 @@ import { Context } from '../global';
 import useOnClickOutside from '../../services/use-on-click-outside';
 import { MemberModal } from './member-modal';
 import { DEFAULT_ROLE_TYPE } from '../../utility/constants';
+import { capitalizeFirstLetter } from '../../utility';
 
 export const MemberRow = ({
   member,
@@ -56,7 +57,9 @@ export const MemberRow = ({
     <>
       <tr>
         <td>{index}</td>
-        <td>{`${member.first_name} ${member.last_name}`}</td>
+        <td>{`${capitalizeFirstLetter(
+          member.first_name
+        )} ${capitalizeFirstLetter(member.last_name)}`}</td>
         <td>{member.court_number}</td>
         <td>{getStatus(member)}</td>
         <td className="table-icon-wrapper" ref={contextRef}>

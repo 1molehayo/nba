@@ -4,6 +4,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
+  capitalizeFirstLetter,
   formatCharLength,
   getImagePath,
   shimmer,
@@ -54,7 +55,7 @@ export const EventsCard = ({ item, onDelete, link }) => {
                 onClick={toggleModal}
                 className="event-card__title"
               >
-                {item.title}
+                {capitalizeFirstLetter(item.title)}
               </p>
             </Link>
           )}
@@ -70,7 +71,9 @@ export const EventsCard = ({ item, onDelete, link }) => {
           )}
 
           <p className="font-size-small mb-4">
-            {formatCharLength(item.description, TEXT_RESTRICTIONS.medium_text)}
+            {capitalizeFirstLetter(
+              formatCharLength(item.description, TEXT_RESTRICTIONS.medium_text)
+            )}
           </p>
 
           <hr className="divider" />

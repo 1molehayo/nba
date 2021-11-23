@@ -4,6 +4,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
+  capitalizeFirstLetter,
   formatCharLength,
   getImagePath,
   shimmer,
@@ -32,9 +33,11 @@ export const NewsCard = ({ item, link, onDelete }) => (
         <p className="news-card__date">
           {moment(item.published_at).format('Do MMM YYYY')}
         </p>
-        <p className="news-card__title">{formatCharLength(item.title, 50)}</p>
+        <p className="news-card__title">
+          {capitalizeFirstLetter(formatCharLength(item.title, 50))}
+        </p>
         <p className="font-size-small mb-5">
-          {formatCharLength(item.short_description, 70)}
+          {capitalizeFirstLetter(formatCharLength(item.short_description, 70))}
         </p>
       </div>
 

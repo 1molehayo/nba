@@ -3,6 +3,7 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styles from '../../styles/app/components/lawyer-card.module.scss';
 import {
+  capitalizeFirstLetter,
   formatCharLength,
   getImagePath,
   shimmer,
@@ -49,7 +50,8 @@ export const LawyerCard = ({ item }) => {
       </div>
 
       <p className={styles.name}>
-        {item.first_name} {item.last_name}
+        {capitalizeFirstLetter(item.first_name)}{' '}
+        {capitalizeFirstLetter(item.last_name)}
       </p>
 
       <p className={styles.job}>{`${item.job_type} (${item.job_title})`}</p>

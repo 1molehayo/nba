@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import axios from '../../services/axios';
 import styles from '../../styles/dashboard/components/payment-card.module.scss';
 import { formatPrice, notify } from '../../utility';
@@ -47,7 +48,7 @@ export const PaymentCard = ({ title, amount, payments, updatePayments }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <p className={styles.title}>{title}</p>
+        <p className={classnames(styles.title, 'text-capitalize')}>{title}</p>
 
         <p className={styles.price}>
           <strong>{formatPrice(amount)}</strong>

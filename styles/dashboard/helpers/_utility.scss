@@ -19,7 +19,11 @@
 }
 
 @mixin fullname {
-  display: flex;
+  display: block;
+
+  @include respond(large) {
+    display: flex;
+  }
 
   &__form {
     display: inline-flex;
@@ -28,14 +32,17 @@
   }
 
   &__label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: right;
-    width: 20rem;
-    padding-bottom: 1.5rem;
+    display: block;
+    margin-bottom: 1rem;
 
     @include respond(large) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: right;
+      width: 20rem;
+      margin-bottom: 0;
       padding-right: 4rem;
+      padding-bottom: 1.5rem;
       text-align: right;
     }
 

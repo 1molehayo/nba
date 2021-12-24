@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -35,9 +35,14 @@ function ProfileDetails({ uid }) {
     error,
     status
   } = useFetch(`/profiles?uid=${uid}`, true);
+
   const [memberData, setMember] = useState(member);
 
   useOnError(error);
+
+  useEffect(() => {
+    setMember(member);
+  }, [member]);
 
   const onToggleActivate = async () => {
     setLoading(true);
@@ -124,7 +129,7 @@ function ProfileDetails({ uid }) {
       <div className="section">
         <div className="section pt-0">
           <div className="container">
-            <h4 className="pb-5">Pending Request</h4>
+            <h4 className="pb-5">Member Details</h4>
 
             <MemberDetails
               member={member}

@@ -13,7 +13,7 @@ const useHomeAPIs = () => {
       _limit: 3,
       _sort: 'created_at:DESC'
     };
-    const { data } = await axios.get('/events', { params: query });
+    const { data } = await axios.get('/articles', { params: query });
     setArticles(data);
   }, []);
 
@@ -22,7 +22,7 @@ const useHomeAPIs = () => {
       _limit: 3,
       _sort: 'created_at:DESC'
     };
-    const { data } = await axios.get('/articles', { params: query });
+    const { data } = await axios.get('/events', { params: query });
     setEvents(data);
   }, []);
 

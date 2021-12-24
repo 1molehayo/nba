@@ -2,12 +2,14 @@
 import Avatar from '../../assets/images/avatar.png';
 import Abijo from '../../assets/images/about/adeyemi-abijo.jpeg';
 import Ada from '../../assets/images/about/ada-ahubelem.jpeg';
+import Adedoyin from '../../assets/images/about/adedoyin-shobiye.jpg';
 import Adeola from '../../assets/images/about/adeola-folarin.jpeg';
 import Adesola from '../../assets/images/about/adesola-adekunbi.jpeg';
 import Bartholomew from '../../assets/images/about/bartholomew-aguegbodo.jpeg';
 import Ezekiel from '../../assets/images/about/ezekiel-olugbenga.jpeg';
 import Marvin from '../../assets/images/about/marvin-ogah.jpeg';
 import Omozusi from '../../assets/images/about/omozusi-omokhafe.jpeg';
+import Tracy from '../../assets/images/about/tracy-ugboaku.png';
 
 export const PEOPLE_DATA = [
   {
@@ -26,7 +28,7 @@ export const PEOPLE_DATA = [
     id: 'people-03',
     name: 'Adedoyin Shobiye',
     job: 'vice chairman',
-    image: Avatar.src
+    image: Adedoyin.src
   },
   {
     id: 'people-04',
@@ -68,7 +70,7 @@ export const PEOPLE_DATA = [
     id: 'people-10',
     name: 'Tracy Ugboaku',
     job: 'legal advisor',
-    image: Avatar.src
+    image: Tracy.src
   },
   {
     id: 'people-11',

@@ -24,7 +24,7 @@ export default function Home() {
         <title>Home | NBA-Ikeja</title>
       </Head>
 
-      <Hero />
+      <Hero data={articles} />
 
       <About />
 

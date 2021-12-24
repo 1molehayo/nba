@@ -28,8 +28,12 @@ export default function AboutUs() {
               Rule of Law. it is the only branch that leads in the fight for the
               masses. The Branch exemplifies what the first Nigerian Lawyer,
               Christopher Sapara Williams said, &quot;A Lawyer leads for the
-              advancement of his society&quot; PROGRAMMES &amp; EVENTS.
+              advancement of his society&quot;
             </p>
+          </div>
+
+          <div className="pb-5">
+            <h5>PROGRAMMES &amp; EVENTS.</h5>
           </div>
 
           <div className="pb-5">

@@ -1,13 +1,20 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import classnames from 'classnames';
 import styles from '../../../styles/app/components/hero.module.scss';
 import { BlobImage } from '../../global/blob-image';
-import { HERO_SLIDES } from '../../../utility/constants';
 import { useAppContext } from '../../../contexts/app-context';
+import {
+  capitalizeFirstLetter,
+  formatCharLength,
+  getImagePath,
+  shimmer,
+  toBase64
+} from '../../../utility';
 
-export default function Hero() {
+export default function Hero({ data }) {
   const [slideIndex, setSlideIndex] = useState(0);
   const { isTab, isMobile } = useAppContext();
   const sliderRef = useRef(null);
@@ -31,21 +38,29 @@ export default function Hero() {
     sliderRef.current.slickGoTo(index);
   };
 
+  const slides = data.slice(0, 3);
+
   return (
     <section className={styles.wrapper}>
       <Slider {...settings} ref={sliderRef} className={styles.hero__slider}>
-        {HERO_SLIDES.map((item, i) => (
+        {slides.map((item, i) => (
           <div key={i}>
             {isMobile && (
               <div className={styles.image__bg}>
                 <div className={styles.image__overlay} />
 
-                <Image
-                  src={item.image}
-                  alt=""
-                  layout="fill"
-                  objectFit="cover"
-                />
+                {item.image && (
+                  <Image
+                    src={getImagePath(item.image.formats.thumbnail.url)}
+                    placeholder="blur"
+                    blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                      shimmer(700, 500)
+                    )}`}
+                    alt={item.title}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                )}
               </div>
             )}
 
@@ -59,28 +74,36 @@ export default function Hero() {
                     className={styles.title}
                   />
 
-                  <p className="mb-5 font-italic pb-5">{item.desc}</p>
+                  <p className="mb-5 font-italic pb-5">
+                    {capitalizeFirstLetter(
+                      formatCharLength(item.short_description, 70)
+                    )}
+                  </p>
 
                   <button className="button button--primary font-italic">
                     Learn more <span className="icon-right-arrow ml-5" />
                   </button>
 
-                  <div className={styles.slider__dots}>
-                    {HERO_SLIDES.map((dot, j) => (
-                      <span
-                        key={j}
-                        className={classnames(styles.slider__dot, {
-                          [styles.slider__dot__active]: j === slideIndex
-                        })}
-                        onClick={() => goToSlide(j)}
-                      />
-                    ))}
-                  </div>
+                  {slides.length > 1 && (
+                    <div className={styles.slider__dots}>
+                      {data.map((dot, j) => (
+                        <span
+                          key={j}
+                          className={classnames(styles.slider__dot, {
+                            [styles.slider__dot__active]: j === slideIndex
+                          })}
+                          onClick={() => goToSlide(j)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {!isTab && (
                   <div className={styles.image}>
-                    <BlobImage image={item.image} />
+                    {item.image && (
+                      <BlobImage image={getImagePath(item.image.url)} />
+                    )}
                   </div>
                 )}
               </div>
@@ -91,3 +114,7 @@ export default function Hero() {
     </section>
   );
 }
+
+Hero.propTypes = {
+  data: PropTypes.array
+};

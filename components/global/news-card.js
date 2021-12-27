@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import classnames from 'classnames';
 import {
   capitalizeFirstLetter,
   formatCharLength,
@@ -13,7 +14,11 @@ import {
 
 export const NewsCard = ({ item, link, onDelete }) => (
   <div className="news-card-wrapper">
-    <div className="news-card__image">
+    <div
+      className={classnames('news-card__image', {
+        'news-card__image--empty': !item.image
+      })}
+    >
       {item.image && (
         <Image
           src={getImagePath(item.image.url)}

@@ -11,10 +11,13 @@
     position: relative;
     width: 100%;
     height: 150px;
-    background-color: color(light-grey);
 
     @include respond(small) {
       height: 180px;
+    }
+
+    &--empty {
+      background-color: color(light-grey);
     }
 
     img {

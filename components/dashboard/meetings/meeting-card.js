@@ -86,14 +86,16 @@ export const MeetingCard = ({ item, link, onDelete }) => {
       )}
 
       <div className={styles.buttons}>
-        <a
-          href={item.url}
-          target="_blank"
-          className="button button--primary"
-          rel="noreferrer"
-        >
-          Enter
-        </a>
+        {item.url && (
+          <a
+            href={item?.url}
+            target="_blank"
+            className="button button--primary"
+            rel="noreferrer"
+          >
+            Enter
+          </a>
+        )}
 
         {onDelete && (
           <button onClick={onDelete} className="button button--red ml-4">

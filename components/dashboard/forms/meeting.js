@@ -152,7 +152,6 @@ const MeetingForm = ({ data, onDelete }) => {
             type="textarea"
             rows={6}
             id="description"
-            className="font-size-regular"
             label={`Short description max (${TEXT_RESTRICTIONS.long_text} characters)`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

@@ -23,7 +23,7 @@ export const EventsCard = ({ item, onDelete, link }) => {
         <div className="event-card__image">
           {item.image && (
             <Image
-              src={getImagePath(item.image.formats.thumbnail.url)}
+              src={getImagePath(item.image.url)}
               alt={item.title}
               placeholder="blur"
               blurDataURL={`data:image/svg+xml;base64,${toBase64(

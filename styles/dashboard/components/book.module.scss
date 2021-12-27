@@ -49,6 +49,7 @@
 
   &__wrapper {
     @include modal-wrapper;
+    max-width: 100%;
   }
 }
 

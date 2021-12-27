@@ -43,19 +43,19 @@ export const MeetingCard = ({ item, link, onDelete }) => {
               </p>
             </Link>
           )}
-
           {!link && <p className={styles.title}>{item.title}</p>}
-
           <p className={styles.desc}>
             {formatCharLength(item.description, TEXT_RESTRICTIONS.short_text)}
           </p>
 
-          <p
-            className={classnames(styles.desc, styles.readmore)}
-            onClick={toggleReadmore}
-          >
-            {showReadmore ? 'show details' : 'hide details'}
-          </p>
+          {item.extra_info && (
+            <p
+              className={classnames(styles.desc, styles.readmore)}
+              onClick={toggleReadmore}
+            >
+              {showReadmore ? 'hide details' : 'show details'}
+            </p>
+          )}
         </div>
 
         <div className={styles.time}>

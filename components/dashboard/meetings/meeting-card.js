@@ -29,8 +29,6 @@ export const MeetingCard = ({ item, link, onDelete }) => {
 
   const toggleReadmore = () => setShowReadmore((prevState) => !prevState);
 
-  console.log('platform: ', getPlatform());
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.inner}>
@@ -61,8 +59,8 @@ export const MeetingCard = ({ item, link, onDelete }) => {
         </div>
 
         <div className={styles.time}>
-          {/* <div className={styles.image}>
-            {getPlatform() && (
+          <div className={styles.image}>
+            {getPlatform() && getPlatform().image && (
               <Image
                 src={getImagePath(getPlatform().image.url)}
                 alt={getPlatform().name}
@@ -70,7 +68,7 @@ export const MeetingCard = ({ item, link, onDelete }) => {
                 height={24}
               />
             )}
-          </div> */}
+          </div>
 
           <p className="mb-0">{moment(item.date).format('Do MMM YYYY')}</p>
 

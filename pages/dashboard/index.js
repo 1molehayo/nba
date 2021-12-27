@@ -34,8 +34,6 @@ function Dashboard() {
 
   useOnError(error);
 
-  console.log('meetings: ', meetings);
-
   const DASHBOARD_CARDS = [
     {
       title: booksCount,

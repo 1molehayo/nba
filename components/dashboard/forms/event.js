@@ -148,7 +148,6 @@ const EventForm = ({ data, onDelete }) => {
             id="description"
             type="textarea"
             rows={6}
-            className="font-size-regular"
             label={`Short description max (${TEXT_RESTRICTIONS.long_text} characters)`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

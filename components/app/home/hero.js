@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import Slider from 'react-slick';
 import classnames from 'classnames';
 import styles from '../../../styles/app/components/hero.module.scss';
@@ -80,9 +81,11 @@ export default function Hero({ data }) {
                     )}
                   </p>
 
-                  <button className="button button--primary font-italic">
-                    Learn more <span className="icon-right-arrow ml-5" />
-                  </button>
+                  <Link href={`/news/${item.slug}`} passHref>
+                    <button className="button button--primary font-italic">
+                      Learn more <span className="icon-right-arrow ml-5" />
+                    </button>
+                  </Link>
 
                   {slides.length > 1 && (
                     <div className={styles.slider__dots}>

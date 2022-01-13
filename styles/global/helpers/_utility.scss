@@ -168,8 +168,8 @@ $start: 0;
   display: block;
   position: relative;
   z-index: 10;
-  top: 0;
-  right: 0;
+  top: 1rem;
+  right: 1rem;
   width: 25px;
   height: 25px;
   margin-left: auto;
@@ -180,8 +180,6 @@ $start: 0;
 
   @include respond(medium) {
     position: absolute;
-    top: 0;
-    right: 0;
     margin-left: 0;
   }
 

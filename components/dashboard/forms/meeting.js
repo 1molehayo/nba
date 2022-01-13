@@ -53,9 +53,11 @@ const MeetingForm = ({ data, onDelete }) => {
       try {
         const formData = new FormData();
 
-        const content = draftToHtml(
-          convertToRaw(editorState.getCurrentContent())
-        );
+        let content;
+
+        if (editorState) {
+          content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        }
 
         const obj = {
           ...values,

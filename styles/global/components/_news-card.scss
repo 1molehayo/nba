@@ -7,6 +7,10 @@
     padding: 2rem;
   }
 
+  &__date {
+    @include font-size(small);
+  }
+
   &__image {
     position: relative;
     width: 100%;

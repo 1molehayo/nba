@@ -1,41 +1,33 @@
 /* eslint-disable camelcase */
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import axios from '../../services/axios';
 import styles from '../../styles/dashboard/components/payment-card.module.scss';
-import { formatPrice, notify } from '../../utility';
-import FlutterwaveButton from './flutterwave-button';
-import { useCurrentUser } from '../../contexts/current-user';
-import { PAYMENT_GATEWAY } from '../../utility/constants';
+import { FormField, Loader, Modal, Select } from '../global';
+import { formatPrice, isArrayEmpty, notify } from '../../utility';
 import handleApiError from '../../services/handle-api-error';
 
-export const PaymentCard = ({ title, amount, payments, updatePayments }) => {
-  const { email, phone_number, first_name, last_name } = useCurrentUser();
-  const [order, setOrder] = useState({});
+export const PaymentCard = ({ amount, formLabel, title, slug, url }) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [billings, setBillings] = useState([]);
+  const [selectedBill, setSelectedBill] = useState('');
+  const [amountFee, setAmountFee] = useState(0);
+  const [urlLink, setUrlLink] = useState('');
   const [loading, setLoading] = useState(false);
-  const flutterwaveRef = useRef(null);
-  const { uid } = useCurrentUser();
 
-  const createOrder = async () => {
+  const fetchDueBillings = async (due) => {
     setLoading(true);
+
     try {
-      const orderData = {
-        payment_details: title,
-        amount: amount.toFixed(2),
-        status: 'pending',
-        gateway: PAYMENT_GATEWAY,
-        uid
-      };
-
-      const { data } = await axios.post('/payments', orderData);
-
-      setOrder(data);
-      updatePayments([...payments, data]);
-      flutterwaveRef.current.click();
+      const { data } = await axios.get('/billings', {
+        params: {
+          'due.slug': due
+        }
+      });
+      setBillings(data);
     } catch (err) {
       const error = handleApiError(err);
-
       notify({
         type: 'error',
         message: error.message
@@ -45,50 +37,131 @@ export const PaymentCard = ({ title, amount, payments, updatePayments }) => {
     }
   };
 
+  const resetData = () => {
+    setSelectedBill('');
+    setAmountFee(0);
+    setUrlLink('');
+    setBillings([]);
+  };
+
+  const toggleModal = (dueId) => {
+    setOpenModal((prevState) => !prevState);
+
+    if (dueId) {
+      fetchDueBillings(dueId);
+    } else {
+      resetData();
+    }
+  };
+
+  const getBillDetails = (bill) => {
+    if (!bill) {
+      return null;
+    }
+
+    return billings.filter((item) => item.uid === bill)[0];
+  };
+
+  const onSelectBill = (e) => {
+    setSelectedBill(e.target.value);
+    const result = formatPrice(getBillDetails(e.target.value).amount);
+    setAmountFee(result);
+    setUrlLink(getBillDetails(e.target.value).url);
+  };
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <p className={classnames(styles.title, 'text-capitalize')}>{title}</p>
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.content}>
+          <p className={classnames(styles.title, 'text-capitalize')}>{title}</p>
 
-        <p className={styles.price}>
-          <strong>{formatPrice(amount)}</strong>
-        </p>
-      </div>
+          <p className={styles.price}>
+            <strong>{amount ? formatPrice(amount) : 'N/A'}</strong>
+          </p>
+        </div>
 
-      <div className={styles.buttonwrapper}>
-        <div className="relative">
-          <button
-            className="button button--primary"
-            disabled={loading}
-            onClick={createOrder}
-          >
-            {loading ? 'Loading...' : 'Pay'}
-          </button>
-
-          <FlutterwaveButton
-            className="flutterwave-button"
-            ref={flutterwaveRef}
-            transactionRef={order?.transaction_ref}
-            amount={amount}
-            title={title.toLowerCase()}
-            description={`Payment for ${title.toLowerCase()}`}
-            payments={payments}
-            updatePayments={updatePayments}
-            customer={{
-              email,
-              phonenumber: phone_number,
-              name: `${first_name} ${last_name}`
-            }}
-          />
+        <div className={styles.buttonwrapper}>
+          <div className="relative">
+            {url ? (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={url}
+                className="button button--primary w-100"
+              >
+                Pay
+              </a>
+            ) : (
+              <button
+                className="button button--primary"
+                onClick={() => toggleModal(slug)}
+              >
+                Pay
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <Modal
+        show={openModal}
+        onClose={() => toggleModal()}
+        className={styles.modal__wrapper}
+      >
+        <div className={styles.modal}>
+          {loading && <Loader inline />}
+
+          {!loading && (
+            <div className="form">
+              <Select
+                id="bill"
+                label={formLabel}
+                onChange={onSelectBill}
+                value={selectedBill}
+              >
+                {!isArrayEmpty(billings) &&
+                  billings.map((bItem, i) => (
+                    <option key={i} value={`${bItem.uid}`}>
+                      {bItem.name}
+                    </option>
+                  ))}
+              </Select>
+
+              <FormField
+                id="amount"
+                label="Amount"
+                value={amountFee}
+                disabled
+              />
+
+              <div className="mt-4">
+                {!urlLink ? (
+                  <button className="button button--primary" disabled>
+                    Proceed
+                  </button>
+                ) : (
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={urlLink}
+                    className="button button--primary"
+                  >
+                    Proceed
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </Modal>
+    </>
   );
 };
 
 PaymentCard.propTypes = {
   amount: PropTypes.number,
-  payments: PropTypes.array,
+  formLabel: PropTypes.string,
+  slug: PropTypes.string,
   title: PropTypes.string,
-  updatePayments: PropTypes.func
+  url: PropTypes.string
 };

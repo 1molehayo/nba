@@ -14,6 +14,18 @@
   padding-right: 3rem;
 }
 
+.modal {
+  padding: 4rem;
+  border: 1px solid rgba($color: color(primary), $alpha: 0.5);
+  border-radius: 5px;
+  background-color: color(white);
+
+  &__wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
 .price {
   @include font-size(medium);
   margin-bottom: 0;

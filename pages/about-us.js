@@ -19,16 +19,31 @@ export default function AboutUs() {
           <div className="pb-5">
             <p>
               The NBA IKEJA Branch has been in existence for several decades and
-              still waxing stronger. In tandem with the provisions of the law,
-              the branch is led by an Executive Committee for which Election
-              hold every 2(two) years. The NBA Ikeja Branch of the Nigerian Bar
-              Association is undoubtedly the most vibrant, known respected of
-              all. As the people&apos;s Bar, it is the primus inter pares of the
-              Bar. The branch has for several decades upheld the principle of
-              Rule of Law. it is the only branch that leads in the fight for the
-              masses. The Branch exemplifies what the first Nigerian Lawyer,
-              Christopher Sapara Williams said, &quot;A Lawyer leads for the
-              advancement of his society&quot;
+              still waxing strong.
+            </p>
+
+            <p>
+              In tandem with the provisions of the law, the branch is led by an
+              Executive Committee for which Election hold every 2(two) years.
+            </p>
+
+            <p>
+              The NBA Ikeja Branch of the Nigerian Bar Association is
+              undoubtedly the most vibrant, known and respected of all. As the
+              people&apos;s Bar, it is the primus inter pares of the Bar.
+            </p>
+
+            <p>
+              NBA, Ikeja Branch being the conscience of the Bar and the
+              people&apos;s Bar, has for several decades upheld the principle of
+              Rule of Law. It is the branch that leads in the fight for the
+              masses.
+            </p>
+
+            <p>
+              The Branch exemplifies what the first Nigerian Lawyer, Christopher
+              Sapara Williams said, &quot;A Lawyer leads for the advancement of
+              his society&quot;
             </p>
           </div>
 
@@ -43,10 +58,10 @@ export default function AboutUs() {
             <p>
               In the year 2005, during the lifetime of the foremost Human Rights
               Activist, Chief Gani Fawehinmi, S.A.N, the NBA IKEJA under the
-              Chairmanship of Adekunle Akanbi OJO, ESQ. birthed an Annual
-              Lecture titled FAWEHINMIISM in his honour. The Annual Lecture
-              FAWEHINMIISM still hold even after the death of Chief Gani
-              Fawehinmi, S.A.N.
+              Chairmanship of Dr. Adekunle Akanbi OJO, SAN birthed an Annual
+              Lecture titled FAWEHINMIISM, in his honour. The Annual Lecture,
+              FAWEHINMIISM still hold yearly even after the passing of Chief
+              Gani Fawehinmi, S.A.N.
             </p>
           </div>
 
@@ -55,13 +70,14 @@ export default function AboutUs() {
               <strong>ANNUAL LAW WEEK</strong>
             </p>
             <p>
-              As it is a traditional within the Bar both domestic and
-              international, on a yearly basis the Branch holds a week-long
-              event called LAW WEEK. The Law Week affords the opportunity to
-              have interactive sessions with members, non-members, the public
-              and particularly, to give support to the less privileged citizens
-              of Nigera through free legal advice and representation. The law
-              week is usually concluded with a Law Dinner.
+              As it is the traditional within the Bar both local and
+              international, on a yearly basis, the Branch holds a week-long
+              event tagged &quot;LAW WEEK&quot;. The Law Week affords the
+              opportunity to have interactive sessions with members and the
+              general public. The Branch particularly use this medium to render
+              support to the less privileged citizens of Nigera through free
+              legal advice and representation. The law week is usually concluded
+              with a Law Dinner.
             </p>
           </div>
 
@@ -70,12 +86,12 @@ export default function AboutUs() {
               <strong>THE HUMAN RIGHTS COMMITTEE</strong>
             </p>
             <p>
-              According to the law, the Human Right Committee is usually headed
-              by the Vice Chairman. The essence of the Committee is to assist
-              indigent members of the society who require legal advice and
-              representation. This is a very important aspect of the Branch
-              activities that is very dear to the heart of the branchs as a
-              whole.
+              In consonance with our laws, the Human Right Committee is usually
+              led by the Vice Chairman of the Branch. The essence of the
+              Committee is to assist indigent members of the society who require
+              legal advice and representation. This is a very important aspect
+              of the Branch&apos;s activities that is very dear to the heart of
+              the branch and the Bar in general.
             </p>
           </div>
 
@@ -85,8 +101,12 @@ export default function AboutUs() {
             </p>
             <p>
               The branch has, as its core principle, the fight for the masses
-              for which reason it takes up without fear or favour issues
-              resulting from Government policies affecting the general populace.{' '}
+              for which reason it takes up without fear or favour, issues
+              resulting from Government policies affecting the general populace.
+              Through this medium, the Branch serves as the watch dog in the
+              protection of public interest generally. This is achieved through
+              engagcement with Government Agencies and resort to litigation in
+              deserving cases.
             </p>
           </div>
         </div>

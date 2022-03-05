@@ -1,6 +1,7 @@
 // people
-import Avatar from '../../assets/images/avatar.png';
+// import Avatar from '../../assets/images/avatar.png';
 import Abijo from '../../assets/images/about/adeyemi-abijo.jpeg';
+import Ademilola from '../../assets/images/about/ademilola-demilade.jpeg';
 import Ada from '../../assets/images/about/ada-ahubelem.jpeg';
 import Adedoyin from '../../assets/images/about/adedoyin-shobiye.jpg';
 import Adeola from '../../assets/images/about/adeola-folarin.jpeg';
@@ -40,7 +41,7 @@ export const PEOPLE_DATA = [
     id: 'people-05',
     name: 'Ademilola Demilade',
     job: 'financial secretary',
-    image: Avatar.src
+    image: Ademilola.src
   },
   {
     id: 'people-06',

@@ -282,3 +282,14 @@ $start: 0;
   top: 0;
   left: 0;
 }
+
+.rdw-image-modal-upload-option {
+  padding-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &-label {
+    justify-content: flex-start;
+  }
+}

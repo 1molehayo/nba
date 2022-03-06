@@ -10,6 +10,19 @@ const Editor = dynamic(
   { ssr: false }
 );
 
+const uploadCallback = (file) => {
+  // eslint-disable-next-line no-unused-vars
+  return new Promise((resolve, reject) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        resolve({ data: { link: e.target.result } });
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+};
+
 class RichTextEditor extends React.Component {
   isMounted = false;
 
@@ -58,6 +71,17 @@ class RichTextEditor extends React.Component {
           wrapperClassName="rich-text-wrapper"
           editorClassName="rich-text"
           onEditorStateChange={this.onEditorStateChange}
+          toolbar={{
+            inline: { inDropdown: true },
+            list: { inDropdown: true },
+            textAlign: { inDropdown: true },
+            link: { inDropdown: true },
+            history: { inDropdown: true },
+            image: {
+              uploadCallback,
+              alt: { present: true, mandatory: true }
+            }
+          }}
         />
       </div>
     );

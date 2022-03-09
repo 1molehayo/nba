@@ -36,7 +36,7 @@ export const PEOPLE_DATA = [
   },
   {
     id: 'people-04',
-    name: 'Ade Ahubelem',
+    name: 'Ada Ahubelem',
     job: 'treasurer',
     image: Ada.src,
     size: 'sm'

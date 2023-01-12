@@ -10,6 +10,9 @@
     "lint:fix": "eslint '**/*.{js,jsx}' --fix"
   },
   "dependencies": {
+    "@draft-js-plugins/drag-n-drop-upload": "^4.2.1",
+    "@draft-js-plugins/editor": "^4.1.2",
+    "@draft-js-plugins/image": "^4.1.2",
     "axios": "^0.22.0",
     "canvas": "^2.8.0",
     "classnames": "^2.3.1",

@@ -14,69 +14,80 @@ import Tracy from '../../assets/images/about/tracy-ugboaku.png';
 
 export const PEOPLE_DATA = [
   {
-    id: 'people-01',
-    name: 'Bartholomew Aguegbodo',
-    job: 'chairman',
-    image: Bartholomew.src
-  },
-  {
     id: 'people-02',
     name: 'Adeyemi Abijo',
     job: 'general secretary',
-    image: Abijo.src
+    image: Abijo.src,
+    size: 'sm'
+  },
+  {
+    id: 'people-01',
+    name: 'Bartholomew Aguegbodo',
+    job: 'chairman',
+    image: Bartholomew.src,
+    size: 'lg'
   },
   {
     id: 'people-03',
-    name: 'Adedoyin Shobiye',
+    name: 'Adedoyin Sobiye',
     job: 'vice chairman',
-    image: Adedoyin.src
+    image: Adedoyin.src,
+    size: 'sm'
   },
   {
     id: 'people-04',
-    name: 'Ade Ahubelem',
+    name: 'Ada Ahubelem',
     job: 'treasurer',
-    image: Ada.src
+    image: Ada.src,
+    size: 'sm'
   },
   {
     id: 'people-05',
     name: 'Ademilola Demilade',
     job: 'financial secretary',
-    image: Ademilola.src
+    image: Ademilola.src,
+    size: 'sm'
   },
   {
     id: 'people-06',
     name: 'Adesola O. Bello',
     job: 'social secretary',
-    image: Adesola.src
+    image: Adesola.src,
+    size: 'sm'
   },
   {
     id: 'people-07',
     name: 'Adeola Folarin',
     job: 'welfare secretary ',
-    image: Adeola.src
+    image: Adeola.src,
+    size: 'sm'
   },
   {
     id: 'people-08',
     name: 'Marvin Ibem',
     job: 'publicity secretary',
-    image: Marvin.src
+    image: Marvin.src,
+    size: 'sm'
   },
   {
     id: 'people-09',
     name: 'Ezekiel O. Bodunde',
     job: 'assistant general sec.',
-    image: Ezekiel.src
+    image: Ezekiel.src,
+    size: 'sm'
   },
   {
     id: 'people-10',
     name: 'Tracy Ugboaku',
     job: 'legal advisor',
-    image: Tracy.src
+    image: Tracy.src,
+    size: 'sm'
   },
   {
     id: 'people-11',
     name: 'Omozusi Omokhaje',
     job: 'provost',
-    image: Omozusi.src
+    image: Omozusi.src,
+    size: 'sm'
   }
 ];

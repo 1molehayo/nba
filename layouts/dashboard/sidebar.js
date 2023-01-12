@@ -5,6 +5,10 @@ import { useCurrentUser } from '../../contexts/current-user';
 import styles from '../../styles/dashboard/layouts/sidebar.module.scss';
 import { getPermissions } from '../../utility';
 
+// classnames({
+//   [styles.isActive]: router.pathname === '/dashboard'
+// })
+
 const DashboardSidebar = () => {
   const router = useRouter();
   const { role } = useCurrentUser();
@@ -16,9 +20,9 @@ const DashboardSidebar = () => {
           <li>
             <Link href="/dashboard">
               <a
-                className={classnames({
-                  [styles.isActive]: router.pathname === '/dashboard'
-                })}
+                className={router.pathname.includes(
+                  '/dashboard' ? 'active' : ''
+                )}
               >
                 <span className="icon-dashboard" />
                 Dashboard

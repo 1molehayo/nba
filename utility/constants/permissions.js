@@ -1,7 +1,7 @@
 import { DEFAULT_ROLE_TYPE } from './others';
 
 export const PERMISSIONS = {
-  administrator: [
+  admin: [
     'find.articles',
     'findOne.articles',
     'update.articles',

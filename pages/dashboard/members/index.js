@@ -7,6 +7,7 @@ import handleApiError from '../../../services/handle-api-error';
 import { getStartPage, isArrayEmpty, notify } from '../../../utility';
 import { Empty, Loader, Searchbar } from '../../../components/global';
 import {
+  ADMIN_ROLE_TYPE,
   DEFAULT_ROLE_TYPE,
   MEMBERS_HEADERS,
   PAGE_SIZE
@@ -113,9 +114,9 @@ function Members() {
     try {
       const data = {
         role:
-          member.role.type === 'administrator'
+          member.role.type === ADMIN_ROLE_TYPE
             ? DEFAULT_ROLE_TYPE
-            : 'administrator'
+            : ADMIN_ROLE_TYPE
       };
 
       const newData = await axios.put(`/users/${member.uid}`, data);
@@ -133,7 +134,7 @@ function Members() {
       notify({
         type: 'success',
         message: `${member.first_name}'s profile has been ${
-          member.role.type === 'administrator'
+          member.role.type === ADMIN_ROLE_TYPE
             ? 'upgraded to administrator account'
             : 'degraded to lawyer account'
         }`

@@ -10,7 +10,11 @@ import { notify } from '../../../../utility';
 import { MemberDetails } from '../../../../components/dashboard/member-details';
 import { MemberModal } from '../../../../components/dashboard';
 import useAuthGuard from '../../../../services/use-auth-guard';
-import { DEFAULT_ROLE_TYPE, FETCHING } from '../../../../utility/constants';
+import {
+  ADMIN_ROLE_TYPE,
+  DEFAULT_ROLE_TYPE,
+  FETCHING
+} from '../../../../utility/constants';
 import useFetch from '../../../../services/use-fetch';
 import { Loader } from '../../../../components/global';
 
@@ -79,9 +83,9 @@ function ProfileDetails({ uid }) {
     try {
       const updateData = {
         role:
-          memberData.role.type === 'administrator'
+          memberData.role.type === ADMIN_ROLE_TYPE
             ? DEFAULT_ROLE_TYPE
-            : 'administrator'
+            : ADMIN_ROLE_TYPE
       };
 
       const newData = await axios.put(`/users/${memberData.uid}`, updateData);
@@ -91,7 +95,7 @@ function ProfileDetails({ uid }) {
       notify({
         type: 'success',
         message: `${memberData.first_name}'s profile has been ${
-          newData.role.type === 'administrator'
+          newData.role.type === ADMIN_ROLE_TYPE
             ? 'upgraded to administrator account'
             : 'degraded to lawyer account'
         }`

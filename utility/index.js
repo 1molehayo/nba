@@ -115,7 +115,7 @@ export const getPermissions = (role) => {
     return [];
   }
 
-  return PERMISSIONS[role.type.toLowerCase()];
+  return PERMISSIONS[role.type.toLowerCase()] || [];
 };
 
 const getToasterStyles = (type) => {

@@ -41,7 +41,7 @@ export const DATE_FORMAT_VIEW = 'DD-MM-YYYY';
 
 export const PAYMENT_DATE_FORMAT = 'DD MMM YYYY';
 
-export const DEFAULT_ROLE_TYPE = 'authenticated';
+export const DEFAULT_ROLE_TYPE = 'member';
 
 export const PAYMENT_GATEWAY = 'flutterwave';
 
@@ -50,3 +50,5 @@ export const PAGE_SIZE = 10;
 export const PAGE_SIZE_SM = 6;
 
 export const PAGE_SIZE_ALT = 12;
+
+export const ADMIN_ROLE_TYPE = 'admin';

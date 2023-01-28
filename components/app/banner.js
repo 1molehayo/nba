@@ -15,13 +15,15 @@ export const Banner = ({ title, hasBackButton }) => {
     <div className={styles.container}>
       <div className="container">
         <div className="row justify-content-between align-items-center">
-          <h2>{title}</h2>
+          <div className="col-12">
+            <h2>{title}</h2>
 
-          {hasBackButton && (
-            <button className="button button--link" onClick={goBack}>
-              Go Back
-            </button>
-          )}
+            {hasBackButton && (
+              <button className="button button--link" onClick={goBack}>
+                Go Back
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

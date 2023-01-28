@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
 import styles from '../../styles/app/components/about-card.module.scss';
@@ -11,8 +12,8 @@ export const AboutCard = ({ item }) => {
   const [selectedProfile, setSelectedProfile] = useState();
   const toggleModal = () => setOpenModal((prevState) => !prevState);
 
-  const getProfile = (id) => {
-    const result = PROFILES.filter((profile) => profile.peopleId === id);
+  const getProfile = () => {
+    const result = PROFILES.filter((profile) => profile.peopleId === item.id);
 
     if (isArrayEmpty(result)) {
       return null;
@@ -31,12 +32,18 @@ export const AboutCard = ({ item }) => {
     return '';
   };
 
+  const hasProfile = () => {
+    return PROFILES.some((profile) => profile.peopleId === item.id);
+  };
+
   return (
     <>
       <div
         role="button"
-        className={styles.wrapper}
-        onClick={() => getProfile(item.id)}
+        className={classnames(styles.wrapper, {
+          'card--no-link': !hasProfile()
+        })}
+        onClick={() => getProfile()}
       >
         <div className={styles.image}>
           {item.image && (
@@ -54,7 +61,13 @@ export const AboutCard = ({ item }) => {
           )}
         </div>
 
-        <p className={styles.title}>{item.name}</p>
+        <p
+          className={classnames(styles.title, {
+            'button--no-link': !hasProfile()
+          })}
+        >
+          {item.name}
+        </p>
         <p className={styles.job}>{item.job}</p>
       </div>
 

@@ -26,6 +26,12 @@
   img {
     border-radius: 50%;
   }
+
+  span:hover {
+    &::before {
+      content: none !important;
+    }
+  }
 }
 
 .wrapper {

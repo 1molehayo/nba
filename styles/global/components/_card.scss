@@ -1,4 +1,8 @@
 .card {
   @include card-shadow;
   background-color: color(white);
+
+  &--no-link {
+    cursor: default !important;
+  }
 }

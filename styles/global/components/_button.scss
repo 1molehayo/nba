@@ -27,6 +27,14 @@
     }
   }
 
+  &--no-link {
+    cursor: none;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+
   &--link {
     transition: color 0.3s ease;
     border: 0;

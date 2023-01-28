@@ -53,7 +53,7 @@ a.contact__text {
   &__wrapper {
     display: flex;
 
-    @include respond(small) {
+    @include respond(medium) {
       justify-content: flex-end;
     }
   }

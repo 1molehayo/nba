@@ -20,9 +20,9 @@ const DashboardSidebar = () => {
           <li>
             <Link href="/dashboard">
               <a
-                className={router.pathname.includes(
-                  '/dashboard' ? 'active' : ''
-                )}
+                className={classnames({
+                  [styles.isActive]: router.pathname === '/dashboard'
+                })}
               >
                 <span className="icon-dashboard" />
                 Dashboard

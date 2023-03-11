@@ -1,6 +1,6 @@
 // people
 // import Avatar from '../../assets/images/avatar.png';
-import Adedoyin from '../../assets/images/about/adedoyin-shobiye.jpg';
+// import Adedoyin from '../../assets/images/about/adedoyin-shobiye.jpg';
 import Adelaja from '../../assets/images/about/adelaja-patrick.jpg';
 import Bartholomew from '../../assets/images/about/bartholomew-aguegbodo.jpeg';
 import Chika from '../../assets/images/about/chika-okolie.jpg';
@@ -37,9 +37,9 @@ export const PEOPLE_DATA = [
   },
   {
     id: 'people-03',
-    name: 'Adedoyin Sobiye',
+    name: 'U.C. Tracy Amadigwe-Dike',
     job: 'vice chairman',
-    image: Adedoyin.src,
+    image: Tracy.src,
     size: 'sm'
   },
   {
@@ -84,13 +84,13 @@ export const PEOPLE_DATA = [
     image: Rotimi.src,
     size: 'sm'
   },
-  {
-    id: 'people-10',
-    name: 'Tracy Ugboaku',
-    job: 'legal advisor',
-    image: Tracy.src,
-    size: 'sm'
-  },
+  // {
+  //   id: 'people-10',
+  //   name: 'Tracy Ugboaku',
+  //   job: 'legal advisor',
+  //   image: Tracy.src,
+  //   size: 'sm'
+  // },
   {
     id: 'people-11',
     name: 'Yusuf T. Nurudeen (Esq)',

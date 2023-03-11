@@ -1,23 +1,31 @@
 // people
 // import Avatar from '../../assets/images/avatar.png';
-import Abijo from '../../assets/images/about/adeyemi-abijo.jpeg';
-import Ademilola from '../../assets/images/about/ademilola-demilade.jpeg';
-import Ada from '../../assets/images/about/ada-ahubelem.jpeg';
 import Adedoyin from '../../assets/images/about/adedoyin-shobiye.jpg';
-import Adeola from '../../assets/images/about/adeola-folarin.jpeg';
-import Adesola from '../../assets/images/about/adesola-adekunbi.jpeg';
+import Adelaja from '../../assets/images/about/adelaja-patrick.jpg';
 import Bartholomew from '../../assets/images/about/bartholomew-aguegbodo.jpeg';
-import Ezekiel from '../../assets/images/about/ezekiel-olugbenga.jpeg';
-import Marvin from '../../assets/images/about/marvin-ogah.jpeg';
-import Omozusi from '../../assets/images/about/omozusi-omokhafe.jpeg';
+import Chika from '../../assets/images/about/chika-okolie.jpg';
+import Issa from '../../assets/images/about/issa-adedokun.jpg';
+import Komolafe from '../../assets/images/about/komolafe-olanrewaju.jpg';
+import Muhammed from '../../assets/images/about/muhammed-jimoh.jpg';
+import Omozusi from '../../assets/images/about/omozusi-omokhafe.jpg';
+import Rotimi from '../../assets/images/about/rotimi-komolafe.jpg';
 import Tracy from '../../assets/images/about/tracy-ugboaku.png';
+import Yusuf from '../../assets/images/about/yusuf-temilola.jpg';
+
+// import Abijo from '../../assets/images/about/adeyemi-abijo.jpeg';
+// import Ademilola from '../../assets/images/about/ademilola-demilade.jpeg';
+// import Ada from '../../assets/images/about/ada-ahubelem.jpeg';
+// import Adeola from '../../assets/images/about/adeola-folarin.jpeg';
+// import Adesola from '../../assets/images/about/adesola-adekunbi.jpeg';
+// import Ezekiel from '../../assets/images/about/ezekiel-olugbenga.jpeg';
+// import Marvin from '../../assets/images/about/marvin-ogah.jpeg';
 
 export const PEOPLE_DATA = [
   {
     id: 'people-02',
-    name: 'Adeyemi Abijo',
+    name: 'Issa Adedokun (Esq)',
     job: 'general secretary',
-    image: Abijo.src,
+    image: Issa.src,
     size: 'sm'
   },
   {
@@ -36,44 +44,44 @@ export const PEOPLE_DATA = [
   },
   {
     id: 'people-04',
-    name: 'Ada Ahubelem',
+    name: 'Omozusi Omokhaje (Esq)',
     job: 'treasurer',
-    image: Ada.src,
+    image: Omozusi.src,
     size: 'sm'
   },
   {
     id: 'people-05',
-    name: 'Ademilola Demilade',
+    name: 'Muhammed Jimoh (Esq)',
     job: 'financial secretary',
-    image: Ademilola.src,
+    image: Muhammed.src,
     size: 'sm'
   },
   {
     id: 'people-06',
-    name: 'Adesola O. Bello',
+    name: 'Komolafe O. Latifah (Esq)',
     job: 'social secretary',
-    image: Adesola.src,
+    image: Komolafe.src,
     size: 'sm'
   },
   {
     id: 'people-07',
-    name: 'Adeola Folarin',
+    name: 'Chika E. Okolie (FICMC)',
     job: 'welfare secretary ',
-    image: Adeola.src,
+    image: Chika.src,
     size: 'sm'
   },
   {
     id: 'people-08',
-    name: 'Marvin Ibem',
+    name: 'Adelaja P. Agboola (Esq)',
     job: 'publicity secretary',
-    image: Marvin.src,
+    image: Adelaja.src,
     size: 'sm'
   },
   {
     id: 'people-09',
-    name: 'Ezekiel O. Bodunde',
+    name: 'Rotimi Komolafe (Esq)',
     job: 'assistant general sec.',
-    image: Ezekiel.src,
+    image: Rotimi.src,
     size: 'sm'
   },
   {
@@ -85,9 +93,9 @@ export const PEOPLE_DATA = [
   },
   {
     id: 'people-11',
-    name: 'Omozusi Omokhaje',
+    name: 'Yusuf T. Nurudeen (Esq)',
     job: 'provost',
-    image: Omozusi.src,
+    image: Yusuf.src,
     size: 'sm'
   }
 ];

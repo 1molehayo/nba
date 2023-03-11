@@ -2,7 +2,7 @@
 // import Avatar from '../../assets/images/avatar.png';
 // import Adedoyin from '../../assets/images/about/adedoyin-shobiye.jpg';
 import Adelaja from '../../assets/images/about/adelaja-patrick.jpg';
-import Bartholomew from '../../assets/images/about/bartholomew-aguegbodo.jpeg';
+import Oluwaseyi from '../../assets/images/about/oluwaseyi-olawumi.jpg';
 import Chika from '../../assets/images/about/chika-okolie.jpg';
 import Issa from '../../assets/images/about/issa-adedokun.jpg';
 import Komolafe from '../../assets/images/about/komolafe-olanrewaju.jpg';
@@ -17,6 +17,7 @@ import Yusuf from '../../assets/images/about/yusuf-temilola.jpg';
 // import Ada from '../../assets/images/about/ada-ahubelem.jpeg';
 // import Adeola from '../../assets/images/about/adeola-folarin.jpeg';
 // import Adesola from '../../assets/images/about/adesola-adekunbi.jpeg';
+// import Bartholomew from '../../assets/images/about/bartholomew-aguegbodo.jpeg';
 // import Ezekiel from '../../assets/images/about/ezekiel-olugbenga.jpeg';
 // import Marvin from '../../assets/images/about/marvin-ogah.jpeg';
 
@@ -30,9 +31,9 @@ export const PEOPLE_DATA = [
   },
   {
     id: 'people-01',
-    name: 'Bartholomew Aguegbodo',
+    name: 'Oluwaseyi Olawumi (Esq)',
     job: 'chairman',
-    image: Bartholomew.src,
+    image: Oluwaseyi.src,
     size: 'lg'
   },
   {
